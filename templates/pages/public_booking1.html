@@ -1,0 +1,53 @@
+{% extends "layouts/public_layout.html" %}
+
+{% block content %}
+    <div class="booking-wrapper">
+        <div class="booking-card">
+            <h2 class="booking-title">Boeking - Public 1</h2>
+
+            <form class="booking-form" action="/booking2" method="get">
+                <!-- Accommodatie -->
+                <div class="form-group">
+                    <label for="accommodation">Accommodatie</label>
+                    <select name="accommodation_id" class="form-input">
+                        <option value="">-- Kies een accommodatie --</option>
+
+                        <option value="1" {% if accommodation_id == "1" %}selected{% endif %}>
+                            Chalet
+                        </option>
+
+                        <option value="2" {% if accommodation_id == "2" %}selected{% endif %}>
+                            Tent
+                        </option>
+
+                        <option value="3" {% if accommodation_id == "3" %}selected{% endif %}>
+                            Staanplaats
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Begin date -->
+                <div class="form-group">
+                    <label>Begin datum</label>
+                    <input type="text" name="check_in_date" class="form-input" value="" onclick="this.showPicker()">
+                </div>
+
+                <!-- End date -->
+                <div class="form-group">
+                    <label>Eind datum</label>
+                    <input type="text" name="check_out_date" class="form-input" value="" onclick="this.showPicker()">
+                </div>
+
+                <!-- Buttons -->
+                <div class="booking-buttons">
+                    <button type="button" onclick="window.location.href='/'" class="btn-primary">
+                        Terug
+                    </button>
+                    <button id="submit-btn" type="submit" class="btn-primary" disabled>
+                        Doorgaan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

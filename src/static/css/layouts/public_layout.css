@@ -1,0 +1,255 @@
+
+
+
+/* Public layout Banner */
+/***************************************************************************/
+.banner {
+    position: relative;
+    height: 120px;
+    background-color: var(--accent-color);
+    border-bottom: 10px solid var(--main-color);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.banner-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.banner-icon img {
+    height: 110px;
+    width: auto;
+    transform: scale(1.8);
+    transform-origin: left center;
+}
+
+.banner-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-family: "Georgia", "Times New Roman", serif;
+    font-weight: 600;
+    color: var(--main-color);
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.title-small {
+    font-size: 2.2rem;
+    margin-right: 0.6rem;
+}
+
+.title-large {
+    font-size: 3.6rem;
+}
+
+
+
+/* Public layout navigation */
+/***************************************************************************/
+.public-nav {
+    width: 100%;
+    border-bottom: 2px solid var(--main-color);
+    margin-bottom: 36px;
+}
+
+.nav-left {
+    display: flex;
+    gap: 32px;
+    padding: 16px 24px;
+    list-style: none;
+    margin: 0;
+}
+
+.nav-link {
+    position: relative;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--main-color);
+    padding: 4px 0;
+}
+
+/* Color text stay main color */
+.nav-link:hover,
+.nav-link:focus,
+.nav-link:active {
+    color: var(--main-color);
+}
+
+/* Title underline*/
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -1px;
+    width: 0;
+    height: 3px;
+    background-color: var(--main-color);
+    transform: translateX(-50%);
+    transition: width 0.25s ease;
+}
+
+/* Hover effect */
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Active page */
+.nav-link.active::after {
+    width: 100%;
+}
+
+
+
+/* Public layout Footer*/
+/***************************************************************************/
+.public-footer {
+    margin-top: 36px;
+    border-top: 2px solid var(--main-color);
+    background-color: #fff;
+}
+
+/* Container */
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 32px 24px;
+}
+
+/* Footer blocks */
+.footer-box {
+    flex: 1;
+    border: 2px solid var(--main-color);
+    border-radius: 12px;
+    padding: 20px;
+    background-color: var(--accent-color);
+}
+
+/* Titles */
+.footer-box h4 {
+    margin-bottom: 12px;
+    color: var(--main-color);
+}
+
+/* Text & links */
+.footer-box p,
+.footer-box a {
+    color: #333;
+    font-size: 0.95rem;
+}
+
+/* Navigation list */
+.footer-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-box li {
+    margin-bottom: 6px;
+}
+
+.footer-box a {
+    color: var(--main-color);
+    text-decoration: none;
+    text-decoration-color: var(--main-color);
+}
+
+.footer-box a:hover {
+    text-decoration: underline;
+}
+
+/* Footer logo*/
+.footer-logo {
+    display: block;
+    margin-top: 24px;
+    margin-left: -24px;
+    height: 40px;
+    width: auto;
+    transform: scale(3);
+    transform-origin: left center;
+}
+
+/* Camping info */
+.contact-address p,
+.contact-details p {
+    margin: 0;
+}
+
+.contact-address {
+    margin-bottom: 16px;
+}
+
+/* Bottom bar */
+.footer-bottom {
+    text-align: center;
+    padding: 12px;
+    border-top: 1px solid var(--main-color);
+    font-size: 0.85rem;
+}
+
+
+/* ===============================
+   PUBLIC LAYOUT RESPONSIVE
+   =============================== */
+
+@media (max-width: 900px) {
+    /* Banner */
+    .banner {
+        height: auto;
+        padding: 16px 0 20px;
+        text-align: center;
+    }
+
+    .banner-icon {
+        position: static;
+        transform: none;
+        margin-bottom: 8px;
+    }
+
+    .banner-icon img {
+        display: block;
+        margin: 0 auto;
+        transform: scale(1.8);
+        transform-origin: center;
+    }
+
+    .banner-title {
+        position: static;
+        transform: none;
+        margin-top: 12px;
+        text-align: center;
+        white-space: normal;
+        line-height: 1.1;
+    }
+
+    .title-small {
+        display: block;
+        font-size: 1.6rem;
+        margin: 0;
+    }
+
+    .title-large {
+        display: block;
+        font-size: 2.4rem;
+        margin: 0;
+    }
+
+    /* Navbar */
+    .nav-left {
+        justify-content: center;
+        padding: 16px 0;
+    }
+
+    /* Footer */
+    .footer-content {
+        flex-direction: column;
+    }
+
+}

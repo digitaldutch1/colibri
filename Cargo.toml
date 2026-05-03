@@ -1,0 +1,30 @@
+[package]
+name = "colibri"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+# Web framework for handling HTTP requests and routing
+actix-web = "4"
+
+# Plugin for serving static files like CSS and images
+actix-files = "0.6"
+
+# Template engine to render HTML files with Rust data
+askama = "0.12"
+
+# Loads environment variables from a .env file (e.g., database URLs)
+dotenv = "0.15"
+
+# Framework for serializing and deserializing data (e.g., JSON)
+serde = { version = "1", features = ["derive"] }
+
+# Middleware for managing user sessions via cookies
+actix-session = { version = "0.9", features = ["cookie-session"] }
+
+# Date and time library for handling timestamps
+chrono = { version = "0.4", features = ["serde"] }
+
+# Database driver to communicate with the PostgreSQL container
+tokio-postgres = { version = "0.7", features = ["with-chrono-0_4"] }
+

@@ -1,0 +1,94 @@
+{% extends "layouts/public_layout.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="public-content-wrapper">
+        <div class="left-column">
+            <div class="container-booking-cards">
+
+                <div class="booking-card">
+                    <div class="booking-image">
+                        <img src="/static/images/kotelet_afbeelding.jpg" alt="Kotelet accommodatie">
+                    </div>
+
+                    <div class="booking-content">
+                        <h3>Chalet</h3>
+                        <p>
+                            Onze chalet is een comfortabele accommodatie voor wie graag wat extra luxe wil tijdens het kamperen.
+                            De kotelet is volledig ingericht en biedt een fijne plek om te ontspannen na een dag in de natuur.
+                            Geschikt voor stellen en gezinnen die gemak en comfort belangrijk vinden.
+                        </p>
+                        <small>€300 per nacht</small>
+                        <button type="button" onclick="window.location.href='/booking1?accommodation_id=1'" class="btn-booking">
+                            Boeken
+                        </button>
+                    </div>
+                </div>
+
+                <div class="booking-card">
+                    <div class="booking-image">
+                        <img src="/static/images/tent_afbeelding.webp" alt="Tent accommodatie">
+                    </div>
+
+                    <div class="booking-content">
+                        <h3>Tent</h3>
+                        <p>
+                        De tent is ideaal voor echte kampeerliefhebbers die graag dicht bij de natuur verblijven.
+                        Je geniet van rust, ruimte en een echte buitenervaring.
+                        Een fijne keuze voor wie eenvoudig wil kamperen in een groene omgeving.
+                        </p>
+                        <small>€200 per nacht</small>
+                        <button type="button" onclick="window.location.href='/booking1?accommodation_id=2'" class="btn-booking">
+                            Boeken
+                        </button>
+                    </div>
+                </div>
+
+                <div class="booking-card">
+                    <div class="booking-image">
+                        <img src="/static/images/staanplaats_afbeelding.webp" alt="Staanplaats">
+                    </div>
+
+                    <div class="booking-content">
+                        <h3>Staanplaats</h3>
+                        <p>
+                            Onze staanplaatsen zijn ruim opgezet en geschikt voor campers, caravans en tenten.
+                            Je hebt voldoende privacy en uitzicht op het groen rondom de camping.
+                            Perfect voor gasten die met hun eigen kampeermiddel reizen.
+                        </p>
+                        <small>€100 per nacht</small>
+                        <button type="button" onclick="window.location.href='/booking1?accommodation_id=3'" class="btn-booking">
+                            Boeken
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="right-column">
+            <div class="camping-info">
+                <h2>Welkom bij Camping de Colibri</h2>
+                <p>
+                    Welkom bij Camping de Colibri, een rustige camping midden in de natuur.
+                    Hier kun je genieten van ontspanning, ruimte en een fijne omgeving.
+                    De camping is een ideale uitvalsbasis voor wandelen, fietsen en zwemmen.
+                    Of je nu komt om te ontspannen of actief bezig wilt zijn, bij Camping de Colibri voel je je snel thuis.
+                </p>
+
+                <div class="camping-activities">
+                    <div class="activity-image">
+                        <img src="/static/images/wandelen_afbeelding.jpg" alt="Wandelen">
+                    </div>
+                    <div class="activity-image">
+                        <img src="/static/images/zwemmen_afbeelding.jpg" alt="Zwemmen">
+                    </div>
+                    <div class="activity-image">
+                        <img src="/static/images/fietsen_afbeelding.jpg" alt="Fietsen">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

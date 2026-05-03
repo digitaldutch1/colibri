@@ -1,0 +1,119 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/static/css/base/base_style.css">
+    <link rel="stylesheet" href="/static/css/layouts/public_layout.css">
+    <link rel="stylesheet" href="/static/css/pages/public_home.css">
+    <link rel="stylesheet" href="/static/css/pages/contact.css">
+    <link rel="stylesheet" href="/static/css/pages/tos.css">
+    <link rel="stylesheet" href="/static/css/pages/form_booking.css">
+    <title>Layout Public</title>
+</head>
+
+<body>
+    <!-- Header -->  
+    <header class="banner">
+        <div class="banner-icon">
+            <img src="/static/images/logo.png" alt="Camping de Colibri">
+        </div>
+
+        <div class="banner-title">
+            <span class="title-small">Camping de</span>
+            <span class="title-large">Colibri</span>
+        </div>
+    </header>
+
+
+    <!--  Navbar  -->
+    <nav class="public-nav">
+        <ul class="nav-left">
+            <li><a id="navHome" href="/" class="nav-link">Home</a></li>
+            <li><a id="navBooking" href="/booking1" class="nav-link">Boeken</a></li>
+            <li><a id="navContact" href="/contact" class="nav-link">Contact</a></li>
+
+            {% if user_name.is_some() %}
+                <li><a id="navAdmin" href="/admin" class="nav-link">Admin</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Public Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="public-footer">
+        <div class="footer-content">
+            <div class="footer-box">
+                <h4>Camping de Colibri</h4>
+                <p>Een rustige camping midden in de natuur.</p>
+                <img
+                    src="/static/images/logo.png"
+                    alt="Camping de Colibri logo"
+                    class="footer-logo"
+                >
+            </div>
+
+            
+            <div class="footer-box">
+                <h4>Navigatie</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/booking1">Boeken</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/tos">Algemene voorwaarden</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-box">
+                <h4>Contact</h4>
+
+                <div class="contact-address">
+                    <p>Vogelsang 1</p>
+                    <p>5050 AB Hoogerheide</p>
+                    <p>Nederland</p>
+                </div>
+
+                <div class="contact-details">
+                    <p>Email: info@camping-colibri.nl</p>
+                    <p>Telefoon: 06 12345678</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 Camping de Colibri</p>
+        </div>
+    </footer>
+
+        <!-- Script active underline navbar -->
+    <script>
+        (function () {
+            const path = window.location.pathname;
+
+            const home = document.getElementById("navHome");
+            const booking = document.getElementById("navBooking");
+            const contact = document.getElementById("navContact");
+            const admin = document.getElementById("navAdmin");
+
+            function setActive(el) {
+                if (el) el.classList.add("active");
+            }
+
+            if (path === "/") setActive(home);
+            else if (path.startsWith("/booking1") || path.startsWith("/booking2") || path.startsWith("/boeken")) setActive(booking);
+            else if (path.startsWith("/contact")) setActive(contact);
+            else if (admin && path.startsWith("/admin")) setActive(admin);
+        })();
+    </script>
+</body>
+</html>

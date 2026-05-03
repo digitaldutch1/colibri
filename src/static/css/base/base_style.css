@@ -1,0 +1,20 @@
+
+
+
+/* Theme colors*/
+:root {
+    --main-color: #2f5d3a;
+    --accent-color: #f7faf7;
+}
+
+/* Reset all margins and paddings to 0px*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Font */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}

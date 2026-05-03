@@ -1,0 +1,166 @@
+
+
+
+/*  Public content layout*/
+/***************************************************************************/
+.public-content-wrapper {
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0 24px;
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Left column*/
+.left-column {
+    width: calc(50vw - 24px);
+    flex: none;
+}
+
+/* Right column*/
+.right-column {
+    width: calc(50vw - 48px);
+    margin-left: 24px;
+    flex: none;
+}
+
+/*  Booking cards */
+.container-booking-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.booking-card {
+    display: flex;
+    gap: 20px;
+    border: 2px solid var(--main-color);
+    border-radius: 12px;
+    padding: 16px;
+    align-items: center;
+    background-color: var(--accent-color);
+}
+
+.booking-image {
+    width: 150px;
+    height: 120px;
+    border-radius: 10px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.booking-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.booking-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.booking-content h3 {
+    color: var(--main-color);
+    margin: 0 0 8px 0;
+}
+
+.booking-content p {
+    margin: 0 0 12px 0;
+}
+
+.booking-content small {
+    display: block ;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.btn-booking {
+    width: 100px;
+    height: 28px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--main-color);
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.btn-booking:hover {
+    transform: scale(1.08);
+}
+
+/* Welcome box */
+.camping-info {
+    border: 2px solid var(--main-color);
+    border-radius: 12px;
+    padding: 24px;
+    background-color: var(--accent-color);
+}
+
+.camping-info h2 {
+    color: var(--main-color);
+}
+
+/* Activities images in welcome box */
+.camping-activities {
+    display: flex;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.activity-image {
+    flex: 1;
+    height: 90px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.activity-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+
+/* ===============================
+   PUBLIC CONTENT RESPONSIVE
+   =============================== */
+
+@media (max-width: 900px) {
+    /* Public content layout */
+    .public-content-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Welkom card above */
+    .right-column {
+        order: 1;
+        width: 100%;
+        margin: 0 0 24px 0;
+    }
+
+    /* Booking cards under */
+    .left-column {
+        order: 2;
+        width: 100%;
+    }
+
+    /* Booking card */
+    .booking-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .booking-image {
+        width: 100%;
+        height: 160px;
+    }
+
+}

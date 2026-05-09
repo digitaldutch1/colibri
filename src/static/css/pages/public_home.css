@@ -5,11 +5,10 @@
 /***************************************************************************/
 .public-content-wrapper {
     width: 100%;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin: 0px;
     padding: 0 24px;
     display: flex;
-    align-items: flex-start;
+    align-items: flex-start ;
 }
 
 /* Left column*/

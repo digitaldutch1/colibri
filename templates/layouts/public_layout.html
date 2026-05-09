@@ -29,6 +29,16 @@
             <span class="title-small">Camping de</span>
             <span class="title-large">Colibri</span>
         </div>
+
+        <div class="language-switch-container">
+            <span class="lang-label en active">EN</span>
+            <div class="switch" id="langSwitch">
+                <div class="switch-handle">
+                    <img src="/static/images/flag-uk-round.png" id="flagImg" alt="Language">
+                </div>
+            </div>
+            <span class="lang-label nl">NL</span>
+        </div>
     </header>
 
 
@@ -113,6 +123,40 @@
             else if (path.startsWith("/booking1") || path.startsWith("/booking2") || path.startsWith("/boeken")) setActive(booking);
             else if (path.startsWith("/contact")) setActive(contact);
             else if (admin && path.startsWith("/admin")) setActive(admin);
+        })();
+    </script>
+
+    <!-- Script for language switch-->
+    <script>
+        (function() {
+            const langSwitch = document.getElementById('langSwitch');
+            const flagImg = document.getElementById('flagImg');
+            const labelEN = document.querySelector('.lang-label.en');
+            const labelNL = document.querySelector('.lang-label.nl');
+            const savedLang = localStorage.getItem('selectedLanguage');
+
+            if (savedLang === 'nl') {
+                langSwitch.classList.add('active');
+                flagImg.src = "/static/images/flag-nl-round.png";
+                labelNL.classList.add('active');
+                labelEN.classList.remove('active');
+            }
+
+            langSwitch.addEventListener('click', function() {
+                this.classList.toggle('active');
+                
+                if (this.classList.contains('active')) {
+                    flagImg.src = "/static/images/flag-nl-round.png";
+                    labelNL.classList.add('active');
+                    labelEN.classList.remove('active');
+                    localStorage.setItem('selectedLanguage', 'nl');
+                } else {
+                    flagImg.src = "/static/images/flag-uk-round.png";
+                    labelEN.classList.add('active');
+                    labelNL.classList.remove('active');
+                    localStorage.setItem('selectedLanguage', 'en');
+                }
+            });
         })();
     </script>
 </body>

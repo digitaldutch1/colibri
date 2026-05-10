@@ -194,12 +194,13 @@
 .footer-box h4 {
     margin-bottom: 12px;
     color: var(--main-color);
+    font-weight: bold;
 }
 
 /* Text & links */
 .footer-box p,
 .footer-box a {
-    color: #333;
+    color: var(--main-color);
     font-size: 0.95rem;
 }
 

@@ -3,48 +3,44 @@
 {% block content %}
     <div class="booking-wrapper">
         <div class="booking-card">
-            <h2 class="booking-title">Boeking - Public 1</h2>
+            <h2 class="booking-title">{{ self.i18n("booking-title-step1") }}</h2>
 
             <form class="booking-form" action="/booking2" method="get">
-                <!-- Accommodatie -->
                 <div class="form-group">
-                    <label for="accommodation">Accommodatie</label>
+                    <label for="accommodation">{{ self.i18n("booking-label-accommodation") }}</label>
                     <select name="accommodation_id" class="form-input">
-                        <option value="">-- Kies een accommodatie --</option>
+                        <option value="">{{ self.i18n("booking-option-default") }}</option>
 
                         <option value="1" {% if accommodation_id == "1" %}selected{% endif %}>
-                            Chalet
+                            {{ self.i18n("home-chalet-title") }}
                         </option>
 
                         <option value="2" {% if accommodation_id == "2" %}selected{% endif %}>
-                            Tent
+                            {{ self.i18n("home-tent-title") }}
                         </option>
 
                         <option value="3" {% if accommodation_id == "3" %}selected{% endif %}>
-                            Staanplaats
+                            {{ self.i18n("home-pitch-title") }}
                         </option>
                     </select>
                 </div>
 
-                <!-- Begin date -->
                 <div class="form-group">
-                    <label>Begin datum</label>
+                    <label>{{ self.i18n("booking-label-checkin") }}</label>
                     <input type="text" name="check_in_date" class="form-input" value="" onclick="this.showPicker()">
                 </div>
 
-                <!-- End date -->
                 <div class="form-group">
-                    <label>Eind datum</label>
+                    <label>{{ self.i18n("booking-label-checkout") }}</label>
                     <input type="text" name="check_out_date" class="form-input" value="" onclick="this.showPicker()">
                 </div>
 
-                <!-- Buttons -->
                 <div class="booking-buttons">
                     <button type="button" onclick="window.location.href='/'" class="btn-primary">
-                        Terug
+                        {{ self.i18n("booking-btn-back") }}
                     </button>
                     <button id="submit-btn" type="submit" class="btn-primary" disabled>
-                        Doorgaan
+                        {{ self.i18n("booking-btn-next") }}
                     </button>
                 </div>
             </form>

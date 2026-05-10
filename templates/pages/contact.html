@@ -4,29 +4,26 @@
     <div class="contact-wrapper">
         <div class="contact-card">
 
-            <h2 class="contact-title">Contact</h2>
+            <h2 class="contact-title">{{ self.i18n("contact-main-title") }}</h2>
 
             <div class="contact-content">
-
                 <div class="contact-block">
-                    <h3>Adres</h3>
+                    <h3>{{ self.i18n("contact-address-title") }}</h3>
                     <p>Vogelsang 1</p>
                     <p>5050 AB Hoogerheide</p>
-                    <p>Nederland</p>
+                    <p>{{ self.i18n("footer-contact-country") }}</p> </div>
+
+                <div class="contact-block">
+                    <h3>{{ self.i18n("contact-info-title") }}</h3>
+                    <p>{{ self.i18n("footer-contact-email") }}: info@camping-colibri.nl</p>
+                    <p>{{ self.i18n("footer-contact-phone") }}: 06 12345678</p>
                 </div>
 
                 <div class="contact-block">
-                    <h3>Contactgegevens</h3>
-                    <p>Email: info@camping-colibri.nl</p>
-                    <p>Telefoon: 06 12345678</p>
+                    <h3>{{ self.i18n("contact-hours-title") }}</h3>
+                    <p>{{ self.i18n("contact-hours-week") }}: 09:00 - 17:00</p>
+                    <p>{{ self.i18n("contact-hours-weekend") }}: 10:00 - 16:00</p>
                 </div>
-
-                <div class="contact-block">
-                    <h3>Openingstijden</h3>
-                    <p>Maandag - Vrijdag: 09:00 - 17:00</p>
-                    <p>Zaterdag - Zondag: 10:00 - 16:00</p>
-                </div>
-
             </div>
 
         </div>

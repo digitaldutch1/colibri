@@ -1,58 +1,42 @@
 {% extends "layouts/public_layout.html" %}
 
 {% block content %}
-
 <div class="tos-wrapper">
     <div class="tos-card">
 
-        <h2 class="tos-title">Algemene Voorwaarden</h2>
+        <h2 class="tos-title">{{ self.i18n("tos-main-title") }}</h2>
 
         <div class="tos-content">
 
-            <h3>1. Reservering</h3>
-            <p>
-                Een reservering is pas definitief nadat deze is bevestigd via email.
-                Bij het maken van een reservering gaat u akkoord met deze voorwaarden.
-            </p>
+            <h3>{{ self.i18n("tos-section-1-title") }}</h3>
+            <p>{{ self.i18n("tos-section-1-text") }}</p>
 
-            <h3>2. Betaling</h3>
-            <p>
-                De betaling dient volledig te worden voldaan via de aangeboden betaalmogelijkheid.
-                Na succesvolle betaling ontvangt u een bevestiging per email.
-            </p>
+            <h3>{{ self.i18n("tos-section-2-title") }}</h3>
+            <p>{{ self.i18n("tos-section-2-text") }}</p>
 
-            <h3>3. Annulering</h3>
-            <p>
-                Annuleren kan via de annuleringslink in de bevestigingsmail.
-            </p>
+            <h3>{{ self.i18n("tos-section-3-title") }}</h3>
+            <p>{{ self.i18n("tos-section-3-text") }}</p>
 
             <ul>
-                <li>Tot 7 dagen voor aankomst: kosteloos annuleren</li>
-                <li>Binnen 7 dagen: 50% van het totaalbedrag</li>
-                <li>No-show: 100% van het totaalbedrag</li>
+                <li>{{ self.i18n("tos-cancel-free") }}</li>
+                <li>{{ self.i18n("tos-cancel-half") }}</li>
+                <li>{{ self.i18n("tos-cancel-none") }}</li>
             </ul>
 
-            <h3>4. Verblijf</h3>
-            <p>
-                De gast is verantwoordelijk voor het correct gebruik van de accommodatie.
-                Eventuele schade kan in rekening worden gebracht.
-            </p>
+            <h3>{{ self.i18n("tos-section-4-title") }}</h3>
+            <p>{{ self.i18n("tos-section-4-text") }}</p>
 
-            <h3>5. Aansprakelijkheid</h3>
-            <p>
-                Camping Colibri is niet aansprakelijk voor verlies, schade of diefstal
-                van persoonlijke eigendommen tijdens het verblijf.
-            </p>
+            <h3>{{ self.i18n("tos-section-5-title") }}</h3>
+            <p>{{ self.i18n("tos-section-5-text") }}</p>
 
-            <h3>6. Contact</h3>
+            <h3>{{ self.i18n("tos-section-6-title") }}</h3>
             <p>
-                Voor vragen kunt u contact opnemen via de 
-                <a href="/contact" class="tos-link">contactpagina</a>.
+                {{ self.i18n("tos-section-6-text") }} 
+                <a href="/contact" class="tos-link">{{ self.i18n("tos-contact-link") }}</a>.
             </p>
 
         </div>
 
     </div>
 </div>
-
 {% endblock %}

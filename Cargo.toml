@@ -27,4 +27,12 @@ chrono = { version = "0.4", features = ["serde"] }
 
 # Database driver to communicate with the PostgreSQL container
 tokio-postgres = { version = "0.7", features = ["with-chrono-0_4"] }
+deadpool-postgres = "0.10"
+
+# Internationalization (i18n) support
+fluent = "0.16"
+unic-langid = "0.9"
+
+# Helper for loading Fluent files (Fluent templates for Askama/Tera)
+fluent-templates = { version = "0.8", features = ["macros"] }
 

@@ -45,12 +45,12 @@
     <!--  Navbar  -->
     <nav class="public-nav">
         <ul class="nav-left">
-            <li><a id="navHome" href="/" class="nav-link">Home</a></li>
-            <li><a id="navBooking" href="/booking1" class="nav-link">Boeken</a></li>
-            <li><a id="navContact" href="/contact" class="nav-link">Contact</a></li>
+            <li><a id="navHome" href="/" class="nav-link">{{ self.i18n("nav-home") }}</a></li>
+            <li><a id="navBooking" href="/booking1" class="nav-link">{{ self.i18n("nav-booking") }}</a></li>
+            <li><a id="navContact" href="/contact" class="nav-link">{{ self.i18n("nav-contact") }}</a></li>
 
             {% if user_name.is_some() %}
-                <li><a id="navAdmin" href="/admin" class="nav-link">Admin</a></li>
+                <li><a id="navAdmin" href="/admin" class="nav-link">{{ self.i18n("nav-admin") }}</a></li>
             {% endif %}
         </ul>
     </nav>
@@ -65,47 +65,40 @@
         <div class="footer-content">
             <div class="footer-box">
                 <h4>Camping de Colibri</h4>
-                <p>Een rustige camping midden in de natuur.</p>
-                <img
-                    src="/static/images/logo.png"
-                    alt="Camping de Colibri logo"
-                    class="footer-logo"
-                >
+                <p>{{ self.i18n("footer-camping-desc") }}</p>
+                <img src="/static/images/logo.png" alt="Logo" class="footer-logo">
             </div>
 
-            
             <div class="footer-box">
-                <h4>Navigatie</h4>
+                <h4>{{ self.i18n("footer-nav-title") }}</h4>
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/booking1">Boeken</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                    <li><a href="/tos">Algemene voorwaarden</a></li>
+                    <li><a href="/">{{ self.i18n("nav-home") }}</a></li>
+                    <li><a href="/booking1">{{ self.i18n("nav-booking") }}</a></li>
+                    <li><a href="/contact">{{ self.i18n("nav-contact") }}</a></li>
+                    <li><a href="/tos">{{ self.i18n("footer-nav-tos") }}</a></li>
                 </ul>
             </div>
 
             <div class="footer-box">
-                <h4>Contact</h4>
-
+                <h4>{{ self.i18n("footer-contact-title") }}</h4>
                 <div class="contact-address">
                     <p>Vogelsang 1</p>
                     <p>5050 AB Hoogerheide</p>
-                    <p>Nederland</p>
+                    <p>{{ self.i18n("footer-contact-country") }}</p>
                 </div>
-
                 <div class="contact-details">
-                    <p>Email: info@camping-colibri.nl</p>
-                    <p>Telefoon: 06 12345678</p>
+                    <p>{{ self.i18n("footer-contact-email") }}: info@camping-colibri.nl</p>
+                    <p>{{ self.i18n("footer-contact-phone") }}: 06 12345678</p>
                 </div>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <p>© 2026 Camping de Colibri</p>
+            <p>{{ self.i18n("footer-copyright") }}</p>
         </div>
     </footer>
 
-        <!-- Script active underline navbar -->
+    <!-- Script active underline navbar -->
     <script>
         (function () {
             const path = window.location.pathname;
@@ -145,17 +138,23 @@
             langSwitch.addEventListener('click', function() {
                 this.classList.toggle('active');
                 
+                let currentLang = 'en'; // Standaard
+                
                 if (this.classList.contains('active')) {
                     flagImg.src = "/static/images/flag-nl-round.png";
                     labelNL.classList.add('active');
                     labelEN.classList.remove('active');
-                    localStorage.setItem('selectedLanguage', 'nl');
+                    currentLang = 'nl';
                 } else {
                     flagImg.src = "/static/images/flag-uk-round.png";
                     labelEN.classList.add('active');
                     labelNL.classList.remove('active');
-                    localStorage.setItem('selectedLanguage', 'en');
+                    currentLang = 'en';
                 }
+
+                localStorage.setItem('selectedLanguage', currentLang);
+                document.cookie = "lang=" + currentLang + ";path=/;max-age=31536000";
+                window.location.reload();
             });
         })();
     </script>

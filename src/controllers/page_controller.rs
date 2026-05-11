@@ -9,8 +9,6 @@ use serde::Deserialize;
 
 
 
-
-
 // Helper function to extract language from cookie or default to "en"
 fn get_lang(req: &HttpRequest) -> String {
     req.cookie("lang")

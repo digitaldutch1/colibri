@@ -1,0 +1,73 @@
+{% extends "layouts/public_layout.html" %}
+
+{% block content %}
+
+{% if success %}
+<div class="alert-wrapper">
+    <div class="alert success">
+        {{ self.i18n("booking-overview-success") }}
+
+        {% if email != "" %}
+            <br>{{ self.i18n("booking-overview-email-sent") }}
+            <br><strong>{{ email }}</strong>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<div class="booking-wrapper">
+    <div class="booking-card">
+
+        <h2 class="booking-title">{{ self.i18n("booking-overview-title") }}</h2>
+
+        <div class="booking-form overview-center">
+
+            <p>{{ self.i18n("booking-overview-thankyou") }}</p>
+
+            <p>
+                {{ first_name }} {{ last_name }}<br>
+                {{ address }}<br>
+                {{ zip_code }} {{ city }}<br>
+                {{ self.i18n("booking-overview-phone") }}: {{ phone }}
+            </p>
+
+            <p>
+                {{ self.i18n("booking-overview-booked") }}
+                <strong>{{ accommodation }}</strong>
+            </p>
+
+            <p>
+                {{ self.i18n("booking-overview-from") }}
+                <strong>{{ check_in }}</strong>
+                {{ self.i18n("booking-overview-until") }}
+                <strong>{{ check_out }}</strong>
+                <br>
+                <small class="nights-breakdown">
+                    ({{ nights }} {{ self.i18n("booking-overview-nights") }} à €{{ price_per_night }} {{ self.i18n("booking-overview-per-night") }})
+                </small>
+            </p>
+
+            <div class="overview-price">
+                <strong>{{ self.i18n("booking-overview-total") }}: €{{ total_price }}</strong>
+            </div>
+
+            <div class="booking-buttons overview-buttons">
+                <button type="button"
+                    onclick="window.location.href='/'"
+                    class="btn-main">
+                    {{ self.i18n("booking-btn-home") }}
+                </button>
+
+                <button type="button"
+                    onclick="window.location.href='/payment/{{ payment_token }}'"
+                    class="btn-main">
+                    {{ self.i18n("booking-btn-pay") }}
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

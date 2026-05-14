@@ -67,12 +67,15 @@ impl I18nTemplate for TosTemplate {
     fn lang(&self) -> &str { &self.current_lang }
 }
 
+
+// Public booking
 #[derive(Template)]
 #[template(path = "pages/public_booking1.html")]
 pub struct PublicBooking1Template {
     pub user_name: Option<String>,
     pub accommodation_id: String,
     pub current_lang: String,
+    pub error: String,
 }
 
 impl I18nTemplate for PublicBooking1Template {
@@ -84,8 +87,41 @@ impl I18nTemplate for PublicBooking1Template {
 pub struct PublicBooking2Template {
     pub user_name: Option<String>,
     pub current_lang: String,
+    pub booking_id: String,
+    pub lock_token: String,
+    pub accommodation_id: String,
+    pub check_in_date: String,
+    pub check_out_date: String,
 }
 
 impl I18nTemplate for PublicBooking2Template {
     fn lang(&self) -> &str { &self.current_lang }
+}
+
+#[derive(Template)]
+#[template(path = "pages/public_booking_overview.html")]
+pub struct PublicBookingOverviewTemplate {
+    pub user_name: Option<String>,
+    pub current_lang: String,
+    pub success: bool,
+    pub email: String,
+    pub first_name: String,
+    pub last_name: String,
+    pub address: String,
+    pub zip_code: String,
+    pub city: String,
+    pub phone: String,
+    pub accommodation: String,
+    pub check_in: String,
+    pub check_out: String,
+    pub nights: i64,
+    pub price_per_night: String,
+    pub total_price: String,
+    pub payment_token: String,
+}
+
+impl I18nTemplate for PublicBookingOverviewTemplate {
+    fn lang(&self) -> &str {
+        &self.current_lang
+    }
 }

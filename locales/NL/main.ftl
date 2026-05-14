@@ -1,6 +1,13 @@
 # This file contains the Dutch translations for the Colibri camping website
 # Language: Dutch (nl)
 
+# Alert booking session expired
+booking-session-expired = Je boekingssessie is verlopen. Selecteer je datums opnieuw.
+
+# Booking step 2 session countdown
+booking-lock-message = Deze reservering wordt vastgehouden voor
+booking-lock-expired = Je reserveringstijd is verlopen. Je wordt doorgestuurd.
+
 # Public layout
 nav-home = Home
 nav-booking = Boeken
@@ -86,3 +93,20 @@ booking-label-phone = Telefoonnummer
 booking-label-email = Email
 booking-tos-agree = Ik ga akkoord met de
 booking-tos-link = algemene voorwaarden
+
+
+
+# Booking Overview
+booking-overview-title = Boekingsoverzicht
+booking-overview-success = Boeking succesvol geplaatst!
+booking-overview-email-sent = Er is een bevestiging verstuurd naar
+booking-overview-thankyou = Bedankt voor je boeking bij Camping de Colibri!
+booking-overview-phone = Tel
+booking-overview-booked = Je hebt geboekt:
+booking-overview-from = Van
+booking-overview-until = tot
+booking-overview-nights = nachten
+booking-overview-per-night = per nacht
+booking-overview-total = Totaal
+booking-btn-home = Terug naar home
+booking-btn-pay = Betalen

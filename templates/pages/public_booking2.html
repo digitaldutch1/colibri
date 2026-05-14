@@ -1,13 +1,27 @@
 {% extends "layouts/public_layout.html" %}
 
 {% block content %}
+
+    <div class="alert-wrapper">
+        <div class="alert success persistent-alert" id="booking-lock-timer">
+            {{ self.i18n("booking-lock-message") }} <strong><span id="lock-countdown">05:00</span></strong>
+        </div>
+    </div>
+
     <div class="booking-wrapper">
         <div class="booking-card">
-
             <h2 class="booking-title">{{ self.i18n("booking-title-step2") }}</h2>
 
             <form class="booking-form" action="/booking/create" method="post">
-                <input type="hidden" name="csrf_token" value="">
+                
+                <!-- Pass booking details from booking step 1 -->
+                <input type="hidden" name="accommodation_id" value="{{ accommodation_id }}">
+                <input type="hidden" name="check_in_date" value="{{ check_in_date }}">
+                <input type="hidden" name="check_out_date" value="{{ check_out_date }}">
+
+                <!-- Pass booking lock data created during booking start -->
+                <input type="hidden" name="booking_id" value="{{ booking_id }}">
+                <input type="hidden" name="lock_token" value="{{ lock_token }}">
 
                 <div class="form-group">
                     <label>{{ self.i18n("booking-label-firstname") }}</label>
@@ -48,7 +62,7 @@
 
                 <div class="tos-check-wrapper">
                     <label class="tos-check">
-                        <input type="checkbox" id="tosCheck">
+                        <input type="checkbox" id="tosCheck" name="tos_accepted" value="yes">
                         {{ self.i18n("booking-tos-agree") }} 
                         <a href="/tos" target="_blank">{{ self.i18n("booking-tos-link") }}</a>
                     </label>
@@ -67,4 +81,85 @@
             </form>
         </div>
     </div>
+
+    <!-- Booking step 2 form validation and submit button state -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const requiredFields = [
+                document.querySelector('[name="first_name"]'),
+                document.querySelector('[name="last_name"]'),
+                document.querySelector('[name="address"]'),
+                document.querySelector('[name="zip_code"]'),
+                document.querySelector('[name="city"]'),
+                document.querySelector('[name="phone"]'),
+                document.querySelector('[name="email"]')
+            ];
+
+            const tosCheck = document.getElementById("tosCheck");
+            const submitBtn = document.getElementById("submit-btn");
+
+            function validateForm() {
+                const fieldsFilled = requiredFields.every(function (field) {
+                    return field && field.value.trim() !== "";
+                });
+
+                const tosAccepted = tosCheck && tosCheck.checked;
+
+                submitBtn.disabled = !(fieldsFilled && tosAccepted);
+            }
+
+            requiredFields.forEach(function (field) {
+                if (field) {
+                    field.addEventListener("input", validateForm);
+                }
+            });
+
+            if (tosCheck) {
+                tosCheck.addEventListener("change", validateForm);
+            }
+        });
+    </script>
+
+    <!-- Booking lock countdown timer -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const countdownElement = document.getElementById("lock-countdown");
+            const timerAlert = document.getElementById("booking-lock-timer");
+            const submitBtn = document.getElementById("submit-btn");
+
+            let remainingSeconds = 300;
+
+            const interval = setInterval(function () {
+                remainingSeconds--;
+
+                const minutes = Math.floor(remainingSeconds / 60);
+                const seconds = remainingSeconds % 60;
+
+                countdownElement.textContent =
+                    String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+
+                if (remainingSeconds <= 0) {
+                    clearInterval(interval);
+
+                    submitBtn.disabled = true;
+
+                    timerAlert.classList.remove("success");
+                    timerAlert.classList.add("error");
+                    timerAlert.textContent = '{{ self.i18n("booking-lock-expired") }}';
+
+                    setTimeout(async function () {
+                        await fetch("/booking/cleanup-expired", {
+                            method: "POST"
+                        });
+
+                        window.location.href =
+                            "/booking1?error=booking_session_expired&accommodation_id={{ accommodation_id }}";
+                       // Alert message expired session stays 3 seconds     
+                    }, 3000);
+                }
+               // Countdown refresh every second 
+            }, 1000);
+        });
+    </script>
+
 {% endblock %}

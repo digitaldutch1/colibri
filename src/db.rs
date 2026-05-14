@@ -1,12 +1,8 @@
 
 
 
-use serde::{Serialize, Deserialize};
 use chrono::{NaiveDate, NaiveDateTime};
-
-
-
-
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct User {
@@ -47,7 +43,6 @@ pub struct Unit {
     pub accommodation_id: i32,
     pub unit_code: String,
     pub created_at: NaiveDateTime,
-    pub locked_until: Option<NaiveDateTime>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -58,7 +53,7 @@ pub struct Booking {
     pub unit_id: i32,
     pub check_in_date: NaiveDate,
     pub check_out_date: NaiveDate,
-    pub total_price: f64, // Use f64 or rust_decimal crate
+    pub total_price: f64,
     pub status: String,
     pub payment_token: Option<String>,
     pub cancel_token: Option<String>,
@@ -67,4 +62,12 @@ pub struct Booking {
     pub external_reference: Option<String>,
     pub created_by_user_id: Option<i32>,
     pub created_at: NaiveDateTime,
+    pub locked_until: Option<NaiveDateTime>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Availability {
+    pub date: NaiveDate,
+    pub booked_count: i64,
+    pub is_available: bool,
 }

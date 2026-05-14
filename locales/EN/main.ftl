@@ -1,6 +1,13 @@
 # This file contains the English translations for the Colibri camping website
 # Language: English (en)
 
+# Alert booking session expired
+booking-session-expired = Your booking session has expired. Please select your dates again.
+
+# Booking step 2 session countdown
+booking-lock-message = This reservation is held for
+booking-lock-expired = Your reservation time has expired. You will be redirected.
+
 # Public layout
 nav-home = Home
 nav-booking = Booking
@@ -86,3 +93,20 @@ booking-label-phone = Phone Number
 booking-label-email = Email
 booking-tos-agree = I agree to the
 booking-tos-link = terms and conditions
+
+
+
+# Booking Overview
+booking-overview-title = Booking overview
+booking-overview-success = Booking successfully created!
+booking-overview-email-sent = A confirmation has been sent to
+booking-overview-thankyou = Thank you for your booking at Camping de Colibri!
+booking-overview-phone = Tel
+booking-overview-booked = You have booked:
+booking-overview-from = From
+booking-overview-until = until
+booking-overview-nights = nights
+booking-overview-per-night = per night
+booking-overview-total = Total
+booking-btn-home = Back to home
+booking-btn-pay = Pay

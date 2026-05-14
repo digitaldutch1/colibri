@@ -36,3 +36,4 @@ unic-langid = "0.9"
 # Helper for loading Fluent files (Fluent templates for Askama/Tera)
 fluent-templates = { version = "0.8", features = ["macros"] }
 
+uuid = { version = "1", features = ["v4"] }

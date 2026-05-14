@@ -1,30 +1,32 @@
 
 
 
-/* Public content Alert wrapper*/
-.public-alert-wrapper {
+/* Alert message */
+.alert-wrapper {
     width: 100%;
     display: flex;
     justify-content: center;
     margin: 36px 0;
 }
 
-/* Alert box */
-.public-alert {
+.alert {
     display: inline-block;
-    max-width: 400px;
+    max-width: 420px;
     width: auto;
-
     padding: 14px 24px;
     border-radius: 8px;
-
     text-align: center;
     font-weight: 500;
 }
 
-/* Alert success */
-.public-alert.success {
+.alert.success {
     background: rgba(0, 128, 0, 0.2);
     color: #1b5e20;
     border: 1px solid rgba(0, 128, 0, 0.4);
+}
+
+.alert.error {
+    background: rgba(180, 0, 0, 0.15);
+    color: #8b0000;
+    border: 1px solid rgba(180, 0, 0, 0.35);
 }

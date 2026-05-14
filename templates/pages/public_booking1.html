@@ -1,11 +1,20 @@
 {% extends "layouts/public_layout.html" %}
 
 {% block content %}
+
+    {% if error == "booking_session_expired" %}
+        <div class="alert-wrapper">
+            <div class="alert error">
+                {{ self.i18n("booking-session-expired") }}
+            </div>
+        </div>
+    {% endif %}
+
     <div class="booking-wrapper">
         <div class="booking-card">
             <h2 class="booking-title">{{ self.i18n("booking-title-step1") }}</h2>
 
-            <form class="booking-form" action="/booking2" method="get">
+            <form class="booking-form" action="/booking/start" method="post">
                 <div class="form-group">
                     <label for="accommodation">{{ self.i18n("booking-label-accommodation") }}</label>
                     <select name="accommodation_id" class="form-input">
@@ -45,5 +54,106 @@
                 </div>
             </form>
         </div>
-    </div>
+        
+        <!-- Booking step 1 form validation Checks if all fields have a value-->
+        <script>
+            function validateBookingStep1Form() {
+                const accommodation = document.querySelector('[name="accommodation_id"]');
+                const checkInInput = document.querySelector('[name="check_in_date"]');
+                const checkOutInput = document.querySelector('[name="check_out_date"]');
+                const submitBtn = document.getElementById("submit-btn");
+
+                const valid =
+                    accommodation.value !== "" &&
+                    checkInInput.value !== "" &&
+                    checkOutInput.value !== "";
+
+                submitBtn.disabled = !valid;
+            }
+        </script>
+
+        <!-- Booking step 1 calendar availability -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const accommodation = document.querySelector('[name="accommodation_id"]');
+                const checkInInput = document.querySelector('[name="check_in_date"]');
+                const checkOutInput = document.querySelector('[name="check_out_date"]');
+
+                let checkInPicker;
+                let checkOutPicker;
+
+                const calendarConfig = {
+                    locale: "nl",
+                    dateFormat: "Y-m-d",
+                    altInput: true,
+                    altFormat: "d-m-Y",
+                    minDate: "today",
+                    disable: [],
+
+                    onDayCreate: function (_dObj, _dStr, _fp, dayElem) {
+                        if (
+                            dayElem.classList.contains("prevMonthDay") ||
+                            dayElem.classList.contains("nextMonthDay")
+                        ) {
+                            dayElem.style.visibility = "hidden";
+                            dayElem.style.pointerEvents = "none";
+                        }
+                    },
+
+                    onChange: function (_selectedDates, dateStr, instance) {
+                        if (instance === checkInPicker && checkOutPicker) {
+                            checkOutPicker.set("minDate", dateStr);
+
+                            if (checkOutInput.value && checkOutInput.value <= dateStr) {
+                                checkOutPicker.clear();
+                            }
+                        }
+
+                        validateBookingStep1Form();
+                    }
+                };
+
+                checkInPicker = flatpickr(checkInInput, calendarConfig);
+                checkOutPicker = flatpickr(checkOutInput, calendarConfig);
+
+                async function loadUnavailableDates() {
+                    const accommodationId = accommodation.value;
+
+                    if (!accommodationId) {
+                        checkInPicker.set("disable", []);
+                        checkOutPicker.set("disable", []);
+                        validateBookingStep1Form();
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(`/api/unavailable/${accommodationId}`);
+                        const unavailableDates = await response.json();
+
+                        checkInPicker.set("disable", unavailableDates);
+                        checkOutPicker.set("disable", unavailableDates);
+
+                        if (unavailableDates.includes(checkInInput.value)) {
+                            checkInPicker.clear();
+                        }
+
+                        if (unavailableDates.includes(checkOutInput.value)) {
+                            checkOutPicker.clear();
+                        }
+
+                        validateBookingStep1Form();
+                    } catch (error) {
+                        console.error("Failed to load unavailable dates:", error);
+                    }
+                }
+
+                accommodation.addEventListener("change", loadUnavailableDates);
+
+                // Refresh availability every 5 seconds
+                setInterval(loadUnavailableDates, 5000);
+
+                loadUnavailableDates();
+                validateBookingStep1Form();
+            });
+        </script>
 {% endblock %}

@@ -82,6 +82,12 @@ INSERT INTO unit (accommodation_id, unit_code) VALUES
 
 -- Check table
 SELECT * FROM "booking";
+SELECT * FROM "customer";
 
 -- Empty table
+DELETE FROM booking;
+DELETE FROM customer;
+
+-- Resette id's
 TRUNCATE TABLE accommodation RESTART IDENTITY CASCADE;
+TRUNCATE booking, customer RESTART IDENTITY CASCADE;

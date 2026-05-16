@@ -1,8 +1,11 @@
 # This file contains the English translations for the Colibri camping website
 # Language: English (en)
 
-# Alert booking session expired
+# Alerts
 booking-session-expired = Your booking session has expired. Please select your dates again.
+payment-success = Payment successfully completed!
+payment-invoice = Invoice number
+booking-cancelled = Your booking has been cancelled successfully.
 
 # Booking step 2 session countdown
 booking-lock-message = This reservation is held for
@@ -108,5 +111,5 @@ booking-overview-until = until
 booking-overview-nights = nights
 booking-overview-per-night = per night
 booking-overview-total = Total
-booking-btn-home = Back to home
+booking-btn-home = Home page
 booking-btn-pay = Pay

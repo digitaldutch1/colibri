@@ -3,6 +3,28 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+
+    <!-- Alert payment succes -->
+    {% if payment == "success" %}
+    <div class="alert-wrapper">
+        <div class="alert success">
+            {{ self.i18n("payment-success") }}
+            <br>
+            {{ self.i18n("payment-invoice") }}:
+            <strong>{{ invoice }}</strong>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Alert cancel booking -->
+    {% if error == "booking_cancelled" %}
+        <div class="alert-wrapper">
+            <div class="alert success">
+                {{ self.i18n("booking-cancelled") }}
+            </div>
+        </div>
+    {% endif %}    
+
     <div class="public-content-wrapper">
         <div class="left-column">
             <div class="container-booking-cards">

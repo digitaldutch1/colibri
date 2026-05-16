@@ -29,13 +29,15 @@ pub trait I18nTemplate {
 
 
 
-// Layouts
+// Page template structs and Trait implementations EN/NL
 #[derive(Template)]
 #[template(path = "pages/public_home.html")]
 pub struct HomePublicTemplate {
     pub user_name: Option<String>,
     pub current_lang: String,
-
+    pub payment: String,
+    pub invoice: String,
+    pub error: String,
 }
 
 impl I18nTemplate for HomePublicTemplate {
@@ -44,7 +46,6 @@ impl I18nTemplate for HomePublicTemplate {
 
 
 
-// Pages
 #[derive(Template)]
 #[template(path = "pages/contact.html")]
 pub struct ContactTemplate {
@@ -55,6 +56,8 @@ pub struct ContactTemplate {
 impl I18nTemplate for ContactTemplate {
     fn lang(&self) -> &str { &self.current_lang }
 }
+
+
 
 #[derive(Template)]
 #[template(path = "pages/tos.html")]
@@ -68,7 +71,8 @@ impl I18nTemplate for TosTemplate {
 }
 
 
-// Public booking
+
+// Public booking template structs and Trait implementations EN/NL
 #[derive(Template)]
 #[template(path = "pages/public_booking1.html")]
 pub struct PublicBooking1Template {
@@ -81,6 +85,8 @@ pub struct PublicBooking1Template {
 impl I18nTemplate for PublicBooking1Template {
     fn lang(&self) -> &str { &self.current_lang }
 }
+
+
 
 #[derive(Template)]
 #[template(path = "pages/public_booking2.html")]
@@ -97,6 +103,8 @@ pub struct PublicBooking2Template {
 impl I18nTemplate for PublicBooking2Template {
     fn lang(&self) -> &str { &self.current_lang }
 }
+
+
 
 #[derive(Template)]
 #[template(path = "pages/public_booking_overview.html")]

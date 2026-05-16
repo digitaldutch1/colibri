@@ -1,8 +1,11 @@
 # This file contains the Dutch translations for the Colibri camping website
 # Language: Dutch (nl)
 
-# Alert booking session expired
+# Alerts
 booking-session-expired = Je boekingssessie is verlopen. Selecteer je datums opnieuw.
+payment-success = Betaling succesvol afgerond!
+payment-invoice = Factuurnummer
+booking-cancelled = Je boeking is succesvol geannuleerd.
 
 # Booking step 2 session countdown
 booking-lock-message = Deze reservering wordt vastgehouden voor
@@ -108,5 +111,5 @@ booking-overview-until = tot
 booking-overview-nights = nachten
 booking-overview-per-night = per nacht
 booking-overview-total = Totaal
-booking-btn-home = Terug naar home
+booking-btn-home = Home page
 booking-btn-pay = Betalen

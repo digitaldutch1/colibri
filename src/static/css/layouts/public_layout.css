@@ -263,8 +263,11 @@
     /* Banner */
     .banner {
         height: auto;
-        padding: 16px 0 20px;
+        padding: 16px;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .banner-icon {
@@ -283,7 +286,7 @@
     .banner-title {
         position: static;
         transform: none;
-        margin-top: 12px;
+        margin: 16px;
         text-align: center;
         white-space: normal;
         line-height: 1.1;
@@ -299,6 +302,20 @@
         display: block;
         font-size: 2.4rem;
         margin: 0;
+    }
+
+    .language-switch-container {
+        position: static;
+        margin-top: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .switch {
+        position: relative;
     }
 
     /* Navbar */

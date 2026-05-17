@@ -1,7 +1,7 @@
 
 
 
-/*  Public content layout*/
+/*  Public home content*/
 /***************************************************************************/
 .public-content-wrapper {
     width: 100%;
@@ -103,6 +103,7 @@
 
 .camping-info h2 {
     color: var(--main-color);
+    margin-bottom: 8px;
 }
 
 /* Activities images in welcome box */

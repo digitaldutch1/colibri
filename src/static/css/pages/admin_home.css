@@ -1,0 +1,58 @@
+
+
+
+/* Admin content */
+.admin-home {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 280px);
+    gap: 32px;
+    padding: 0 24px;
+}
+
+/* Admin card */
+.admin-card {
+    text-decoration: none;
+    border: 2px solid var(--main-color);
+    border-radius: 12px;
+    background-color: var(--accent-color);
+    text-align: center;
+    padding: 32px 16px;
+    transition: transform 0.2s ease;
+}
+
+.admin-card:hover {
+    transform: scale(1.05);
+}
+
+/* Icon */
+.admin-card-icon {
+    font-size: 48px;
+    color: var(--main-color);
+    margin-bottom: 16px;
+}
+
+/* Divider */
+.admin-card-divider {
+    height: 1px;
+    background-color: var(--main-color);
+    margin: 16px 0;
+}
+
+/* Title */
+.admin-card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--main-color);
+}
+
+
+
+/* ===============================
+   ADMIN LAYOUT RESPONSIVE
+   =============================== */
+
+@media (max-width: 900px) {
+    .admin-home {
+        justify-content: center;
+    }
+}

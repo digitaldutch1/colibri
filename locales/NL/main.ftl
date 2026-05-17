@@ -27,7 +27,7 @@ footer-copyright = © 2026 Camping de Colibri
 
 
 
-# Home page
+# Public home page
 home-chalet-title = Chalet
 home-chalet-desc = Onze chalet is een comfortabele accommodatie voor wie graag wat extra luxe wil tijdens het kamperen. De chalet is volledig ingericht en biedt een fijne plek om te ontspannen na een dag in de natuur. Geschikt voor stellen en gezinnen die gemak en comfort belangrijk vinden.
 home-price-chalet = €300 per nacht
@@ -113,3 +113,15 @@ booking-overview-per-night = per nacht
 booking-overview-total = Totaal
 booking-btn-home = Home page
 booking-btn-pay = Betalen
+
+
+
+# Admin layout
+nav-dashboard = Dashboard
+nav-bookings = Boekingen
+nav-users = Gebruikers
+nav-logout = Uitloggen
+
+# Admin home page
+admin-home-bookings = Boekingen
+admin-home-users = Gebruikers

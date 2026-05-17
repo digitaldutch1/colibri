@@ -1,31 +1,44 @@
 
 
 
-/* Public layout Banner */
+
+/* Push footer to the bottom */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Admin layout Banner */
 /***************************************************************************/
-.public-banner {
+.admin-banner {
     position: relative;
     height: 120px;
     background-color: var(--accent-color);
     border-bottom: 10px solid var(--main-color);
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    overflow: hidden;
 }
 
-.public-banner-icon {
+.admin-banner-icon {
     position: absolute;
     left: 16px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-.public-banner-icon img {
+.admin-banner-icon img {
     height: 110px;
     width: auto;
     transform: scale(1.8);
     transform-origin: left center;
 }
 
-.public-banner-title {
+.admin-banner-title {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -38,16 +51,21 @@
     white-space: nowrap;
 }
 
-.public-title-small {
+.admin-title-small {
     font-size: 2.2rem;
     margin-right: 0.6rem;
 }
 
-.public-title-large {
+.admin-title-large {
     font-size: 3.6rem;
+    margin-right: 0.6rem;
 }
 
-.public-language-switch-container {
+.admin-title-admin{
+    font-size: 2.2rem;
+}
+
+.admin-language-switch-container {
     position: absolute;
     right: 24px;
     top: 50%;
@@ -58,7 +76,7 @@
     z-index: 10;
 }
 
-.public-lang-label {
+.admin-lang-label {
     font-weight: 700;
     font-size: 1.1rem;
     color: var(--main-color);
@@ -66,11 +84,11 @@
     transition: opacity 0.3s ease;
 }
 
-.public-lang-label.active {
+.admin-lang-label.active {
     opacity: 1;
 }
 
-.public-switch {
+.admin-switch {
     width: 70px;
     height: 34px;
     background-color: transparent;
@@ -80,7 +98,7 @@
     cursor: pointer;
 }
 
-.public-switch-handle {
+.admin-switch-handle {
     width: 26px;
     height: 26px;
     background-color: white;
@@ -96,28 +114,31 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-.public-switch-handle img {
+.admin-switch-handle img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transform: scale(1.4); 
 }
 
-.public-switch.active .public-switch-handle {
+.admin-switch.active .admin-switch-handle {
     left: 36px;
 }
 
 
 
-/* Public layout navigation */
+/* Admin layout navigation */
 /***************************************************************************/
-.public-nav {
+.admin-nav {
     width: 100%;
     border-bottom: 2px solid var(--main-color);
     margin-bottom: 36px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.public-nav-left {
+.admin-nav-left {
     display: flex;
     gap: 32px;
     padding: 16px 24px;
@@ -125,7 +146,21 @@
     margin: 0;
 }
 
-.public-nav-link {
+.admin-nav-right {
+    display: flex;
+    gap: 32px;
+    padding: 16px 24px;
+    list-style: none;
+    margin: 0;
+    align-items: center;
+}
+
+.admin-nav-user {
+    font-weight: 700;
+    color: var(--main-color);
+}
+
+.admin-nav-link {
     position: relative;
     text-decoration: none;
     font-size: 1.2rem;
@@ -135,14 +170,14 @@
 }
 
 /* Color text stay main color */
-.public-nav-link:hover,
-.public-nav-link:focus,
-.public-nav-link:active {
+.admin-nav-link:hover,
+.admin-nav-link:focus,
+.admin-nav-link:active {
     color: var(--main-color);
 }
 
 /* Title underline*/
-.public-nav-link::after {
+.admin-nav-link::after {
     content: "";
     position: absolute;
     left: 50%;
@@ -155,27 +190,27 @@
 }
 
 /* Hover effect */
-.public-nav-link:hover::after {
+.admin-nav-link:hover::after {
     width: 100%;
 }
 
 /* Active page */
-.public-nav-link.active::after {
+.admin-nav-link.active::after {
     width: 100%;
 }
 
 
 
-/* Public layout Footer*/
+/* Admin layout Footer*/
 /***************************************************************************/
-.public-footer {
-    margin-top: 36px;
+.admin-footer {
+    margin-top: 36px !important;
     border-top: 2px solid var(--main-color);
     background-color: #fff;
 }
 
 /* Container */
-.public-footer-content {
+.admin-footer-content {
     display: flex;
     justify-content: space-between;
     gap: 24px;
@@ -183,7 +218,7 @@
 }
 
 /* Footer blocks */
-.public-footer-box {
+.admin-footer-box {
     flex: 1;
     border: 2px solid var(--main-color);
     border-radius: 12px;
@@ -192,42 +227,42 @@
 }
 
 /* Titles */
-.public-footer-box h4 {
+.admin-footer-box h4 {
     margin-bottom: 12px;
     color: var(--main-color);
     font-weight: bold;
 }
 
 /* Text & links */
-.public-footer-box p,
-.public-footer-box a {
+.admin-footer-box p,
+.admin-footer-box a {
     color: var(--main-color);
     font-size: 0.95rem;
 }
 
 /* Navigation list */
-.public-footer-box ul {
+.admin-footer-box ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.public-footer-box li {
+.admin-footer-box li {
     margin-bottom: 6px;
 }
 
-.public-footer-box a {
+.admin-footer-box a {
     color: var(--main-color);
     text-decoration: none;
     text-decoration-color: var(--main-color);
 }
 
-.public-footer-box a:hover {
+.admin-footer-box a:hover {
     text-decoration: underline;
 }
 
 /* Footer logo*/
-.public-footer-logo {
+.admin-footer-logo {
     display: block;
     margin-top: 24px;
     margin-left: -24px;
@@ -238,17 +273,17 @@
 }
 
 /* Camping info */
-.public-contact-address p,
-.public-contact-details p {
+.admin-contact-address p,
+.admin-contact-details p {
     margin: 0;
 }
 
-.public-contact-address {
+.admin-contact-address {
     margin-bottom: 16px;
 }
 
 /* Bottom bar */
-.public-footer-bottom {
+.admin-footer-bottom {
     text-align: center;
     padding: 12px;
     border-top: 1px solid var(--main-color);
@@ -257,13 +292,13 @@
 
 
 /* ===============================
-   PUBLIC LAYOUT RESPONSIVE
+   ADMIN LAYOUT RESPONSIVE
    =============================== */
 
 @media (max-width: 900px) {
 
     /* Banner */
-    .public-banner {
+    .admin-banner {
         height: auto;
         padding: 16px;
         text-align: center;
@@ -272,20 +307,20 @@
         align-items: center;
     }
 
-    .public-banner-icon {
+    .admin-banner-icon {
         position: static;
         transform: none;
         margin-bottom: 8px;
     }
 
-    .public-banner-icon img {
+    .admin-banner-icon img {
         display: block;
         margin: 0 auto;
         transform: scale(1.8);
         transform-origin: center;
     }
 
-    .public-banner-title {
+    .admin-banner-title {
         position: static;
         transform: none;
         margin: 16px;
@@ -294,19 +329,25 @@
         line-height: 1.1;
     }
 
-    .public-title-small {
+    .admin-title-small {
         display: block;
         font-size: 1.6rem;
         margin: 0;
     }
 
-    .public-title-large {
+    .admin-title-large {
         display: block;
         font-size: 2.4rem;
         margin: 0;
     }
 
-    .public-language-switch-container {
+    .admin-title-admin {
+        display: block;
+        font-size: 1.6rem;
+        margin: 0;
+    }
+
+    .admin-language-switch-container {
         position: static;
         margin-top: 16px;
         display: flex;
@@ -316,18 +357,25 @@
         width: 100%;
     }
 
-    .public-switch {
+    .admin-switch {
         position: relative;
     }
 
     /* Navbar */
-    .public-nav-left {
+    .admin-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .admin-nav-left,
+    .admin-nav-right {
         justify-content: center;
+        flex-wrap: wrap;
         padding: 16px 0;
     }
 
     /* Footer */
-    .public-footer-content {
+    .admin-footer-content {
         flex-direction: column;
     }
 

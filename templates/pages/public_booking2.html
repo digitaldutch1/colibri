@@ -2,16 +2,17 @@
 
 {% block content %}
 
+    <!-- Session countdonw message -->
     <div class="alert-wrapper">
         <div class="alert success persistent-alert" id="booking-lock-timer">
             {{ self.i18n("booking-lock-message") }} <strong><span id="lock-countdown">05:00</span></strong>
         </div>
     </div>
 
+    <!-- Public booking 2 for, -->
     <div class="booking-wrapper">
         <div class="booking-card">
             <h2 class="booking-title">{{ self.i18n("booking-title-step2") }}</h2>
-
             <form class="booking-form" action="/booking/create" method="post">
                 
                 <!-- Pass booking details from booking step 1 -->

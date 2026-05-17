@@ -113,3 +113,15 @@ booking-overview-per-night = per night
 booking-overview-total = Total
 booking-btn-home = Home page
 booking-btn-pay = Pay
+
+
+
+# Admin layout
+nav-dashboard = Dashboard
+nav-bookings = Bookings
+nav-users = Users
+nav-logout = Logout
+
+# Admin home page
+admin-home-bookings = Bookings
+admin-home-users = Users

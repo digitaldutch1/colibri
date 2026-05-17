@@ -17,7 +17,7 @@ fn get_lang(req: &HttpRequest) -> String {
 }
 
 
-
+// Public pages
 // Homepage query parameters for payment and cancel alerts
 #[derive(Deserialize)]
 pub struct HomeParams {
@@ -195,4 +195,30 @@ pub async fn public_booking2(
 
         Err(_) => HttpResponse::InternalServerError().finish(),
     }
+}
+
+
+
+
+
+// Admin pages
+// Render admin homepage
+pub async fn admin_home(
+    req: HttpRequest,
+    session: Session,
+) -> impl Responder {
+
+    // 1. Get session user and selected language
+    let user_name: Option<String> = session.get("user_name").unwrap_or(None);
+    let current_lang = get_lang(&req);
+
+    // 2. Render admin homepage template
+    let template = AdminHomeTemplate {
+        user_name,
+        current_lang,
+    };
+
+    HttpResponse::Ok()
+        .content_type("text/html")
+        .body(template.render().unwrap())
 }

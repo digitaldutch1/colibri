@@ -29,7 +29,7 @@ pub trait I18nTemplate {
 
 
 
-// Page template structs and Trait implementations EN/NL
+// Public page template structs and Trait implementations EN/NL
 #[derive(Template)]
 #[template(path = "pages/public_home.html")]
 pub struct HomePublicTemplate {
@@ -47,7 +47,7 @@ impl I18nTemplate for HomePublicTemplate {
 
 
 #[derive(Template)]
-#[template(path = "pages/contact.html")]
+#[template(path = "pages/public_contact.html")]
 pub struct ContactTemplate {
     pub user_name: Option<String>,
     pub current_lang: String,
@@ -60,7 +60,7 @@ impl I18nTemplate for ContactTemplate {
 
 
 #[derive(Template)]
-#[template(path = "pages/tos.html")]
+#[template(path = "pages/public_tos.html")]
 pub struct TosTemplate {
     pub user_name: Option<String>,
     pub current_lang: String,
@@ -132,4 +132,18 @@ impl I18nTemplate for PublicBookingOverviewTemplate {
     fn lang(&self) -> &str {
         &self.current_lang
     }
+}
+
+
+
+// Admin page template structs and Trait implementations EN/NL
+#[derive(Template)]
+#[template(path = "pages/admin_home.html")]
+pub struct AdminHomeTemplate {
+    pub user_name: Option<String>,
+    pub current_lang: String,
+}
+
+impl I18nTemplate for AdminHomeTemplate {
+    fn lang(&self) -> &str { &self.current_lang }
 }

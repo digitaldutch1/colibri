@@ -10,95 +10,100 @@
 
     <link rel="stylesheet" href="/static/css/base/base_style.css">
     <link rel="stylesheet" href="/static/css/base/alert.css">    
-    <link rel="stylesheet" href="/static/css/layouts/public_layout.css">
-    <link rel="stylesheet" href="/static/css/pages/public_home.css">
-    <link rel="stylesheet" href="/static/css/pages/public_contact.css">
-    <link rel="stylesheet" href="/static/css/pages/public_tos.css">
-    <link rel="stylesheet" href="/static/css/pages/form_booking.css">
-    <link rel="stylesheet" href="/static/css/pages/public_booking_overview.css">
+    <link rel="stylesheet" href="/static/css/layouts/admin_layout.css">
+    <link rel="stylesheet" href="/static/css/pages/admin_home.css">
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <script src="/static/js/alert.js"></script>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/nl.js"></script>
 
-    <title>Layout Public</title>
+    <title>Layout Admin</title>
 </head>
 
 <body>
-
-    <!-- Public header -->  
-    <header class="public-banner">
-        <div class="public-banner-icon">
+    <!-- Admin header -->  
+    <header class="admin-banner">
+        <div class="admin-banner-icon">
             <img src="/static/images/logo.png" alt="Camping de Colibri">
         </div>
 
-        <div class="public-banner-title">
-            <span class="public-title-small">Camping de</span>
-            <span class="public-title-large">Colibri</span>
+        <div class="admin-banner-title">
+            <span class="admin-title-small">Camping de</span>
+            <span class="admin-title-large">Colibri</span>
+            <span class="admin-title-admin">Admin</span>
         </div>
 
-        <div class="public-language-switch-container">
-            <span class="public-lang-label en active">EN</span>
-            <div class="public-switch" id="publicLangSwitch">
-                <div class="public-switch-handle">
-                    <img src="/static/images/flag-uk-round.png" id="publicFlagImg" alt="Language">
+        <div class="admin-language-switch-container">
+            <span class="admin-lang-label en active">EN</span>
+            <div class="admin-switch" id="adminLangSwitch">
+                <div class="admin-switch-handle">
+                    <img src="/static/images/flag-uk-round.png" id="adminFlagImg" alt="Language">
                 </div>
             </div>
-            <span class="public-lang-label nl">NL</span>
+            <span class="admin-lang-label nl">NL</span>
         </div>
     </header>
 
-
-    <!-- Public navbar -->
-    <nav class="public-nav">
-        <ul class="public-nav-left">
+    <!-- Admin navbar -->
+    <nav class="admin-nav">
+        <ul class="admin-nav-left">
             <li>
-                <a id="publicNavHome" href="/" class="public-nav-link">
+                <a id="adminNavHome" href="/" class="admin-nav-link">
                     {{ self.i18n("nav-home") }}
                 </a>
             </li>
 
             <li>
-                <a id="publicNavBooking" href="/booking1" class="public-nav-link">
-                    {{ self.i18n("nav-booking") }}
+                <a id="adminNavDashboard" href="/admin" class="admin-nav-link">
+                    {{ self.i18n("nav-dashboard") }}
                 </a>
             </li>
 
             <li>
-                <a id="publicNavContact" href="/contact" class="public-nav-link">
-                    {{ self.i18n("nav-contact") }}
+                <a id="adminNavBookings" href="/admin/bookings" class="admin-nav-link">
+                    {{ self.i18n("nav-bookings") }}
                 </a>
             </li>
 
-            {% if user_name.is_some() %}
-                <li>
-                    <a id="publicNavAdmin" href="/admin" class="public-nav-link">
-                        {{ self.i18n("nav-admin") }}
-                    </a>
-                </li>
-            {% endif %}
+            <li>
+                <a id="adminNavUsers" href="/admin/users" class="admin-nav-link">
+                    {{ self.i18n("nav-users") }}
+                </a>
+            </li>
+        </ul>
+
+        <ul class="admin-nav-right">
+            <li class="admin-nav-user">
+                {{ user_name.as_deref().unwrap_or("Admin") }}
+            </li>
+
+            <li>
+                <a id="adminNavLogout" href="/logout" class="admin-nav-link">
+                    {{ self.i18n("nav-logout") }}
+                </a>
+            </li>
         </ul>
     </nav>
 
-
-    <!-- Public Content -->
+    <!-- Admin Content -->
     <main>
         {% block content %}{% endblock %}
     </main>
 
-
-    <!-- Public footer -->
-    <footer class="public-footer">
-        <div class="public-footer-content">
-            <div class="public-footer-box">
+    <!-- Admin footer -->
+    <footer class="admin-footer">
+        <div class="admin-footer-content">
+            <div class="admin-footer-box">
                 <h4>Camping de Colibri</h4>
                 <p>{{ self.i18n("footer-camping-desc") }}</p>
-                <img src="/static/images/logo.png" alt="Logo" class="public-footer-logo">
+                <img src="/static/images/logo.png" alt="Logo" class="admin-footer-logo">
             </div>
 
-            <div class="public-footer-box">
+            <div class="admin-footer-box">
                 <h4>{{ self.i18n("footer-nav-title") }}</h4>
                 <ul>
                     <li><a href="/">{{ self.i18n("nav-home") }}</a></li>
@@ -108,22 +113,22 @@
                 </ul>
             </div>
 
-            <div class="public-footer-box">
+            <div class="admin-footer-box">
                 <h4>{{ self.i18n("footer-contact-title") }}</h4>
-                <div class="public-contact-address">
+                <div class="admin-contact-address">
                     <p>Vogelsang 1</p>
                     <p>5050 AB Hoogerheide</p>
                     <p>{{ self.i18n("footer-contact-country") }}</p>
                 </div>
 
-                <div class="public-contact-details">
+                <div class="admin-contact-details">
                     <p>{{ self.i18n("footer-contact-email") }}: info@camping-colibri.nl</p>
                     <p>{{ self.i18n("footer-contact-phone") }}: 06 12345678</p>
                 </div>
             </div>
         </div>
 
-        <div class="public-footer-bottom">
+        <div class="admin-footer-bottom">
             <p>{{ self.i18n("footer-copyright") }}</p>
         </div>
     </footer>
@@ -132,10 +137,10 @@
     <script>
         (function () {
             const path = window.location.pathname;
-            const home = document.getElementById("publicNavHome");
-            const booking = document.getElementById("publicNavBooking");
-            const contact = document.getElementById("publicNavContact");
-            const admin = document.getElementById("publicNavAdmin");
+            const home = document.getElementById("adminNavHome");
+            const dashboard = document.getElementById("adminNavDashboard");
+            const bookings = document.getElementById("adminNavBookings");
+            const users = document.getElementById("adminNavUsers");
 
             function setActive(el) {
                 if (el) el.classList.add("active");
@@ -145,21 +150,18 @@
                 setActive(home);
             }
 
-            else if (
-                path.startsWith("/booking1") ||
-                path.startsWith("/booking2") ||
-                path.startsWith("/boeken")
-            ) {
-                setActive(booking);
+            else if (path === "/admin") {
+                setActive(dashboard);
             }
 
-            else if (path.startsWith("/contact")) {
-                setActive(contact);
+            else if (path.startsWith("/admin/bookings")) {
+                setActive(bookings);
             }
 
-            else if (admin && path.startsWith("/admin")) {
-                setActive(admin);
+            else if (path.startsWith("/admin/users")) {
+                setActive(users);
             }
+
         })();
     </script>
 
@@ -167,10 +169,10 @@
     <!-- Script for language switch -->
     <script>
         (function() {
-            const langSwitch = document.getElementById('publicLangSwitch');
-            const flagImg = document.getElementById('publicFlagImg');
-            const labelEN = document.querySelector('.public-lang-label.en');
-            const labelNL = document.querySelector('.public-lang-label.nl');
+            const langSwitch = document.getElementById('adminLangSwitch');
+            const flagImg = document.getElementById('adminFlagImg');
+            const labelEN = document.querySelector('.admin-lang-label.en');
+            const labelNL = document.querySelector('.admin-lang-label.nl');
             const savedLang = localStorage.getItem('selectedLanguage');
 
             if (savedLang === 'nl') {
@@ -205,6 +207,5 @@
             });
         })();
     </script>
-
 </body>
 </html>

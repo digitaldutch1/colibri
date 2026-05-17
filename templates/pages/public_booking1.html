@@ -2,6 +2,7 @@
 
 {% block content %}
 
+    <!-- Session expired message -->
     {% if error == "booking_session_expired" %}
         <div class="alert-wrapper">
             <div class="alert error">
@@ -10,10 +11,10 @@
         </div>
     {% endif %}
 
+    <!-- Public booking 1 form  -->
     <div class="booking-wrapper">
         <div class="booking-card">
             <h2 class="booking-title">{{ self.i18n("booking-title-step1") }}</h2>
-
             <form class="booking-form" action="/booking/start" method="post">
                 <div class="form-group">
                     <label for="accommodation">{{ self.i18n("booking-label-accommodation") }}</label>
@@ -151,7 +152,6 @@
 
                 // Refresh availability every 5 seconds
                 setInterval(loadUnavailableDates, 5000);
-
                 loadUnavailableDates();
                 validateBookingStep1Form();
             });

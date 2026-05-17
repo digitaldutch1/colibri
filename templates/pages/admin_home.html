@@ -1,0 +1,30 @@
+
+
+
+{% extends "layouts/admin_layout.html" %}
+{% block content %}
+
+<!-- Admin bookings tile -->
+<div class="admin-home">
+    <a href="/admin/bookings" class="admin-card">
+        <div class="admin-card-icon">
+            <i class="bx bx-calendar"></i>
+        </div>
+        <div class="admin-card-divider"></div>
+        <div class="admin-card-title">
+            {{ self.i18n("admin-home-bookings") }}
+        </div>
+    </a>
+
+    <!-- Admin users tile -->
+    <a href="/admin/users" class="admin-card">
+        <div class="admin-card-icon">
+            <i class="bx bx-user"></i>
+        </div>
+        <div class="admin-card-divider"></div>
+        <div class="admin-card-title">
+            {{ self.i18n("admin-home-users") }}
+        </div>
+    </a>
+</div>
+{% endblock %}

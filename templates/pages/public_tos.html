@@ -1,11 +1,11 @@
 {% extends "layouts/public_layout.html" %}
 
 {% block content %}
+
+<!-- Public terms of service wrapper -->
 <div class="tos-wrapper">
     <div class="tos-card">
-
         <h2 class="tos-title">{{ self.i18n("tos-main-title") }}</h2>
-
         <div class="tos-content">
 
             <h3>{{ self.i18n("tos-section-1-title") }}</h3>
@@ -34,9 +34,7 @@
                 {{ self.i18n("tos-section-6-text") }} 
                 <a href="/contact" class="tos-link">{{ self.i18n("tos-contact-link") }}</a>.
             </p>
-
         </div>
-
     </div>
 </div>
 {% endblock %}

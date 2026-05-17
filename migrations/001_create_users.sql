@@ -83,6 +83,7 @@ INSERT INTO unit (accommodation_id, unit_code) VALUES
 -- Check table
 SELECT * FROM "booking";
 SELECT * FROM "customer";
+SELECT * FROM "user";
 
 -- Empty table
 DELETE FROM booking;

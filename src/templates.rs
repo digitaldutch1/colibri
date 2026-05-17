@@ -7,7 +7,7 @@ use unic_langid::LanguageIdentifier;
 
 
 
-
+// Public
 // Fluent language switch
 // Load locales from the root /locales folder
 fluent_templates::static_loader! {
@@ -135,6 +135,22 @@ impl I18nTemplate for PublicBookingOverviewTemplate {
 }
 
 
+
+
+
+//Admin
+// Admin login page template struct and trait implemantation EN/NL
+#[derive(Template)]
+#[template(path = "pages/admin_login.html")]
+pub struct AdminLoginTemplate {
+    pub user_name: Option<String>,
+    pub current_lang: String,
+    pub error: Option<String>,
+}
+
+impl I18nTemplate for AdminLoginTemplate {
+    fn lang(&self) -> &str { &self.current_lang }
+}
 
 // Admin page template structs and Trait implementations EN/NL
 #[derive(Template)]

@@ -1,0 +1,56 @@
+{% extends "layouts/admin_layout.html" %}
+{% block content %}
+<div class="login-container">
+    <div class="login-card">
+
+        <!-- Alert (css in form_bookings.css)-->
+        {% if error.is_some() %}
+            <div class="alert-error">
+                {{ error.as_ref().unwrap() }}
+            </div>
+        {% endif %}
+
+        <form method="POST" action="/admin/login">
+            <h1>Admin Login</h1>
+
+            <div class="input-field">
+                <input type="email" name="email" placeholder="Email address" required>
+            </div>
+
+            <div class="input-field">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <i class="bx bx-show toggle-password" id="togglePassword"></i>
+            </div>
+
+            <div class="forgot">
+                <a href="#">Wachtwoord vergeten?</a>
+            </div>
+
+            <button type="submit" class="login-button">
+                Inloggen
+            </button>
+        </form>
+
+    </div>
+</div>
+
+<!-- Script toggle password visibility -->
+<script>
+    const togglePassword = document.getElementById("togglePassword");
+    const password = document.getElementById("password");
+
+    togglePassword.addEventListener("click", function () {
+
+        const type =
+            password.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+
+        password.setAttribute("type", type);
+
+        this.classList.toggle("bx-show");
+        this.classList.toggle("bx-hide");
+    });
+</script>
+
+{% endblock %}

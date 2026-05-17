@@ -22,5 +22,8 @@ pub fn init(cfg: &mut web::ServiceConfig) {
         .route("/booking/cleanup-expired", web::post().to(booking_controller::cleanup_expired_booking))
         
         // Admin pages
+        .route("/admin/login", web::get().to(page_controller::admin_login))
+        .route("/admin/login", web::post().to(login_controller::login_admin))
+        .route("/logout", web::get().to(login_controller::logout_admin))
         .route("/admin", web::get().to(page_controller::admin_home));
 }

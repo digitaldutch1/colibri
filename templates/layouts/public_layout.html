@@ -80,6 +80,21 @@
                 </li>
             {% endif %}
         </ul>
+
+
+        {% if user_name.is_some() %}
+        <ul class="public-nav-right">
+            <li class="public-nav-user">
+                {{ user_name.as_ref().unwrap() }}
+            </li>
+
+            <li>
+                <a href="/logout?redirect=public" class="public-nav-link">
+                    {{ self.i18n("nav-logout") }}
+                </a>
+            </li>
+        </ul>
+        {% endif %}
     </nav>
 
 

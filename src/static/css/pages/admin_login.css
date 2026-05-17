@@ -1,0 +1,110 @@
+
+
+
+/* Form */
+form {
+    text-align: center;
+}
+
+/* Login container */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+
+/* Login card */
+.login-card {
+    width: 420px;
+    background-color: var(--accent-color);
+    border: 2px solid var(--main-color);
+    border-radius: 12px;
+    padding: 20px 30px;
+    color: var(--main-color);
+}
+
+/* Title */
+.login-card h1 {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Input field */
+.login-card .input-field {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 20px 0;
+}
+
+/* Input */
+.input-field input {
+    width: 100%;
+    height: 100%;
+    color: var(--main-color);
+    border: 2px solid var(--main-color);
+    outline: none;
+    background-color: #ffffff;
+    border-radius: 40px;
+    font-size: 16px;
+    padding: 0 45px 0 20px;
+}
+
+.input-field input::placeholder {
+    color: var(--main-color);
+    opacity: 0.4;
+}
+
+/* Input icon */
+.input-field i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--main-color);
+}
+
+.toggle-password {
+    position: absolute;
+    right: 45px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--main-color);
+    cursor: pointer;
+}
+
+/* Forgot */
+.login-card .forgot {
+    text-align: center;
+    font-size: 15px;
+    margin: 20px 0;
+}
+
+/* Forgot link */
+.forgot a {
+    color: var(--main-color);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.forgot a:hover {
+    text-decoration: underline;
+}
+
+/* Button */
+.login-button {
+    width: 100%;
+    height: 45px;
+    background-color: var(--main-color);
+    color: var(--accent-color);
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+}
+

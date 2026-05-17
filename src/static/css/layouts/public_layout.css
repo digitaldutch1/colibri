@@ -115,6 +115,10 @@
     width: 100%;
     border-bottom: 2px solid var(--main-color);
     margin-bottom: 36px !important;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .public-nav-left {
@@ -123,6 +127,21 @@
     padding: 16px 24px;
     list-style: none;
     margin: 0;
+    flex: 1;
+}
+
+.public-nav-right {
+    display: flex;
+    gap: 32px;
+    padding: 16px 24px;
+    list-style: none;
+    margin: 0;
+    align-items: center;
+}
+
+.public-nav-user {
+    font-weight: 700;
+    color: var(--main-color);
 }
 
 .public-nav-link {
@@ -321,8 +340,15 @@
     }
 
     /* Navbar */
-    .public-nav-left {
+    .public-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .public-nav-left,
+    .public-nav-right {
         justify-content: center;
+        flex-wrap: wrap;
         padding: 16px 0;
     }
 

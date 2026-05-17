@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/static/css/base/base_style.css">
     <link rel="stylesheet" href="/static/css/base/alert.css">    
     <link rel="stylesheet" href="/static/css/layouts/admin_layout.css">
+    <link rel="stylesheet" href="/static/css/pages/admin_login.css">
     <link rel="stylesheet" href="/static/css/pages/admin_home.css">
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -57,36 +58,38 @@
                 </a>
             </li>
 
-            <li>
-                <a id="adminNavDashboard" href="/admin" class="admin-nav-link">
-                    {{ self.i18n("nav-dashboard") }}
-                </a>
-            </li>
-
-            <li>
-                <a id="adminNavBookings" href="/admin/bookings" class="admin-nav-link">
-                    {{ self.i18n("nav-bookings") }}
-                </a>
-            </li>
-
-            <li>
-                <a id="adminNavUsers" href="/admin/users" class="admin-nav-link">
-                    {{ self.i18n("nav-users") }}
-                </a>
-            </li>
+            {% if user_name.is_some() %}
+                <li>
+                    <a id="adminNavDashboard" href="/admin" class="admin-nav-link">
+                        {{ self.i18n("nav-dashboard") }}
+                    </a>
+                </li>
+                <li>
+                    <a id="adminNavBookings" href="/admin/bookings" class="admin-nav-link">
+                        {{ self.i18n("nav-bookings") }}
+                    </a>
+                </li>
+                <li>
+                    <a id="adminNavUsers" href="/admin/users" class="admin-nav-link">
+                        {{ self.i18n("nav-users") }}
+                    </a>
+                </li>
+            {% endif %}
         </ul>
 
+
+        {% if user_name.is_some() %}
         <ul class="admin-nav-right">
             <li class="admin-nav-user">
-                {{ user_name.as_deref().unwrap_or("Admin") }}
+                {{ user_name.as_ref().unwrap() }}
             </li>
-
             <li>
                 <a id="adminNavLogout" href="/logout" class="admin-nav-link">
                     {{ self.i18n("nav-logout") }}
                 </a>
             </li>
         </ul>
+        {% endif %}
     </nav>
 
     <!-- Admin Content -->

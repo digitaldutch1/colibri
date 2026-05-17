@@ -7,6 +7,8 @@ use askama::Template;
 use crate::templates::*;
 use serde::Deserialize;
 
+// Login session time
+const SESSION_TIMEOUT_HOURS: i64 = 8;
 
 
 // Helper function to extract language from cookie or default to "en"
@@ -202,17 +204,85 @@ pub async fn public_booking2(
 
 
 // Admin pages
+// Render admin login page
+pub async fn admin_login(
+    req: HttpRequest,
+) -> impl Responder {
+
+    // 1. Get selected language
+    let current_lang = get_lang(&req);
+
+    // 2. Get optional error message from query string
+    let error = req
+        .query_string()
+        .split('&')
+        .find_map(|pair| {
+            let mut parts = pair.split('=');
+
+            match (parts.next(), parts.next()) {
+                (Some("error"), Some(value)) => {
+                    Some(value.replace("%20", " "))
+                }
+                _ => None,
+            }
+        });
+
+    // 3. Render template
+    let template = AdminLoginTemplate {
+        user_name: None,
+        current_lang,
+        error,
+    };
+
+    HttpResponse::Ok()
+        .content_type("text/html")
+        .body(template.render().unwrap())
+}
+
 // Render admin homepage
 pub async fn admin_home(
     req: HttpRequest,
     session: Session,
 ) -> impl Responder {
 
-    // 1. Get session user and selected language
-    let user_name: Option<String> = session.get("user_name").unwrap_or(None);
+    // 1. Get selected language
     let current_lang = get_lang(&req);
 
-    // 2. Render admin homepage template
+    // 2. Check if user is logged in
+    let logged_in = session
+        .get::<bool>("logged_in")
+        .unwrap_or(None)
+        .unwrap_or(false);
+
+    if !logged_in {
+        return HttpResponse::Found()
+            .append_header(("Location", "/admin/login"))
+            .finish();
+    }
+
+    // 3. Check session timeout (8 hours)
+    let login_at = session
+        .get::<i64>("login_at")
+        .unwrap_or(None)
+        .unwrap_or(0);
+
+    let now = chrono::Utc::now().timestamp();
+
+    if now - login_at > SESSION_TIMEOUT_HOURS * 60 * 60 {
+
+        // Session expired
+        session.purge();
+
+        return HttpResponse::Found()
+            .append_header(("Location", "/admin/login?error=Sessie verlopen"))
+            .finish();
+    }
+
+    // 4. Get session user
+    let user_name: Option<String> =
+        session.get("user_name").unwrap_or(None);
+
+    // 5. Render admin homepage template
     let template = AdminHomeTemplate {
         user_name,
         current_lang,

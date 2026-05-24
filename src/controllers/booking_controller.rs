@@ -1076,6 +1076,76 @@ pub async fn update_admin_booking(
         old_check_in != new_check_in ||
         old_check_out != new_check_out;
 
+    // Get updated booking data for email
+    let booking_row = client
+        .query_one(
+            "
+            SELECT
+                c.email,
+                c.first_name,
+                a.name,
+                TO_CHAR(b.check_in_date, 'DD-MM-YYYY'),
+                TO_CHAR(b.check_out_date, 'DD-MM-YYYY'),
+                b.total_price::float8
+
+            FROM booking b
+
+            JOIN customer c
+                ON b.customer_id = c.id
+
+            JOIN accommodation a
+                ON b.accommodation_id = a.id
+
+            WHERE b.id = $1
+            ",
+            &[&form.booking_id],
+        )
+        .await
+        .unwrap();
+
+    let email: String =
+        booking_row.get(0);
+
+    let first_name: String =
+        booking_row.get(1);
+
+    let accommodation_name: String =
+        booking_row.get(2);
+
+    let email_check_in: String =
+        booking_row.get(3);
+
+    let email_check_out: String =
+        booking_row.get(4);
+
+    let total_price: f64 =
+        booking_row.get(5);
+
+    let nights =
+        (check_out_date - check_in_date).num_days();
+
+    let price_per_night =
+        total_price / nights as f64;
+
+    // Send booking update email
+    match crate::controllers::email_controller::send_booking_update_email(
+        &email,
+        &first_name,
+        &accommodation_name,
+        &email_check_in,
+        &email_check_out,
+        nights,
+        price_per_night,
+        total_price,
+    ).await {
+
+        Ok(_) =>
+            println!("Booking update email sent."),
+
+        Err(error) =>
+            println!("Booking update email failed: {}", error),
+    }
+
     // Redirect to update overview
     return HttpResponse::SeeOther()
         .insert_header((

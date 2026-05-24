@@ -72,6 +72,7 @@ pub async fn confirm_payment(path: web::Path<String>) -> impl Responder {
             WHERE b.payment_token = $1
             AND b.status = 'pending'
             AND b.locked_until IS NULL
+            AND b.invoice_number IS NULL
             ",
             &[&payment_token],
         )
@@ -105,6 +106,7 @@ pub async fn confirm_payment(path: web::Path<String>) -> impl Responder {
             WHERE payment_token = $2
             AND status = 'pending'
             AND locked_until IS NULL
+            AND invoice_number IS NULL
             ",
             &[&invoice_number, &payment_token],
         )

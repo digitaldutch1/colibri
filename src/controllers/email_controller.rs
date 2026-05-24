@@ -220,6 +220,92 @@ pub async fn send_cancel_confirmation_email(
     Ok(())
 }
 
+// Booking update confirmation email
+pub async fn send_booking_update_email(
+    to_email: &str,
+    first_name: &str,
+    accommodation_name: &str,
+    check_in: &str,
+    check_out: &str,
+    nights: i64,
+    price_per_night: f64,
+    total_price: f64,
+) -> Result<(), String> {
+
+    let smtp_user =
+        env::var("SMTP_USER")
+            .map_err(|_| "SMTP_USER missing".to_string())?;
+
+    let smtp_password =
+        env::var("SMTP_PASSWORD")
+            .map_err(|_| "SMTP_PASSWORD missing".to_string())?;
+
+    let email_body = format!(
+        "<html>
+        <body style='font-family: Arial, sans-serif;'>
+
+            <p>Dear {},</p>
+
+            <p>
+                Your booking at Camping de Colibri
+                has been updated.
+            </p>
+
+            <h3>Updated booking overview:</h3>
+
+            <p>
+                Accommodation:
+                <strong>{}</strong>
+            </p>
+
+            <p>
+                From <strong>{}</strong>
+                until <strong>{}</strong><br>
+
+                <small>
+                    ({} nights at €{:.2} per night)
+                </small>
+            </p>
+
+            <p>
+                <strong>
+                    Total amount: €{:.2}
+                </strong>
+            </p>
+
+            <p>
+                Kind regards,<br>
+                Team Colibri
+            </p>
+
+        </body>
+        </html>",
+        first_name,
+        accommodation_name,
+        check_in,
+        check_out,
+        nights,
+        price_per_night,
+        total_price
+    );
+
+    let email = Message::builder()
+        .from(format!("Colibri <{}>", smtp_user).parse().unwrap())
+        .to(to_email.parse().unwrap())
+        .subject("Booking updated")
+        .header(header::ContentType::TEXT_HTML)
+        .body(email_body)
+        .map_err(|e| e.to_string())?;
+
+    let mailer =
+        create_mailer(&smtp_user, &smtp_password)?;
+
+    mailer.send(&email)
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
 // Booking status update email
 pub async fn send_booking_status_email(
     to_email: &str,

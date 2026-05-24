@@ -4,13 +4,11 @@
 <div class="booking-wrapper">
     <div class="booking-card">
         <h2 class="booking-title">
-            {{ self.i18n("admin-customer-update-title") }}
+            {{ self.i18n("admin-customer-create-title") }}
         </h2>
 
-        <form class="booking-form" action="/admin/customer/update/save" method="post">
+        <form class="booking-form" action="/admin/customer/create" method="post">
 
-            <input type="hidden" name="customer_id" value="{{ customer_id }}">
-            
             <!-- First name -->
             <div class="form-group">
                 <label>
@@ -74,7 +72,7 @@
                 </button>
 
                 <button type="submit" class="btn-primary">
-                    {{ self.i18n("admin-customer-update-save") }}
+                    {{ self.i18n("admin-customer-create-save") }}
                 </button>
             </div>
         </form>

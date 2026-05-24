@@ -11,6 +11,12 @@ booking-cancelled = Je boeking is succesvol geannuleerd.
 error-no-unit-available = Er is helaas geen accommodatie meer beschikbaar voor de geselecteerde datums.
 admin-booking-update-overview-mail = Er is een bevestigingsmail verzonden naar de klant.
 admin-bookings-delete-success = Boeking succesvol verwijderd.
+admin-customer-update1-success = Klant 
+admin-customer-update2-success = is bijgewerkt
+admin-customer-delete1-success = Klant
+admin-customer-delete2-success = is verwijderd.
+admin-customer-delete1-error = Klant
+admin-customer-delete2-error = kan niet verwijderd worden omdat er nog open boekingen bestaan.
 
 
 
@@ -237,3 +243,42 @@ admin-booking-status-confirmed = Bevestigd
 admin-booking-status-cancelled = Geannuleerd
 admin-booking-status-back = Terug
 admin-booking-status-save = Opslaan
+
+
+
+# Admin customers
+admin-customers-title = Klanten
+admin-customers-search = Zoeken
+admin-customers-firstname = Voornaam
+admin-customers-lastname = Achternaam
+admin-customers-email = Email
+admin-customers-phone = Telefoonnummer
+admin-customers-address = Adres
+admin-customers-zipcode = Postcode
+admin-customers-city = Plaats
+admin-customers-actions = Acties
+admin-customers-update = Bewerken
+admin-customers-delete = Verwijderen
+admin-customers-create = Aanmaken
+admin-customers-back = Terug
+admin-customers-empty = Geen klanten gevonden
+
+
+
+# Admin customer create
+admin-customer-create-title = Klant aanmaken
+admin-customer-create-firstname = Voornaam
+admin-customer-create-lastname = Achternaam
+admin-customer-create-email = Email
+admin-customer-create-phone = Telefoonnummer
+admin-customer-create-address = Adres
+admin-customer-create-postalcode = Postcode
+admin-customer-create-city = Plaats
+admin-customer-create-back = Terug
+admin-customer-create-save = Opslaan
+
+
+
+# Admin customer update
+admin-customer-update-title = Klant bewerken
+admin-customer-update-save = Opslaan

@@ -7,6 +7,7 @@ pub mod booking_controller;
 pub mod payment_controller;
 pub mod email_controller;
 pub mod login_controller;
+pub mod customer_controller;
 
 
 

@@ -3,6 +3,7 @@
 
 use askama::Template;
 use unic_langid::LanguageIdentifier;
+use crate::db::CustomerRow;
 
 
 
@@ -326,6 +327,73 @@ pub struct AdminBookingStatusTemplate {
 }
 
 impl I18nTemplate for AdminBookingStatusTemplate {
+
+    fn lang(&self) -> &str {
+        &self.current_lang
+    }
+}
+
+// Admin customer
+// Admin customer read template
+#[derive(Template)]
+#[template(path = "pages/admin_customer_read.html")]
+pub struct AdminCustomerReadTemplate {
+    pub user_name: Option<String>,
+    pub current_lang: String,
+    pub customers: Vec<CustomerRow>,
+    pub user_role: String,
+    pub success: String,
+    pub success_last_name: String,
+}
+
+impl I18nTemplate for AdminCustomerReadTemplate {
+
+    fn lang(&self) -> &str {
+        &self.current_lang
+    }
+}
+
+// Admin customer create template
+#[derive(Template)]
+#[template(path = "pages/admin_customer_create.html")]
+pub struct AdminCustomerCreateTemplate {
+    pub user_name: Option<String>,
+    pub current_lang: String,
+    pub first_name: String,
+    pub last_name: String,
+    pub email: String,
+    pub phone: String,
+    pub address: String,
+    pub postal_code: String,
+    pub city: String,
+    pub error: Option<String>,
+}
+
+impl I18nTemplate for AdminCustomerCreateTemplate {
+
+    fn lang(&self) -> &str {
+        &self.current_lang
+    }
+}
+
+// Admin customer update template
+#[derive(Template)]
+#[template(path = "pages/admin_customer_update.html")]
+pub struct AdminCustomerUpdateTemplate {
+    pub user_name: Option<String>,
+    pub current_lang: String,
+    pub customer_id: i32,
+    pub first_name: String,
+    pub last_name: String,
+    pub email: String,
+    pub phone: String,
+    pub address: String,
+    pub postal_code: String,
+    pub city: String,
+    pub error: Option<String>,
+}
+
+impl I18nTemplate for AdminCustomerUpdateTemplate {
 
     fn lang(&self) -> &str {
         &self.current_lang

@@ -163,3 +163,69 @@ pub async fn cleanup_expired_booking_locks() -> Result<(), String> {
 
     Ok(())
 }
+
+pub async fn get_all_customers() -> Vec<crate::db::CustomerRow> {
+
+    let database_url =
+        env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set");
+
+    let (client, connection) =
+        tokio_postgres::connect(&database_url, NoTls)
+            .await
+            .expect("Failed to connect");
+
+    actix_web::rt::spawn(async move {
+
+        if let Err(error) = connection.await {
+            eprintln!("connection error: {}", error);
+        }
+    });
+
+    let rows = client
+        .query(
+            "
+            SELECT
+                id,
+                first_name,
+                last_name,
+                email,
+                phone,
+                address,
+                postal_code,
+                city
+
+            FROM customer
+
+            ORDER BY id ASC
+            ",
+            &[],
+        )
+        .await
+        .expect("Query failed");
+
+    let mut customers = Vec::new();
+
+    for row in rows {
+        customers.push(crate::db::CustomerRow {
+            id:
+                row.get(0),
+            first_name:
+                row.get(1),
+            last_name:
+                row.get(2),
+            email:
+                row.get(3),
+            phone:
+                row.get(4),
+            address:
+                row.get(5),
+            postal_code:
+                row.get(6),
+            city:
+                row.get(7),
+        });
+    }
+
+    customers
+}

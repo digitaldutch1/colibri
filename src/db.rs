@@ -71,3 +71,15 @@ pub struct Availability {
     pub booked_count: i64,
     pub is_available: bool,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CustomerRow {
+    pub id: i32,
+    pub first_name: String,
+    pub last_name: String,
+    pub email: String,
+    pub phone: Option<String>,
+    pub address: Option<String>,
+    pub postal_code: Option<String>,
+    pub city: Option<String>,
+}

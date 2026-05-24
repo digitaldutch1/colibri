@@ -39,6 +39,13 @@ pub fn init(cfg: &mut web::ServiceConfig) {
         .route("/admin/booking/update-overview", web::get().to(page_controller::admin_booking_update_overview))
         .route("/admin/booking/status/{id}", web::get().to(page_controller::admin_booking_status))
         .route("/admin/booking/status/save", web::post().to(booking_controller::save_admin_booking_status))
-        .route("/admin/booking/delete", web::post().to(booking_controller::delete_booking));
+        .route("/admin/booking/delete", web::post().to(booking_controller::delete_booking))
+        
+        .route("/admin/customers", web::get().to(page_controller::admin_customers_read))
+        .route("/admin/customer/create", web::get().to(page_controller::admin_customer_create))
+        .route("/admin/customer/create", web::post().to(customer_controller::create_customer))
+        .route("/admin/customer/update/{id}", web::get().to(page_controller::admin_customer_update))
+        .route("/admin/customer/update/save", web::post().to(customer_controller::update_customer))
+        .route("/admin/customer/delete", web::post().to(customer_controller::delete_customer));
 
 }

@@ -9,6 +9,13 @@ booking-cancelled = Your booking has been cancelled successfully.
 error-no-unit-available = Unfortunately, no accommodation is available for the selected dates.
 admin-booking-update-overview-mail = A confirmation email has been sent to the customer.
 admin-bookings-delete-success = Booking successfully deleted.
+admin-customer-update1-success = Customer 
+admin-customer-update2-success = has been updated
+admin-customer-delete1-success = Customer
+admin-customer-delete2-success = has been deleted.
+admin-customer-delete1-error = Customer
+admin-customer-delete2-error = cannot be deleted because open bookings still exist.
+
 
 
 # Booking step 2 session countdown
@@ -234,3 +241,42 @@ admin-booking-status-confirmed = Confirmed
 admin-booking-status-cancelled = Cancelled
 admin-booking-status-back = Back
 admin-booking-status-save = Save
+
+
+
+# Admin customers
+admin-customers-title = Customers
+admin-customers-search = Search
+admin-customers-firstname = First name
+admin-customers-lastname = Last name
+admin-customers-email = Email
+admin-customers-phone = Phone number
+admin-customers-address = Address
+admin-customers-zipcode = Zip code
+admin-customers-city = City
+admin-customers-actions = Actions
+admin-customers-update = Update
+admin-customers-delete = Delete
+admin-customers-create = Create
+admin-customers-back = Back
+admin-customers-empty = No customers found
+
+
+
+# Admin customer create
+admin-customer-create-title = Create Customer
+admin-customer-create-firstname = First name
+admin-customer-create-lastname = Last name
+admin-customer-create-email = Email
+admin-customer-create-phone = Phone number
+admin-customer-create-address = Address
+admin-customer-create-postalcode = Zip code
+admin-customer-create-city = City
+admin-customer-create-back = Back
+admin-customer-create-save = Save
+
+
+
+# Admin customer update
+admin-customer-update-title = Update Customer
+admin-customer-update-save = Save

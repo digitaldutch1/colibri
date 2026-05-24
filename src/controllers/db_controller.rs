@@ -38,16 +38,30 @@ pub async fn get_all_accommodations() -> Vec<Accommodation> {
 }
 
 
-pub async fn get_unavailable_dates(accommodation_id: i32) -> Result<Vec<String>, String> {
-    let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+pub async fn get_unavailable_dates(
+    accommodation_id: i32,
+    exclude_booking_id: i32,
+) -> Result<Vec<String>, String> {
 
-    let (client, connection) = tokio_postgres::connect(&database_url, tokio_postgres::NoTls)
+    let database_url =
+        std::env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set");
+
+    let (client, connection) =
+        tokio_postgres::connect(
+            &database_url,
+            tokio_postgres::NoTls
+        )
         .await
         .map_err(|error| error.to_string())?;
 
     actix_web::rt::spawn(async move {
+
         if let Err(error) = connection.await {
-            eprintln!("Database connection error: {}", error);
+            eprintln!(
+                "Database connection error: {}",
+                error
+            );
         }
     });
 
@@ -61,23 +75,32 @@ pub async fn get_unavailable_dates(accommodation_id: i32) -> Result<Vec<String>,
                     b.check_out_date - INTERVAL '1 day',
                     INTERVAL '1 day'
                 ) AS day
+
                 FROM booking b
                 WHERE b.accommodation_id = $1
+                AND b.id != $2
                 AND b.status != 'cancelled'
                 AND (
                     b.locked_until IS NULL
                     OR b.locked_until > NOW()
                 )
+
             ) booked_days
+
             GROUP BY booked_days.day
+
             HAVING COUNT(*) >= (
                 SELECT total_units
                 FROM accommodation
                 WHERE id = $1
             )
+
             ORDER BY booked_days.day ASC
             ",
-            &[&accommodation_id],
+            &[
+                &accommodation_id,
+                &exclude_booking_id,
+            ],
         )
         .await
         .map_err(|error| error.to_string())?;
@@ -85,7 +108,10 @@ pub async fn get_unavailable_dates(accommodation_id: i32) -> Result<Vec<String>,
     let mut dates = Vec::new();
 
     for row in rows {
-        let date: String = row.get(0);
+
+        let date: String =
+            row.get(0);
+
         dates.push(date);
     }
 

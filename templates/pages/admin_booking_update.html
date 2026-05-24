@@ -1,0 +1,171 @@
+{% extends "layouts/admin_layout.html" %}
+{% block content %}
+
+{% if error != "" %}
+<div class="alert-wrapper">
+    <div class="alert error">
+        {{ error }}
+    </div>
+</div>
+{% endif %}
+
+<!-- Admin booking update form -->
+<div class="booking-wrapper">
+    <div class="booking-card">
+        <h2 class="booking-title">
+            {{ self.i18n("admin-booking-update-step1-title") }}
+        </h2>
+
+        <form class="booking-form" action="/admin/booking/update/save" method="post">
+            <input type="hidden" name="booking_id" value="{{ booking_id }}">
+
+            <!-- Accommodation -->
+            <div class="form-group">
+                <label for="accommodation">
+                    {{ self.i18n("admin-booking-update-accommodation") }}
+                </label>
+                <select name="accommodation_id" class="form-input">
+                    <option value="">
+                        {{ self.i18n("admin-booking-update-option-default") }}
+                    </option>
+                    <option value="1" {% if accommodation_id == "1" %}selected{% endif %}>
+                        {{ self.i18n("home-chalet-title") }}
+                    </option>
+                    <option value="2" {% if accommodation_id == "2" %}selected{% endif %}>
+                        {{ self.i18n("home-tent-title") }}
+                    </option>
+                    <option value="3" {% if accommodation_id == "3" %}selected{% endif %}>
+                        {{ self.i18n("home-pitch-title") }}
+                    </option>
+                </select>
+            </div>
+
+            <!-- Check-in -->
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-booking-update-checkin") }}
+                </label>
+                <input type="text" name="check_in_date" value="{{ check_in_date }}" class="form-input">
+            </div>
+
+            <!-- Check-out -->
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-booking-update-checkout") }}
+                </label>
+                <input type="text" name="check_out_date" value="{{ check_out_date }}" class="form-input">
+            </div>
+
+            <!-- Buttons -->
+            <div class="booking-buttons">
+                <button type="button" onclick="window.location.href='/admin/bookings'" class="btn-secondary">
+                    {{ self.i18n("admin-booking-update-back") }}
+                </button>                
+                <button id="submit-btn" type="submit" class="btn-primary">
+                    {{ self.i18n("admin-booking-update-save") }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Booking update availability -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const accommodation =
+        document.querySelector('[name="accommodation_id"]');
+
+    const checkInInput =
+        document.querySelector('[name="check_in_date"]');
+
+    const checkOutInput =
+        document.querySelector('[name="check_out_date"]');
+
+    const bookingId =
+        "{{ booking_id }}";
+
+    let checkInPicker;
+    let checkOutPicker;
+
+    const calendarConfig = {
+        locale: "nl",
+        dateFormat: "Y-m-d",
+        altInput: true,
+        altFormat: "d-m-Y",
+        minDate: "today",
+        disable: [],
+
+        onChange: function (_selectedDates, dateStr, instance) {
+            if (instance === checkInPicker && checkOutPicker) {
+                checkOutPicker.set("minDate", dateStr);
+
+                if (
+                    checkOutInput.value &&
+                    checkOutInput.value <= dateStr
+                ) {
+                    checkOutPicker.clear();
+                }
+            }
+        }
+    };
+
+    checkInPicker =
+        flatpickr(checkInInput, calendarConfig);
+    checkOutPicker =
+        flatpickr(checkOutInput, calendarConfig);
+
+    async function loadUnavailableDates() {
+        const accommodationId =
+            accommodation.value;
+
+        if (!accommodationId) {
+            checkInPicker.set("disable", []);
+            checkOutPicker.set("disable", []);
+
+            return;
+        }
+
+        try {
+            const response =
+                await fetch(
+                    `/api/unavailable/${accommodationId}?exclude=${bookingId}`
+                );
+
+            const unavailableDates =
+                await response.json();
+
+            checkInPicker.set(
+                "disable",
+                unavailableDates
+            );
+
+            checkOutPicker.set(
+                "disable",
+                unavailableDates
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Failed to load unavailable dates:",
+                error
+            );
+        }
+    }
+
+    accommodation.addEventListener(
+        "change",
+        function () {
+
+            checkInPicker.clear();
+            checkOutPicker.clear();
+
+            loadUnavailableDates();
+        }
+    );
+
+    loadUnavailableDates();
+});
+</script>
+{% endblock %}

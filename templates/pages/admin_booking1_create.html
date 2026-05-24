@@ -1,0 +1,190 @@
+{% extends "layouts/admin_layout.html" %}
+{% block content %}
+
+<!-- Admin booking step 1 form -->
+<div class="booking-wrapper">
+    <div class="booking-card">
+        <h2 class="booking-title">
+            {{ self.i18n("admin-booking-create-step1-title") }}
+        </h2>
+
+        <form class="booking-form" action="/admin/booking2" method="get">
+            <div class="form-group">
+                <label for="accommodation">
+                    {{ self.i18n("admin-booking-create-accommodation") }}
+                </label>
+
+                <select name="accommodation_id" class="form-input">
+                    <option value="">
+                        {{ self.i18n("admin-booking-create-option-default") }}
+                    </option>
+
+                    <option value="1" {% if accommodation_id == "1" %}selected{% endif %}>
+                        {{ self.i18n("home-chalet-title") }}
+                    </option>
+
+                    <option value="2" {% if accommodation_id == "2" %}selected{% endif %}>
+                        {{ self.i18n("home-tent-title") }}
+                    </option>
+
+                    <option value="3" {% if accommodation_id == "3" %}selected{% endif %}>
+                        {{ self.i18n("home-pitch-title") }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-booking-create-checkin") }}
+                </label>
+
+                <input
+                    type="text"
+                    name="check_in_date"
+                    class="form-input"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-booking-create-checkout") }}
+                </label>
+                <input
+                    type="text"
+                    name="check_out_date"
+                    class="form-input"
+                >
+            </div>
+
+            <div class="booking-buttons">
+
+                <button
+                    type="button"
+                    onclick="window.location.href='/admin/bookings'"
+                    class="btn-secondary"
+                >
+                    {{ self.i18n("admin-booking-create-back") }}
+                </button>
+
+                <button
+                    id="submit-btn"
+                    type="submit"
+                    class="btn-primary"
+                    disabled
+                >
+                    {{ self.i18n("admin-booking-create-next") }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Booking step 1 form validation -->
+<script>
+function validateBookingStep1Form() {
+    const accommodation =
+        document.querySelector('[name="accommodation_id"]');
+
+    const checkInInput =
+        document.querySelector('[name="check_in_date"]');
+
+    const checkOutInput =
+        document.querySelector('[name="check_out_date"]');
+
+    const submitBtn =
+        document.getElementById("submit-btn");
+
+    const valid =
+        accommodation.value !== "" &&
+        checkInInput.value !== "" &&
+        checkOutInput.value !== "";
+
+    submitBtn.disabled = !valid;
+}
+</script>
+
+
+<!-- Booking step 1 calendar availability -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const accommodation =
+        document.querySelector('[name="accommodation_id"]');
+
+    const checkInInput =
+        document.querySelector('[name="check_in_date"]');
+
+    const checkOutInput =
+        document.querySelector('[name="check_out_date"]');
+
+    let checkInPicker;
+    let checkOutPicker;
+
+    const calendarConfig = {
+        locale: "nl",
+        dateFormat: "Y-m-d",
+        altInput: true,
+        altFormat: "d-m-Y",
+        minDate: "today",
+        disable: [],
+
+        onChange: function (_selectedDates, dateStr, instance) {
+            if (instance === checkInPicker && checkOutPicker) {
+                checkOutPicker.set("minDate", dateStr);
+                if (
+                    checkOutInput.value &&
+                    checkOutInput.value <= dateStr
+                ) {
+                    checkOutPicker.clear();
+                }
+            }
+            validateBookingStep1Form();
+        }
+    };
+
+    checkInPicker =
+        flatpickr(checkInInput, calendarConfig);
+
+    checkOutPicker =
+        flatpickr(checkOutInput, calendarConfig);
+
+    async function loadUnavailableDates() {
+        const accommodationId = accommodation.value;
+
+        if (!accommodationId) {
+            checkInPicker.set("disable", []);
+            checkOutPicker.set("disable", []);
+            validateBookingStep1Form();
+            return;
+        }
+
+        try {
+            const response =
+                await fetch(`/api/unavailable/${accommodationId}`);
+
+            const unavailableDates =
+                await response.json();
+
+            checkInPicker.set("disable", unavailableDates);
+            checkOutPicker.set("disable", unavailableDates);
+
+            validateBookingStep1Form();
+
+        } catch (error) {
+            console.error(
+                "Failed to load unavailable dates:",
+                error
+            );
+        }
+    }
+
+    accommodation.addEventListener(
+        "change",
+        loadUnavailableDates
+    );
+
+    loadUnavailableDates();
+    validateBookingStep1Form();
+});
+</script>
+{% endblock %}

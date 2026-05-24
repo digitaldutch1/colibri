@@ -1,0 +1,85 @@
+{% extends "layouts/admin_layout.html" %}
+{% block content %}
+
+{% if success %}
+<div class="alert-wrapper">
+    <div class="alert success">
+        {{ self.i18n("admin-booking-update-overview-success") }}
+        <br>
+        {{ self.i18n("admin-booking-update-overview-mail") }}
+    </div>
+</div>
+{% endif %}
+
+<div class="booking-wrapper">
+    <div class="booking-card">
+        <h2 class="booking-title">
+            {{ self.i18n("admin-booking-update-overview-title") }}
+        </h2>
+
+        <div class="booking-form admin-update-overview-center">
+            {% if accommodation_changed %}
+            <p class="admin-update-overview-subtitle">
+                {{ self.i18n("admin-booking-update-overview-accommodation-changed") }}
+                <strong>{{ old_accommodation }}</strong>
+                →
+                <strong>{{ new_accommodation }}</strong>
+            </p>
+            {% endif %}
+            
+            {% if dates_changed %}
+            <p>
+                {{ self.i18n("admin-booking-update-overview-dates-changed") }}
+                <br>
+                <strong>
+                    {{ old_check_in }} / {{ old_check_out }}
+                </strong>
+                →
+                <strong>
+                    {{ new_check_in }} / {{ new_check_out }}
+                </strong>
+            </p>
+            {% endif %}
+        
+            <hr class="admin-update-divider">
+
+            <p class="admin-update-overview-subtitle">
+                <strong>
+                    {{ self.i18n("admin-booking-update-overview-new-overview") }}
+                </strong>
+            </p>
+            <p>
+                {{ self.i18n("admin-booking-update-overview-accommodation") }}
+                <strong>{{ accommodation }}</strong>
+            </p>
+
+            <p>
+                {{ self.i18n("admin-booking-update-overview-from") }}
+                <strong>{{ check_in }}</strong>
+                {{ self.i18n("admin-booking-update-overview-until") }}
+                <strong>{{ check_out }}</strong>
+                <br>
+                <small class="admin-update-nights-breakdown">
+                    ({{ nights }}
+                    {{ self.i18n("admin-booking-update-overview-nights") }}
+                    à €{{ price_per_night }}
+                    {{ self.i18n("admin-booking-update-overview-per-night") }})
+                </small>
+            </p>
+
+            <div class="admin-update-overview-price">
+                <strong>
+                    {{ self.i18n("admin-booking-update-overview-total") }}:
+                    €{{ total_price }}
+                </strong>
+            </div>
+
+            <div class="booking-buttons admin-update-overview-buttons">
+                <button type="button" onclick="window.location.href='/admin/bookings'" class="admin-update-btn-main">
+                    {{ self.i18n("admin-booking-update-overview-back") }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

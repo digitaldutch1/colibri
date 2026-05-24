@@ -1,0 +1,165 @@
+{% extends "layouts/admin_layout.html" %}
+{% block content %}
+
+<!-- Admin booking 2 form -->
+<div class="booking-wrapper">
+    <div class="booking-card">
+        <h2 class="booking-title">
+            {{ self.i18n("admin-booking-create-step2-title") }}
+        </h2>
+
+        <form class="booking-form" action="/admin/booking/create" method="post">
+            
+            <input type="hidden" name="accommodation_id" value="{{ accommodation_id }}">
+            <input type="hidden" name="check_in_date" value="{{ check_in_date }}">
+            <input type="hidden" name="check_out_date" value="{{ check_out_date }}">
+
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-booking-create-firstname") }}
+                </label>
+
+                <input
+                    type="text"
+                    name="first_name"
+                    value=""
+                    class="form-input"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-booking-create-lastname") }}
+                </label>
+
+                <input
+                    type="text"
+                    name="last_name"
+                    value=""
+                    class="form-input"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-booking-create-address") }}
+                </label>
+
+                <input
+                    type="text"
+                    name="address"
+                    value=""
+                    class="form-input"
+                >
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half">
+                    <label>
+                        {{ self.i18n("admin-booking-create-zipcode") }}
+                    </label>
+
+                    <input
+                        type="text"
+                        name="zip_code"
+                        value=""
+                        class="form-input"
+                    >
+                </div>
+
+                <div class="form-group half">
+                    <label>
+                        {{ self.i18n("admin-booking-create-city") }}
+                    </label>
+
+                    <input
+                        type="text"
+                        name="city"
+                        value=""
+                        class="form-input"
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-booking-create-phone") }}
+                </label>
+
+                <input
+                    type="text"
+                    name="phone"
+                    value=""
+                    class="form-input"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-booking-create-email") }}
+                </label>
+
+                <input
+                    type="email"
+                    name="email"
+                    value=""
+                    class="form-input"
+                >
+            </div>
+
+            <div class="booking-buttons">
+                <button
+                    type="button"
+                    class="btn-secondary"
+                    onclick="window.history.back()"
+                >
+                    {{ self.i18n("admin-booking-create-back") }}
+                </button>
+
+                <button
+                    type="submit"
+                    id="submit-btn"
+                    class="btn-primary"
+                    disabled
+                >
+                    {{ self.i18n("admin-booking-create-submit") }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Booking step 2 form validation -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const requiredFields = [
+        document.querySelector('[name="first_name"]'),
+        document.querySelector('[name="last_name"]'),
+        document.querySelector('[name="address"]'),
+        document.querySelector('[name="zip_code"]'),
+        document.querySelector('[name="city"]'),
+        document.querySelector('[name="phone"]'),
+        document.querySelector('[name="email"]')
+    ];
+
+    const submitBtn =
+        document.getElementById("submit-btn");
+
+    function validateForm() {
+        const fieldsFilled =
+            requiredFields.every(function (field) {
+                return field &&
+                       field.value.trim() !== "";
+            });
+
+        submitBtn.disabled = !fieldsFilled;
+    }
+
+    requiredFields.forEach(function (field) {
+        if (field) {
+            field.addEventListener("input", validateForm);
+        }
+    });
+});
+</script>
+{% endblock %}

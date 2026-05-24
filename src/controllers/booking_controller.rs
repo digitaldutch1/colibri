@@ -238,7 +238,6 @@ pub struct PublicBookingForm {
 // Create new public booking
 pub async fn create_public_booking(
     req: HttpRequest,
-    session: Session,
     form: web::Form<PublicBookingForm>,
 ) -> impl Responder {
 
@@ -427,8 +426,7 @@ pub async fn create_public_booking(
         )
         .await;
 
-    // 9. Prepare booking overview and email data   
-    let user_name: Option<String> = session.get("user_name").unwrap_or(None);
+    // 9. Prepare booking overview and email data    
     let current_lang = get_lang(&req);
 
     let accommodation = match accommodation_id {
@@ -467,36 +465,11 @@ pub async fn create_public_booking(
     }
 
      // 11. Render booking overview page
-    let template = PublicBookingOverviewTemplate {
-        user_name,
-        current_lang,
+    let redirect_url = format!("/booking-overview?payment_token={}", form.lock_token);
 
-        success: true,
-        email: form.email.clone(),
-
-        first_name: form.first_name.clone(),
-        last_name: form.last_name.clone(),
-        address: form.address.clone(),
-        zip_code: form.zip_code.clone(),
-        city: form.city.clone(),
-        phone: form.phone.clone(),
-
-        accommodation,
-        check_in: check_in_date.format("%d-%m-%Y").to_string(),
-        check_out: check_out_date.format("%d-%m-%Y").to_string(),
-
-        nights,
-        price_per_night: format!("{:.2}", price_per_night),
-        total_price: format!("{:.2}", total_price),
-        payment_token: form.lock_token.clone(),
-    };
-
-    match template.render() {
-        Ok(html) => HttpResponse::Ok()
-            .content_type("text/html")
-            .body(html),
-        Err(_) => HttpResponse::InternalServerError().finish(),
-    }
+    HttpResponse::SeeOther()
+        .insert_header((actix_web::http::header::LOCATION, redirect_url))
+        .finish()
 }
 
 
@@ -598,6 +571,714 @@ pub async fn cancel_booking(path: web::Path<String>) -> impl Responder {
         .insert_header((
             header::LOCATION,
             "/?error=booking_cancelled",
+        ))
+        .finish()
+}
+
+// Admin booking form data struct
+#[derive(Deserialize)]
+pub struct AdminBookingForm {
+    pub accommodation_id: i32,
+    pub check_in_date: String,
+    pub check_out_date: String,
+    pub first_name: String,
+    pub last_name: String,
+    pub address: String,
+    pub zip_code: String,
+    pub city: String,
+    pub phone: String,
+    pub email: String,
+}
+
+// Create admin booking
+pub async fn create_admin_booking(
+    form: web::Form<AdminBookingForm>,
+) -> impl Responder {
+
+    // 1. Parse booking dates
+    let check_in_date =
+        match NaiveDate::parse_from_str(
+            &form.check_in_date,
+            "%Y-%m-%d",
+        ) {
+            Ok(date) => date,
+
+            Err(_) => {
+                return HttpResponse::BadRequest()
+                    .body("Invalid check-in date.");
+            }
+        };
+
+    let check_out_date =
+        match NaiveDate::parse_from_str(
+            &form.check_out_date,
+            "%Y-%m-%d",
+        ) {
+            Ok(date) => date,
+
+            Err(_) => {
+                return HttpResponse::BadRequest()
+                    .body("Invalid check-out date.");
+            }
+        };
+
+    if check_out_date <= check_in_date {
+
+        return HttpResponse::BadRequest()
+            .body("Check-out date must be after check-in date.");
+    }
+
+    // 2. Calculate nights and total price
+    let nights =
+        (check_out_date - check_in_date).num_days();
+
+    let price_per_night = match form.accommodation_id {
+        1 => 300.0,
+        2 => 200.0,
+        3 => 100.0,
+
+        _ => {
+            return HttpResponse::BadRequest()
+                .body("Invalid accommodation.");
+        }
+    };
+
+    let total_price =
+        price_per_night * nights as f64;
+
+    // 3. Connect database
+    let database_url =
+        env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set");
+
+    let (client, connection) =
+        match tokio_postgres::connect(
+            &database_url,
+            NoTls
+        ).await {
+
+            Ok(value) => value,
+
+            Err(_) => {
+                return HttpResponse::InternalServerError()
+                    .body("Database connection failed.");
+            }
+        };
+
+    actix_web::rt::spawn(async move {
+
+        if let Err(error) = connection.await {
+            eprintln!("Database connection error: {}", error);
+        }
+
+    });
+
+    // 4. Final availability check
+    let unit_row = match client
+        .query_opt(
+            "
+            SELECT u.id
+            FROM unit u
+            WHERE u.accommodation_id = $1
+            AND NOT EXISTS (
+                SELECT 1
+                FROM booking b
+                WHERE b.unit_id = u.id
+                AND b.status != 'cancelled'
+                AND b.check_in_date < $3
+                AND b.check_out_date > $2
+            )
+
+            ORDER BY u.id
+            LIMIT 1
+            ",
+            &[
+                &form.accommodation_id,
+                &check_in_date,
+                &check_out_date
+            ],
+        )
+        .await
+    {
+        Ok(row) => row,
+
+        Err(error) => {
+
+            return HttpResponse::InternalServerError()
+                .body(format!(
+                    "Availability check error: {:?}",
+                    error
+                ));
+        }
+    };
+
+    // 5. No available unit
+    let unit_id: i32 = match unit_row {
+        Some(row) => row.get(0),
+        None => {
+            return HttpResponse::SeeOther()
+                .insert_header((
+                    actix_web::http::header::LOCATION,
+                    "/admin/bookings?error=no_unit_available".to_string(),
+                ))
+                .finish();
+        }
+    };
+
+    // 6. Create or update customer
+    let customer_row = match client
+        .query_one(
+            "
+            INSERT INTO customer (
+                first_name,
+                last_name,
+                email,
+                phone,
+                address,
+                postal_code,
+                city
+            )
+
+            VALUES ($1,$2,$3,$4,$5,$6,$7)
+
+            ON CONFLICT (email)
+
+            DO UPDATE SET
+                first_name = EXCLUDED.first_name,
+                last_name = EXCLUDED.last_name,
+                phone = EXCLUDED.phone,
+                address = EXCLUDED.address,
+                postal_code = EXCLUDED.postal_code,
+                city = EXCLUDED.city
+
+            RETURNING id
+            ",
+            &[
+                &form.first_name,
+                &form.last_name,
+                &form.email,
+                &form.phone,
+                &form.address,
+                &form.zip_code,
+                &form.city,
+            ],
+        )
+        .await
+    {
+        Ok(row) => row,
+
+        Err(error) => {
+
+            return HttpResponse::InternalServerError()
+                .body(format!(
+                    "Customer insert error: {:?}",
+                    error
+                ));
+        }
+    };
+
+    let customer_id: i32 =
+        customer_row.get(0);
+
+    // 7. Generate tokens
+    let payment_token =
+        Uuid::new_v4().to_string();
+
+    let cancel_token =
+        Uuid::new_v4().to_string();
+
+    // 8. Create booking
+    let insert_result = client
+        .execute(
+            "
+            INSERT INTO booking (
+                customer_id,
+                accommodation_id,
+                unit_id,
+                check_in_date,
+                check_out_date,
+                total_price,
+                payment_token,
+                cancel_token,
+                status,
+                source,
+                locked_until
+            )
+
+            VALUES (
+                $1,$2,$3,
+                $4,$5,
+                ($6::float8)::numeric,
+                $7,$8,
+                'pending',
+                'admin',
+                NULL
+            )
+            ",
+            &[
+                &customer_id,
+                &form.accommodation_id,
+                &unit_id,
+                &check_in_date,
+                &check_out_date,
+                &total_price,
+                &payment_token,
+                &cancel_token,
+            ],
+        )
+        .await;
+
+    if let Err(error) = insert_result {
+
+        return HttpResponse::InternalServerError()
+            .body(format!(
+                "Booking insert error: {:?}",
+                error
+            ));
+    }
+
+    // Send booking confirmation email
+    let accommodation = match form.accommodation_id {
+        1 => "Chalet",
+        2 => "Tent",
+        3 => "Pitch",
+        _ => "Unknown",
+    };
+
+    match crate::controllers::email_controller::send_confirmation_email(
+        &form.email,
+        &form.first_name,
+        &form.last_name,
+        &form.phone,
+        &form.address,
+        &form.zip_code,
+        &form.city,
+        accommodation,
+        &check_in_date.format("%d-%m-%Y").to_string(),
+        &check_out_date.format("%d-%m-%Y").to_string(),
+        &payment_token,
+        &cancel_token,
+        nights,
+        price_per_night,
+        total_price,
+    ).await {
+
+        Ok(_) => println!("Booking confirmation email sent."),
+
+        Err(error) => println!(
+            "Booking confirmation email failed: {}",
+            error
+        ),
+    }
+
+    // 10. Redirect to admin booking overview
+    return HttpResponse::SeeOther()
+        .insert_header((
+            actix_web::http::header::LOCATION,
+            format!(
+                "/admin/booking-overview?payment_token={}",
+                payment_token
+            ),
+        ))
+        .finish();
+}
+
+// Admin booking update form struct
+#[derive(Deserialize)]
+pub struct AdminBookingUpdateForm {
+    pub booking_id: i32,
+    pub accommodation_id: i32,
+    pub check_in_date: String,
+    pub check_out_date: String,
+}
+
+// Update admin booking
+pub async fn update_admin_booking(
+    form: web::Form<AdminBookingUpdateForm>,
+) -> impl Responder {
+
+    // Parse booking dates
+    let check_in_date =
+        match NaiveDate::parse_from_str(
+            &form.check_in_date,
+            "%Y-%m-%d",
+        ) {
+            Ok(date) => date,
+
+            Err(_) => {
+                return HttpResponse::BadRequest()
+                    .body("Invalid check-in date.");
+            }
+        };
+
+    let check_out_date =
+        match NaiveDate::parse_from_str(
+            &form.check_out_date,
+            "%Y-%m-%d",
+        ) {
+            Ok(date) => date,
+
+            Err(_) => {
+                return HttpResponse::BadRequest()
+                    .body("Invalid check-out date.");
+            }
+        };
+
+    // Database connection
+    let database_url =
+        env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set");
+
+    let (client, connection) =
+        tokio_postgres::connect(&database_url, NoTls)
+            .await
+            .unwrap();
+
+    actix_web::rt::spawn(async move {
+        if let Err(error) = connection.await {
+            eprintln!("Database connection error: {}", error);
+        }
+    });
+
+    // Get old booking data
+    let old_row = client
+        .query_one(
+            "
+            SELECT
+                accommodation.name,
+                TO_CHAR(booking.check_in_date, 'DD-MM-YYYY'),
+                TO_CHAR(booking.check_out_date, 'DD-MM-YYYY')
+
+            FROM booking
+
+            JOIN accommodation
+                ON booking.accommodation_id = accommodation.id
+
+            WHERE booking.id = $1
+            ",
+            &[&form.booking_id],
+        )
+        .await
+        .unwrap();
+
+    let old_accommodation: String =
+        old_row.get(0);
+
+    let old_check_in: String =
+        old_row.get(1);
+
+    let old_check_out: String =
+        old_row.get(2);
+
+    // Availability check
+    let unit_row = client
+        .query_opt(
+            "
+            SELECT u.id
+            FROM unit u
+            WHERE u.accommodation_id = $1
+
+            AND NOT EXISTS (
+                SELECT 1
+                FROM booking b
+                WHERE b.unit_id = u.id
+                AND b.id != $4
+                AND b.check_in_date < $3
+                AND b.check_out_date > $2
+            )
+
+            LIMIT 1
+            ",
+            &[
+                &form.accommodation_id,
+                &check_in_date,
+                &check_out_date,
+                &form.booking_id,
+            ],
+        )
+        .await
+        .unwrap();
+
+    // No available unit
+    let unit_id: i32 =
+        match unit_row {
+
+            Some(row) => row.get(0),
+
+            None => {
+
+                return HttpResponse::SeeOther()
+                    .insert_header((
+                        actix_web::http::header::LOCATION,
+                        format!(
+                            "/admin/booking/update/{}?error=Selected dates are no longer available",
+                            form.booking_id
+                        ),
+                    ))
+                    .finish();
+            }
+        };
+
+    // Update booking
+    client
+        .execute(
+            "
+            UPDATE booking
+
+            SET
+                accommodation_id = $1,
+                unit_id = $2,
+                check_in_date = $3,
+                check_out_date = $4
+
+            WHERE id = $5
+            ",
+            &[
+                &form.accommodation_id,
+                &unit_id,
+                &check_in_date,
+                &check_out_date,
+                &form.booking_id,
+            ],
+        )
+        .await
+        .unwrap();
+
+    // Get new accommodation
+    let new_row = client
+        .query_one(
+            "
+            SELECT accommodation.name
+            FROM booking
+            JOIN accommodation
+                ON booking.accommodation_id = accommodation.id
+            WHERE booking.id = $1
+            ",
+            &[&form.booking_id],
+        )
+        .await
+        .unwrap();
+
+    let new_accommodation: String =
+        new_row.get(0);
+
+    // Compare changes
+    let accommodation_changed =
+        old_accommodation != new_accommodation;
+
+    let new_check_in =
+        check_in_date.format("%d-%m-%Y").to_string();
+
+    let new_check_out =
+        check_out_date.format("%d-%m-%Y").to_string();
+
+    let dates_changed =
+        old_check_in != new_check_in ||
+        old_check_out != new_check_out;
+
+    // Redirect to update overview
+    return HttpResponse::SeeOther()
+        .insert_header((
+            actix_web::http::header::LOCATION,
+            format!(
+                "/admin/booking/update-overview?booking_id={}&accommodation_changed={}&old_accommodation={}&new_accommodation={}&dates_changed={}&old_check_in={}&old_check_out={}&new_check_in={}&new_check_out={}",
+                form.booking_id,
+                accommodation_changed,
+                old_accommodation,
+                new_accommodation,
+                dates_changed,
+                old_check_in,
+                old_check_out,
+                new_check_in,
+                new_check_out,
+            ),
+        ))
+        .finish();
+}
+
+// Admin booking status struct
+#[derive(Deserialize)]
+pub struct AdminBookingStatusForm {
+    pub booking_id: i32,
+    pub status: String,
+}
+
+// Save admin booking status
+pub async fn save_admin_booking_status(
+    form: web::Form<AdminBookingStatusForm>,
+) -> impl Responder {
+
+    // Database connection
+    let database_url =
+        env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set");
+
+    let (client, connection) =
+        tokio_postgres::connect(&database_url, NoTls)
+            .await
+            .unwrap();
+
+    actix_web::rt::spawn(async move {
+
+        if let Err(error) = connection.await {
+            eprintln!("Database connection error: {}", error);
+        }
+    });
+
+    // Get booking data
+    let row = client
+        .query_one(
+            "
+            SELECT
+                b.invoice_number,
+                c.email,
+                c.first_name
+
+            FROM booking b
+
+            JOIN customer c
+                ON b.customer_id = c.id
+
+            WHERE b.id = $1
+            ",
+            &[&form.booking_id],
+        )
+        .await
+        .unwrap();
+
+    let invoice_number: Option<String> =
+        row.get(0);
+
+    let email: String =
+        row.get(1);
+
+    let first_name: String =
+        row.get(2);
+
+    // Generate invoice if status becomes confirmed
+    let final_invoice_number =
+        match (
+            form.status.as_str(),
+            invoice_number.clone(),
+        ) {
+
+            ("confirmed", None) => {
+
+                let new_invoice =
+                    crate::controllers::payment_controller::generate_invoice_number(&client).await;
+
+                client
+                    .execute(
+                        "
+                        UPDATE booking
+
+                        SET invoice_number = $1
+
+                        WHERE id = $2
+                        ",
+                        &[
+                            &new_invoice,
+                            &form.booking_id,
+                        ],
+                    )
+                    .await
+                    .unwrap();
+
+                new_invoice
+            }
+
+            (_, Some(existing)) => existing,
+
+            _ => String::new(),
+        };
+
+    // Update booking status
+    client
+        .execute(
+            "
+            UPDATE booking
+
+            SET status = $1
+
+            WHERE id = $2
+            ",
+            &[
+                &form.status,
+                &form.booking_id,
+            ],
+        )
+        .await
+        .unwrap();
+
+    // Send status update email
+    match crate::controllers::email_controller::send_booking_status_email(
+        &email,
+        &first_name,
+        &form.status,
+        &final_invoice_number,
+    ).await {
+
+        Ok(_) =>
+            println!("Status email sent."),
+
+        Err(error) =>
+            println!("Status email failed: {}", error),
+    }
+
+    // Redirect back to bookings
+    HttpResponse::SeeOther()
+        .insert_header((
+            actix_web::http::header::LOCATION,
+            "/admin/bookings",
+        ))
+        .finish()
+}
+
+// Admin delete booking struct
+#[derive(Deserialize)]
+pub struct DeleteBookingForm {
+    pub booking_id: i32,
+}
+
+// Delete booking
+pub async fn delete_booking(
+    form: web::Form<DeleteBookingForm>,
+) -> impl Responder {
+
+    // Database connection
+    let database_url =
+        env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set");
+
+    let (client, connection) =
+        tokio_postgres::connect(&database_url, NoTls)
+            .await
+            .unwrap();
+
+    actix_web::rt::spawn(async move {
+
+        if let Err(error) = connection.await {
+            eprintln!("Database connection error: {}", error);
+        }
+    });
+
+    // Delete booking
+    client
+        .execute(
+            "
+            DELETE FROM booking
+            WHERE id = $1
+            ",
+            &[&form.booking_id],
+        )
+        .await
+        .unwrap();
+
+    // Redirect back to bookings
+    HttpResponse::SeeOther()
+        .insert_header((
+            actix_web::http::header::LOCATION,
+            "/admin/bookings?success=booking_deleted",
         ))
         .finish()
 }

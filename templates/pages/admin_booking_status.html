@@ -1,0 +1,102 @@
+{% extends "layouts/admin_layout.html" %}
+{% block content %}
+
+<div class="status-wrapper">
+    <div class="status-card">
+        <h2 class="status-title">
+            {{ self.i18n("admin-booking-status-title") }}
+        </h2>
+
+        <form class="status-form" action="/admin/booking/status/save" method="post">
+            <input type="hidden" name="booking_id" value="{{ booking_id }}">
+
+            <!-- Current status -->
+            <div class="status-current">
+                <div class="status-current-title">
+                    {{ self.i18n("admin-booking-status-current") }}
+                </div>
+                <div class="status-value">
+                    {{ current_status }}
+                </div>
+            </div>
+
+            <!-- Status buttons -->
+            <div class="status-buttons">
+
+                <button
+                    type="button"
+                    class="{% if current_status == "pending" %}status-active{% else %}status-inactive{% endif %}"
+                    {% if current_status == "pending" %}disabled{% endif %}
+                    onclick="setStatus('pending')"
+                >
+                    {{ self.i18n("admin-booking-status-pending") }}
+                </button>
+
+                <button
+                    type="button"
+                    class="{% if current_status == "confirmed" %}status-active{% else %}status-inactive{% endif %}"
+                    {% if current_status == "confirmed" %}disabled{% endif %}
+                    onclick="setStatus('confirmed')"
+                >
+                    {{ self.i18n("admin-booking-status-confirmed") }}
+                </button>
+
+                <button
+                    type="button"
+                    class="{% if current_status == "cancelled" %}status-active{% else %}status-inactive{% endif %}"
+                    {% if current_status == "cancelled" %}disabled{% endif %}
+                    onclick="setStatus('cancelled')"
+                >
+                    {{ self.i18n("admin-booking-status-cancelled") }}
+                </button>
+            </div>
+
+            <!-- Hidden selected status -->
+            <input type="hidden" id="selected-status" name="status" value="{{ current_status }}">
+
+            <!-- Save button -->
+            <div class="status-save-wrapper">
+                <button
+                    type="button" onclick="window.location.href='/admin/bookings'" class="status-back-btn">
+                    {{ self.i18n("admin-booking-status-back") }}
+                </button>                
+                <button type="submit" class="status-save-btn">
+                    {{ self.i18n("admin-booking-status-save") }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Booking status button state and selected status update -->
+<script>
+function setStatus(status) {
+    document.getElementById("selected-status").value =
+        status;
+
+    document.querySelector(".status-value").innerText =
+        status;
+
+    const buttons =
+        document.querySelectorAll(".status-buttons button");
+
+    buttons.forEach(function(button) {
+        button.disabled = false;
+        button.classList.remove("status-active");
+        button.classList.add("status-inactive");
+    });
+
+    buttons.forEach(function(button) {
+
+        if (
+            button.innerText.toLowerCase() === status
+        ) {
+
+            button.disabled = true;
+            button.classList.remove("status-inactive");
+            button.classList.add("status-active");
+        }
+    });
+}
+</script>
+{% endblock %}

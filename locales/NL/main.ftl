@@ -1,15 +1,24 @@
 # This file contains the Dutch translations for the Colibri camping website
 # Language: Dutch (nl)
 
+
+
 # Alerts
 booking-session-expired = Je boekingssessie is verlopen. Selecteer je datums opnieuw.
 payment-success = Betaling succesvol afgerond!
 payment-invoice = Factuurnummer
 booking-cancelled = Je boeking is succesvol geannuleerd.
+error-no-unit-available = Er is helaas geen accommodatie meer beschikbaar voor de geselecteerde datums.
+admin-booking-update-overview-mail = Er is een bevestigingsmail verzonden naar de klant.
+admin-bookings-delete-success = Boeking succesvol verwijderd.
+
+
 
 # Booking step 2 session countdown
 booking-lock-message = Deze reservering wordt vastgehouden voor
 booking-lock-expired = Je reserveringstijd is verlopen. Je wordt doorgestuurd.
+
+
 
 # Public layout
 nav-home = Home
@@ -122,6 +131,109 @@ nav-bookings = Boekingen
 nav-users = Gebruikers
 nav-logout = Uitloggen
 
+
+
 # Admin home page
 admin-home-bookings = Boekingen
-admin-home-users = Gebruikers
+admin-home-users = Beheerders / Personeel
+admin-home-customers = Customers
+
+
+
+# Admin bookings read
+admin-bookings-title = Boekingen
+admin-bookings-search = Zoeken
+admin-bookings-lastname = Achternaam
+admin-bookings-email = Email
+admin-bookings-phone = Telefoonnummer
+admin-bookings-unit = Unit
+admin-bookings-invoice = Factuur
+admin-bookings-checkin = In-Check
+admin-bookings-checkout = Uit-Check
+admin-bookings-status = Status
+admin-bookings-source = Bron
+admin-bookings-actions = Acties
+admin-bookings-back = Terug
+admin-bookings-create = Aanmaken
+admin-bookings-edit = Bewerken
+admin-bookings-status-change = Status
+admin-bookings-delete = Verwijderen
+admin-bookings-empty = Geen boekingen gevonden
+
+
+
+# Admin booking create
+admin-booking-create-step1-title = Boeking - Stap 1
+admin-booking-create-step2-title = Boeking Aanmaken
+admin-booking-create-back = Terug
+admin-booking-create-next = Doorgaan
+admin-booking-create-submit = Boeking aanmaken
+admin-booking-create-firstname = Voornaam
+admin-booking-create-lastname = Achternaam
+admin-booking-create-address = Adres
+admin-booking-create-zipcode = Postcode
+admin-booking-create-city = Plaats
+admin-booking-create-phone = Telefoonnummer
+admin-booking-create-email = Email
+admin-booking-create-accommodation = Accommodatie
+admin-booking-create-checkin = In-Check
+admin-booking-create-checkout = Uit-Check
+admin-booking-create-option-default = -- Kies een accommodatie --
+
+
+
+# Admin booking overview
+admin-booking-overview-title = Boeking Overzicht
+admin-booking-overview-thankyou = Boeking succesvol aangemaakt.
+admin-booking-overview-phone = Telefoonnummer
+admin-booking-overview-booked = Je hebt geboekt
+admin-booking-overview-from = Van
+admin-booking-overview-until = tot
+admin-booking-overview-nights = nachten
+admin-booking-overview-per-night = per nacht
+admin-booking-overview-total = Totaalprijs
+admin-booking-overview-back = Terug naar boekingen
+admin-booking-overview-pay = Betaling bevestigen
+admin-booking-overview-success = Boeking succesvol aangemaakt.
+admin-booking-overview-email-sent = Er is een bevestigingsmail verzonden naar
+
+
+
+# Admin booking update
+admin-booking-update-step1-title = Boeking Bewerken - Stap 1
+admin-booking-update-accommodation = Accommodatie
+admin-booking-update-option-default = -- Kies een accommodatie --
+admin-booking-update-checkin = Incheckdatum
+admin-booking-update-checkout = Uitcheckdatum
+admin-booking-update-back = Terug
+admin-booking-update-save = Opslaan
+
+
+
+# Admin booking update overview
+admin-booking-update-overview-title = Boeking Gewijzigd
+admin-booking-update-overview-success = Boeking succesvol gewijzigd.
+admin-booking-update-overview-thankyou = De boeking is succesvol aangepast.
+admin-booking-update-overview-change-message = De boekingsgegevens zijn aangepast.
+admin-booking-update-overview-new-overview = Nieuw overzicht
+admin-booking-update-overview-accommodation = Accommodatie
+admin-booking-update-overview-booked = Gewijzigde accommodatie
+admin-booking-update-overview-accommodation-changed = De accommodatie is gewijzigd van
+admin-booking-update-overview-dates-changed = De incheck- en uitcheckdatum zijn gewijzigd van
+admin-booking-update-overview-from = Van
+admin-booking-update-overview-until = tot
+admin-booking-update-overview-nights = nachten
+admin-booking-update-overview-per-night = per nacht
+admin-booking-update-overview-total = Totaalprijs
+admin-booking-update-overview-back = Terug naar boekingen
+
+
+
+# Admin booking status
+admin-booking-status-title = Boekingsstatus
+admin-booking-status-current = Huidige status
+admin-booking-status-pending = In afwachting
+admin-booking-status-confirmed = Bevestigd
+admin-booking-status-cancelled = Geannuleerd
+admin-booking-status-back = Terug
+admin-booking-status-save = Opslaan

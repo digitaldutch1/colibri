@@ -1,0 +1,214 @@
+
+
+
+
+/* Card container styling */
+/***************************************************************************/
+.card {
+    border: 2px solid var(--main-color);
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+/* Card header styling */
+/***************************************************************************/
+.card-header {
+    background-color: #ffffff;
+    border-bottom: 2px solid var(--main-color);
+    padding: 18px 24px;
+}
+
+.card-header h3 {
+    color: var(--main-color);
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Card header layout */
+/***************************************************************************/
+.admin-bookings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+}
+
+/* Search bar */
+/***************************************************************************/
+.admin-bookings-search {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+}
+
+.admin-bookings-search i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--main-color);
+    font-size: 1.2rem;
+    opacity: 0.5;
+}
+
+.admin-bookings-search input {
+    width: 100%;
+    padding: 10px 14px 10px 42px;
+    border: 2px solid rgba(47, 93, 58, 0.4);
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: var(--main-color);
+    font-size: 1rem;
+}
+
+.admin-bookings-search input:focus {
+    outline: none;
+    border-color: var(--main-color);
+}
+
+.admin-bookings-search input::placeholder {
+    color: var(--main-color);
+    opacity: 0.4;
+}
+
+/* Header buttons */
+/***************************************************************************/
+.admin-bookings-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Table styling */
+/***************************************************************************/
+.table-colibri th {
+    background-color: var(--accent-color);
+    color: var(--main-color);
+    font-weight: 600;
+    border-bottom: 3px solid var(--main-color) !important;
+}
+
+.table td {
+    vertical-align: middle;
+    padding: 12px;
+}
+
+.table-bordered {
+    border: 1px solid var(--main-color) !important;
+}
+
+.table-bordered td,
+.table-bordered th {
+    border: 1px solid var(--main-color) !important;
+}
+
+.table-group-divider {
+    border-top: 2px solid var(--main-color) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Invoice column */
+.invoice-column {
+    white-space: nowrap;
+    min-width: 170px;
+}
+
+/* Check-in and check-out columns */
+.check-date {
+    white-space: nowrap;
+    min-width: 105px;
+}
+
+/* Source column */
+.source-column {
+    white-space: nowrap;
+    min-width: 70px;
+}
+
+/* Status badges */
+.badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-pending {
+    color: #ffb300 !important;
+}
+
+.status-confirmed {
+    color: #0a58ca !important;
+}
+
+.status-paid {
+    color: #2e7d32 !important;
+}
+
+.status-cancelled {
+    color: #842029 !important;
+}
+
+/* Action buttons */
+/***************************************************************************/
+.actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.actions form {
+    display: inline-block;
+    margin: 0;
+}
+
+.btn-colibri {
+    display: inline-block !important;
+    min-width: 95px;
+    padding: 6px 12px !important;
+    border: 2px solid var(--main-color) !important;
+    border-radius: 6px !important;
+    background-color: var(--accent-color) !important;
+    color: var(--main-color) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+.btn-colibri:hover {
+    background-color: var(--main-color) !important;
+    color: var(--accent-color) !important;
+}
+
+/* Header buttons */
+/***************************************************************************/
+.btn-colibri-primary,
+.btn-colibri-success {
+    display: inline-block !important;
+    padding: 6px 14px !important;
+
+    border: 2px solid var(--main-color) !important;
+    border-radius: 6px !important;
+
+    background-color: var(--accent-color) !important;
+    color: var(--main-color) !important;
+
+    font-weight: 600 !important;
+    text-decoration: none !important;
+
+    transition: all 0.2s ease;
+}
+
+.btn-colibri-primary:hover,
+.btn-colibri-success:hover {
+    background-color: var(--main-color) !important;
+    color: var(--accent-color) !important;
+    box-shadow: none !important;
+}

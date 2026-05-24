@@ -219,3 +219,80 @@ pub async fn send_cancel_confirmation_email(
     mailer.send(&email).map_err(|e| e.to_string())?;
     Ok(())
 }
+
+// Booking status update email
+pub async fn send_booking_status_email(
+    to_email: &str,
+    first_name: &str,
+    status: &str,
+    invoice_number: &str,
+) -> Result<(), String> {
+
+    let smtp_user =
+        env::var("SMTP_USER")
+            .map_err(|_| "SMTP_USER missing".to_string())?;
+
+    let smtp_password =
+        env::var("SMTP_PASSWORD")
+            .map_err(|_| "SMTP_PASSWORD missing".to_string())?;
+
+    let email_body = format!(
+        "<html>
+        <body style='font-family: Arial, sans-serif;'>
+
+            <p>Dear {},</p>
+
+            <p>
+                The status of your booking at Camping de Colibri
+                has been updated.
+            </p>
+
+            <p>
+                New booking status:
+                <strong>{}</strong>
+            </p>
+
+            {}
+
+            <p>
+                Kind regards,<br>
+                Team Colibri
+            </p>
+
+        </body>
+        </html>",
+        first_name,
+        status,
+
+        if invoice_number.is_empty() {
+
+            "".to_string()
+
+        } else {
+
+            format!(
+                "<p>
+                    Invoice number:
+                    <strong>{}</strong>
+                </p>",
+                invoice_number
+            )
+        }
+    );
+
+    let email = Message::builder()
+        .from(format!("Colibri <{}>", smtp_user).parse().unwrap())
+        .to(to_email.parse().unwrap())
+        .subject("Booking status updated")
+        .header(header::ContentType::TEXT_HTML)
+        .body(email_body)
+        .map_err(|e| e.to_string())?;
+
+    let mailer =
+        create_mailer(&smtp_user, &smtp_password)?;
+
+    mailer.send(&email)
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
+}

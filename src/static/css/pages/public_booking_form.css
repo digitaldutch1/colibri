@@ -1,0 +1,162 @@
+
+
+
+/* Booking Page Layout */
+/***************************************************************************/
+.booking-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    background-color: #fff;
+}
+
+.booking-wrapper .booking-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 650px;
+    border: 2px solid var(--main-color);
+    border-radius: 12px;
+    padding: 32px;
+    background-color: var(--accent-color);
+    margin: 0;
+}
+
+/* Booking Title */
+/***************************************************************************/
+.booking-wrapper .booking-title {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--main-color);
+    margin-bottom: 24px;
+    text-align: center;
+    line-height: 1;
+}
+
+/* Booking Form Elements */
+/***************************************************************************/
+.booking-wrapper .booking-form {
+    width: 100%;
+    text-align: left;
+}
+
+/* Scoped .form-group to only affect the booking page */
+.booking-wrapper .form-group {
+    margin-bottom: 20px;
+}
+
+.booking-wrapper .form-group label {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--main-color);
+    margin-bottom: 8px;
+}
+
+/* Date inputs row */
+.booking-wrapper .date-group {
+    display: flex;
+    gap: 12px;
+}
+
+.booking-wrapper .form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--main-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #fff;
+    color: #333;
+}
+
+.booking-wrapper .form-input.small {
+    flex: 1;
+}
+
+/* Booking Buttons */
+/***************************************************************************/
+.booking-wrapper .booking-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.booking-wrapper .booking-buttons button {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.25s ease;
+}
+
+.booking-wrapper .btn-primary {
+    background-color: var(--main-color);
+    color: #fff;
+}
+
+.booking-wrapper .btn-secondary {
+    background-color: #e0e0e0;
+    color: var(--main-color);
+    border: 2px solid var(--main-color) !important;
+}
+
+/* Disabled state */
+.booking-wrapper .btn-primary.disabled {
+    background-color: #bbb;
+    cursor: not-allowed;
+}
+
+#submit-btn.btn-primary:disabled {
+    opacity: 0.5 !important;
+    background-color: #999999 !important;
+    cursor: not-allowed !important;
+    border: 2px solid var(--main-color) !important;
+    border-color: var(--main-color) !important;
+    display: inline-block;
+}
+
+.tos-check-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.tos-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tos-check input {
+    margin: 0;
+}
+
+.tos-check a {
+    color: var(--main-color);
+    text-decoration: underline;
+}
+
+/* ===============================
+    BOOKING PAGE RESPONSIVE
+   =============================== */
+
+@media (max-width: 600px) {
+    .booking-wrapper .date-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .booking-wrapper .booking-card {
+        padding: 20px;
+    }
+
+    .booking-wrapper .booking-buttons {
+        flex-direction: column;
+    }
+}

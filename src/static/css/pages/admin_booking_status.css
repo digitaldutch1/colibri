@@ -1,0 +1,119 @@
+
+
+
+.status-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.status-card {
+    width: 700px;
+    background-color: white;
+    border: 2px solid var(--main-color);
+    border-radius: 20px;
+    padding: 40px;
+}
+
+.status-title {
+    text-align: center;
+    color: var(--main-color);
+    font-size: 56px;
+    margin-bottom: 40px;
+}
+
+.status-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.status-current {
+    margin-bottom: 30px;
+}
+
+.status-current-title {
+    text-align: center;
+    color: var(--main-color);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.status-value {
+    width: 460px;
+    height: 55px;
+    border: 2px solid rgba(46, 92, 39, 0.4);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: black;
+    background-color: white;
+    text-transform: capitalize;
+}
+
+.status-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.status-active {
+    min-width: 140px;
+    height: 50px;
+    border-radius: 12px;
+    border: none;
+    background-color: var(--main-color);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: not-allowed;
+}
+
+.status-inactive {
+    min-width: 140px;
+    height: 50px;
+    border-radius: 12px;
+    border: 2px solid var(--main-color);
+    background-color: #f5f5f5;
+    color: var(--main-color);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.status-save-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+.status-back-btn {
+    min-width: 160px;
+    height: 52px;
+    border-radius: 12px;
+    border: 2px solid var(--main-color);
+    background-color: #f5f5f5;
+    color: var(--main-color);
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.status-save-btn {
+    min-width: 160px;
+    height: 52px;
+    border-radius: 12px;
+    border: none;
+    background-color: var(--main-color);
+    color: white;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+}

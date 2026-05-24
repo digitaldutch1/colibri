@@ -6,10 +6,16 @@ booking-session-expired = Your booking session has expired. Please select your d
 payment-success = Payment successfully completed!
 payment-invoice = Invoice number
 booking-cancelled = Your booking has been cancelled successfully.
+error-no-unit-available = Unfortunately, no accommodation is available for the selected dates.
+admin-booking-update-overview-mail = A confirmation email has been sent to the customer.
+admin-bookings-delete-success = Booking successfully deleted.
+
 
 # Booking step 2 session countdown
 booking-lock-message = This reservation is held for
 booking-lock-expired = Your reservation time has expired. You will be redirected.
+
+
 
 # Public layout
 nav-home = Home
@@ -122,6 +128,109 @@ nav-bookings = Bookings
 nav-users = Users
 nav-logout = Logout
 
+
+
 # Admin home page
 admin-home-bookings = Bookings
-admin-home-users = Users
+admin-home-users = Admins / Staff
+admin-home-customers = Customers
+
+
+
+# Admin bookings read
+admin-bookings-title = Bookings
+admin-bookings-search = Search
+admin-bookings-lastname = Last name
+admin-bookings-email = Email
+admin-bookings-phone = Phone number
+admin-bookings-unit = Unit
+admin-bookings-invoice = Invoice
+admin-bookings-checkin = Check-in
+admin-bookings-checkout = Check-out
+admin-bookings-status = Status
+admin-bookings-source = Source
+admin-bookings-actions = Actions
+admin-bookings-back = Back
+admin-bookings-create = Create
+admin-bookings-edit = Edit
+admin-bookings-status-change = Status
+admin-bookings-delete = Delete
+admin-bookings-empty = No bookings found
+
+
+
+# Admin booking create
+admin-booking-create-step1-title = Booking - Step 1
+admin-booking-create-step2-title = Create Booking
+admin-booking-create-back = Back
+admin-booking-create-next = Continue
+admin-booking-create-submit = Create booking
+admin-booking-create-firstname = First name
+admin-booking-create-lastname = Last name
+admin-booking-create-address = Address
+admin-booking-create-zipcode = Zip code
+admin-booking-create-city = City
+admin-booking-create-phone = Phone number
+admin-booking-create-email = Email
+admin-booking-create-accommodation = Accommodation
+admin-booking-create-checkin = Check-in
+admin-booking-create-checkout = Check-out
+admin-booking-create-option-default = -- Select accommodation --
+
+
+
+# Admin booking overview
+admin-booking-overview-title = Booking Overview
+admin-booking-overview-thankyou = Booking successfully created.
+admin-booking-overview-phone = Phone number
+admin-booking-overview-booked = You booked
+admin-booking-overview-from = From
+admin-booking-overview-until = until
+admin-booking-overview-nights = nights
+admin-booking-overview-per-night = per night
+admin-booking-overview-total = Total price
+admin-booking-overview-back = Back to bookings
+admin-booking-overview-pay = Confirm payment
+admin-booking-overview-success = Booking successfully created.
+admin-booking-overview-email-sent = A confirmation email has been sent to
+
+
+
+# Admin booking update
+admin-booking-update-step1-title = Edit Booking - Step 1
+admin-booking-update-accommodation = Accommodation
+admin-booking-update-option-default = -- Select accommodation --
+admin-booking-update-checkin = Check-in date
+admin-booking-update-checkout = Check-out date
+admin-booking-update-back = Back
+admin-booking-update-save = Save
+
+
+
+# Admin booking update overview
+admin-booking-update-overview-title = Booking Updated
+admin-booking-update-overview-success = Booking successfully updated.
+admin-booking-update-overview-thankyou = The booking has been successfully updated.
+admin-booking-update-overview-change-message = The booking details have been updated.
+admin-booking-update-overview-new-overview = Updated overview
+admin-booking-update-overview-accommodation = Accommodation
+admin-booking-update-overview-booked = Updated accommodation
+admin-booking-update-overview-accommodation-changed = The accommodation is changed from
+admin-booking-update-overview-dates-changed = The check-in and check-out dates are changed from
+admin-booking-update-overview-from = From
+admin-booking-update-overview-until = until
+admin-booking-update-overview-nights = nights
+admin-booking-update-overview-per-night = per night
+admin-booking-update-overview-total = Total price
+admin-booking-update-overview-back = Back to bookings
+
+
+
+# Admin booking status
+admin-booking-status-title = Booking Status
+admin-booking-status-current = Current status
+admin-booking-status-pending = Pending
+admin-booking-status-confirmed = Confirmed
+admin-booking-status-cancelled = Cancelled
+admin-booking-status-back = Back
+admin-booking-status-save = Save

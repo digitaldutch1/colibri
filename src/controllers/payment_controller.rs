@@ -7,6 +7,38 @@ use tokio_postgres::NoTls;
 
 
 
+// Generate invoice number
+pub async fn generate_invoice_number(
+    client: &tokio_postgres::Client,
+) -> String {
+
+    let today =
+        Utc::now().format("%Y%m%d").to_string();
+
+    let count_row = client
+        .query_one(
+            "
+            SELECT COUNT(*) + 1
+            FROM booking
+            WHERE invoice_number IS NOT NULL
+            ",
+            &[],
+        )
+        .await
+        .unwrap();
+
+    let invoice_count: i64 =
+        count_row.get(0);
+
+    format!(
+        "CC-{}-{:05}",
+        today,
+        invoice_count
+    )
+}
+
+
+
 // Confirm payment, generate invoice number and complete booking
 pub async fn confirm_payment(path: web::Path<String>) -> impl Responder {
     
@@ -59,30 +91,8 @@ pub async fn confirm_payment(path: web::Path<String>) -> impl Responder {
     let total_price: f64 = row.get(2);
 
     // 4. Generate invoice number
-    let today = Utc::now().format("%Y%m%d").to_string();
-
-    let count_row = match client
-        .query_one(
-            "
-            SELECT COUNT(*) + 1
-            FROM booking
-            WHERE invoice_number IS NOT NULL
-            ",
-            &[],
-        )
-        .await
-    {
-        Ok(row) => row,
-        Err(_) => return HttpResponse::InternalServerError().body("Invoice count failed."),
-    };
-
-    let invoice_count: i64 = count_row.get(0);
-
-    let invoice_number = format!(
-        "CC-{}-{:05}",
-        today,
-        invoice_count
-    );
+    let invoice_number =
+        generate_invoice_number(&client).await;
 
     // 5. Update booking status and store invoice number
     let updated = match client

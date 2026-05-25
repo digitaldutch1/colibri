@@ -17,6 +17,12 @@ admin-customer-delete1-success = Klant
 admin-customer-delete2-success = is verwijderd.
 admin-customer-delete1-error = Klant
 admin-customer-delete2-error = kan niet verwijderd worden omdat er nog open boekingen bestaan.
+admin-staff-create1-success = Staff account
+admin-staff-create2-success = is aangemaakt.
+admin-staff-update1-success = Staff account
+admin-staff-update2-success = is bijgewerkt.
+admin-staff-delete1-success = Staff account
+admin-staff-delete2-success = is verwijderd.
 
 
 
@@ -133,8 +139,9 @@ booking-btn-pay = Betalen
 
 # Admin layout
 nav-dashboard = Dashboard
-nav-bookings = Boekingen
-nav-users = Gebruikers
+nav-bookings = Boeking
+nav-customers = Klant
+nav-users = Personeel
 nav-logout = Uitloggen
 
 
@@ -282,3 +289,45 @@ admin-customer-create-save = Opslaan
 # Admin customer update
 admin-customer-update-title = Klant bewerken
 admin-customer-update-save = Opslaan
+
+
+
+# Admin staff
+admin-staff-title = Staff
+admin-staff-search = Zoeken
+admin-staff-firstname = Voornaam
+admin-staff-lastname = Achternaam
+admin-staff-email = Email
+admin-staff-role = Rol
+admin-staff-actions = Acties
+admin-staff-update = Bewerken
+admin-staff-delete = Verwijderen
+admin-staff-create = Aanmaken
+admin-staff-back = Terug
+admin-staff-empty = Geen staff gevonden
+
+
+
+# Admin staff create
+admin-staff-create-title = Staff aanmaken
+admin-staff-create-firstname = Voornaam
+admin-staff-create-lastname = Achternaam
+admin-staff-create-email = Email
+admin-staff-create-password = Wachtwoord
+admin-staff-create-back = Terug
+admin-staff-create-save = Opslaan
+
+
+
+# Admin staff update
+admin-staff-update-title = Staff bewerken
+admin-staff-update-firstname = Voornaam
+admin-staff-update-lastname = Achternaam
+admin-staff-role-staff = Staff
+admin-staff-role-admin = Admin
+admin-staff-update-email = Email
+admin-staff-update-password = Wachtwoord
+admin-staff-update-role = Rol
+admin-staff-update-password-placeholder = Leeg laten om huidig wachtwoord te behouden
+admin-staff-update-back = Terug
+admin-staff-update-save = Opslaan

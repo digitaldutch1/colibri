@@ -4,6 +4,7 @@
 use askama::Template;
 use unic_langid::LanguageIdentifier;
 use crate::db::CustomerRow;
+use crate::db::StaffRow;
 
 
 
@@ -394,6 +395,67 @@ pub struct AdminCustomerUpdateTemplate {
 }
 
 impl I18nTemplate for AdminCustomerUpdateTemplate {
+
+    fn lang(&self) -> &str {
+        &self.current_lang
+    }
+}
+
+// Admin staff read template
+#[derive(Template)]
+#[template(path = "pages/admin_staff_read.html")]
+pub struct AdminStaffReadTemplate {
+    pub user_name: Option<String>,
+    pub current_lang: String,
+    pub staff: Vec<StaffRow>,
+    pub user_role: String,
+    pub success: String,
+    pub success_last_name: String,
+}
+
+impl I18nTemplate for AdminStaffReadTemplate {
+
+    fn lang(&self) -> &str {
+        &self.current_lang
+    }
+}
+
+// Admin staff create template
+#[derive(Template)]
+#[template(path = "pages/admin_staff_create.html")]
+pub struct AdminStaffCreateTemplate {
+    pub user_name: Option<String>,
+    pub current_lang: String,
+    pub first_name: String,
+    pub last_name: String,
+    pub email: String,
+    pub password: String,
+    pub error: Option<String>,
+}
+
+impl I18nTemplate for AdminStaffCreateTemplate {
+
+    fn lang(&self) -> &str {
+        &self.current_lang
+    }
+}
+
+// Admin staff update template
+#[derive(Template)]
+#[template(path = "pages/admin_staff_update.html")]
+pub struct AdminStaffUpdateTemplate {
+    pub user_name: Option<String>,
+    pub current_lang: String,
+    pub user_id: i32,
+    pub first_name: String,
+    pub last_name: String,
+    pub email: String,
+    pub password: String,
+    pub role: String,
+    pub error: Option<String>,
+}
+
+impl I18nTemplate for AdminStaffUpdateTemplate {
 
     fn lang(&self) -> &str {
         &self.current_lang

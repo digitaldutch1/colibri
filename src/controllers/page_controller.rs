@@ -955,7 +955,6 @@ pub struct AdminBookingStatusPath {
     pub id: i32,
 }
 
-
 // Render admin booking status page
 pub async fn admin_booking_status(
     req: HttpRequest,
@@ -1238,6 +1237,198 @@ pub async fn admin_customer_update(
         city:
             row.get::<_, Option<String>>(6)
                 .unwrap_or_default(),
+        error: None,
+    };
+
+    HttpResponse::Ok()
+        .content_type("text/html")
+        .body(template.render().unwrap())
+}
+
+// Admin staff query parameters
+#[derive(Deserialize)]
+pub struct AdminStaffParams {
+    pub success: Option<String>,
+    pub last_name: Option<String>,
+}
+
+// Render admin staff page
+pub async fn admin_staff_read(
+    req: HttpRequest,
+    session: Session,
+    _query: web::Query<AdminStaffParams>,
+) -> impl Responder {
+
+    // Get selected language
+    let current_lang = get_lang(&req);
+
+    // Check if user is logged in
+    let logged_in = session
+        .get::<bool>("logged_in")
+        .unwrap_or(None)
+        .unwrap_or(false);
+
+    if !logged_in {
+
+        return HttpResponse::Found()
+            .append_header(("Location", "/admin/login"))
+            .finish();
+    }
+
+    // Get session user
+    let user_name: Option<String> =
+        session.get("user_name").unwrap_or(None);
+
+    let user_role: String =
+        session.get::<String>("user_role")
+            .unwrap_or(None)
+            .unwrap_or_default();
+
+    // Get all staff
+    let staff =
+        crate::controllers::db_controller::get_all_staff().await;
+
+    // Render template
+    let template = AdminStaffReadTemplate {
+        user_name,
+        current_lang,
+        staff,
+        user_role,
+        success:
+            _query.success.clone().unwrap_or_default(),
+        success_last_name:
+            _query.last_name.clone().unwrap_or_default(),
+    };
+
+    HttpResponse::Ok()
+        .content_type("text/html")
+        .body(template.render().unwrap())
+}
+
+// Render admin staff create page
+pub async fn admin_staff_create(
+    req: HttpRequest,
+    session: Session,
+) -> impl Responder {
+
+    // Get selected language
+    let current_lang = get_lang(&req);
+
+    // Check if user is logged in
+    let logged_in = session
+        .get::<bool>("logged_in")
+        .unwrap_or(None)
+        .unwrap_or(false);
+
+    if !logged_in {
+
+        return HttpResponse::Found()
+            .append_header(("Location", "/admin/login"))
+            .finish();
+    }
+
+    // Get session user
+    let user_name: Option<String> =
+        session.get("user_name").unwrap_or(None);
+
+    // Render template
+    let template = AdminStaffCreateTemplate {
+        user_name,
+        current_lang,
+        first_name: String::new(),
+        last_name: String::new(),
+        email: String::new(),
+        password: String::new(),
+        error: None,
+    };
+
+    HttpResponse::Ok()
+        .content_type("text/html")
+        .body(template.render().unwrap())
+}
+
+#[derive(Deserialize)]
+pub struct StaffPath {
+    pub id: i32,
+}
+
+// Render admin staff update page
+pub async fn admin_staff_update(
+    req: HttpRequest,
+    session: Session,
+    path: web::Path<StaffPath>,
+) -> impl Responder {
+
+    // Get selected language
+    let current_lang = get_lang(&req);
+
+    // Check if user is logged in
+    let logged_in = session
+        .get::<bool>("logged_in")
+        .unwrap_or(None)
+        .unwrap_or(false);
+
+    if !logged_in {
+
+        return HttpResponse::Found()
+            .append_header(("Location", "/admin/login"))
+            .finish();
+    }
+
+    // Get session user
+    let user_name: Option<String> =
+        session.get("user_name").unwrap_or(None);
+
+    // Database connection
+    let database_url =
+        env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set");
+
+    let (client, connection) =
+        tokio_postgres::connect(&database_url, NoTls)
+            .await
+            .unwrap();
+
+    actix_web::rt::spawn(async move {
+
+        if let Err(error) = connection.await {
+            eprintln!("Database connection error: {}", error);
+        }
+    });
+
+    // Get user
+    let row = client
+        .query_one(
+            "
+            SELECT
+                first_name,
+                last_name,
+                email,
+                role
+
+            FROM \"user\"
+            WHERE id = $1
+            ",
+            &[&path.id],
+        )
+        .await
+        .unwrap();
+
+    // Render template
+    let template = AdminStaffUpdateTemplate {
+        user_name,
+        current_lang,
+        user_id:
+            path.id,
+        first_name:
+            row.get::<_, String>(0),
+        last_name:
+            row.get::<_, String>(1),
+        email:
+            row.get::<_, String>(2),
+        role:
+            row.get::<_, String>(3),
+        password: String::new(),
         error: None,
     };
 

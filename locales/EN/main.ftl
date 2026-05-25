@@ -15,6 +15,12 @@ admin-customer-delete1-success = Customer
 admin-customer-delete2-success = has been deleted.
 admin-customer-delete1-error = Customer
 admin-customer-delete2-error = cannot be deleted because open bookings still exist.
+admin-staff-create1-success = Staff member
+admin-staff-create2-success = has been created.
+admin-staff-update1-success = Staff member
+admin-staff-update2-success = has been updated.
+admin-staff-delete1-success = Staff member
+admin-staff-delete2-success = has been deleted.
 
 
 
@@ -131,8 +137,9 @@ booking-btn-pay = Pay
 
 # Admin layout
 nav-dashboard = Dashboard
-nav-bookings = Bookings
-nav-users = Users
+nav-bookings = Booking
+nav-customers = Customer
+nav-users = Staff
 nav-logout = Logout
 
 
@@ -280,3 +287,46 @@ admin-customer-create-save = Save
 # Admin customer update
 admin-customer-update-title = Update Customer
 admin-customer-update-save = Save
+
+
+
+# Admin staff
+admin-staff-title = Staff
+admin-staff-search = Search
+admin-staff-firstname = First name
+admin-staff-lastname = Last name
+admin-staff-email = Email
+admin-staff-role = Role
+admin-staff-actions = Actions
+admin-staff-update = Update
+admin-staff-delete = Delete
+admin-staff-create = Create
+admin-staff-back = Back
+admin-staff-empty = No staff found
+
+
+
+# Admin staff create
+admin-staff-create-title = Create Staff
+admin-staff-create-firstname = First name
+admin-staff-create-lastname = Last name
+admin-staff-create-email = Email
+admin-staff-create-password = Password
+admin-staff-create-back = Back
+admin-staff-create-save = Save
+
+
+
+# Admin staff update
+admin-staff-update-title = Update Staff
+admin-staff-update-firstname = First name
+admin-staff-update-lastname = Last name
+admin-staff-role-staff = Staff
+admin-staff-role-admin = Admin
+admin-staff-update-email = Email
+admin-staff-update-password = Password
+admin-staff-update-role = Role
+admin-staff-update-password-placeholder = Leave empty to keep current password
+admin-staff-update-back = Back
+admin-staff-update-save = Save
+

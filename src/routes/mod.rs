@@ -46,6 +46,13 @@ pub fn init(cfg: &mut web::ServiceConfig) {
         .route("/admin/customer/create", web::post().to(customer_controller::create_customer))
         .route("/admin/customer/update/{id}", web::get().to(page_controller::admin_customer_update))
         .route("/admin/customer/update/save", web::post().to(customer_controller::update_customer))
-        .route("/admin/customer/delete", web::post().to(customer_controller::delete_customer));
+        .route("/admin/customer/delete", web::post().to(customer_controller::delete_customer))
+        
+        .route("/admin/staff", web::get().to(page_controller::admin_staff_read))
+        .route("/admin/staff/create", web::get().to(page_controller::admin_staff_create))
+        .route("/admin/staff/create", web::post().to(admin_staff_controller::create_staff))
+        .route("/admin/staff/update/{id}", web::get().to(page_controller::admin_staff_update))
+        .route("/admin/staff/update/save", web::post().to(admin_staff_controller::update_staff))
+        .route("/admin/staff/delete", web::post().to(admin_staff_controller::delete_staff));
 
 }

@@ -7,6 +7,7 @@ CREATE TABLE "user" (
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(20),
     password_hash TEXT NOT NULL,
     role VARCHAR(10) NOT NULL DEFAULT 'staff' CHECK (role IN ('admin', 'staff')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

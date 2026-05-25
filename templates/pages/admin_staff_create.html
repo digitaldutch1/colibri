@@ -1,0 +1,55 @@
+{% extends "layouts/admin_layout.html" %}
+{% block content %}
+
+<div class="booking-wrapper">
+    <div class="booking-card">
+        <h2 class="booking-title">
+            {{ self.i18n("admin-staff-create-title") }}
+        </h2>
+
+        <form class="booking-form" action="/admin/staff/create" method="post">
+            <!-- First name -->
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-staff-create-firstname") }}
+                </label>
+                <input type="text" name="first_name" class="form-input" value="{{ first_name }}" required>
+            </div>
+
+            <!-- Last name -->
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-staff-create-lastname") }}
+                </label>
+                <input type="text" name="last_name" class="form-input" value="{{ last_name }}" required>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-staff-create-email") }}
+                </label>
+                <input type="email" name="email" class="form-input" value="{{ email }}" required>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-staff-create-password") }}
+                </label>
+                <input type="password" name="password" class="form-input" value="{{ password }}" required>
+            </div>
+
+            <!-- Buttons -->
+            <div class="booking-buttons">
+                <button type="button" onclick="window.location.href='/admin/staff'" class="btn-secondary">
+                    {{ self.i18n("admin-staff-create-back") }}
+                </button>
+                <button type="submit" class="btn-primary">
+                    {{ self.i18n("admin-staff-create-save") }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

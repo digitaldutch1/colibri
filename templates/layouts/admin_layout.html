@@ -70,12 +70,17 @@
                     </a>
                 </li>
                 <li>
-                    <a id="adminNavBookings" href="/admin/bookings" class="admin-nav-link">
+                    <a id="adminNavBookings" href="/admin/booking1" class="admin-nav-link">
                         {{ self.i18n("nav-bookings") }}
                     </a>
                 </li>
                 <li>
-                    <a id="adminNavUsers" href="/admin/users" class="admin-nav-link">
+                    <a id="adminNavCustomers" href="/admin/customer/create" class="admin-nav-link">
+                        {{ self.i18n("nav-customers") }}
+                    </a>
+                </li>                
+                <li>
+                    <a id="adminNavUsers" href="/admin/staff/create" class="admin-nav-link">
                         {{ self.i18n("nav-users") }}
                     </a>
                 </li>
@@ -147,29 +152,28 @@
             const path = window.location.pathname;
             const home = document.getElementById("adminNavHome");
             const dashboard = document.getElementById("adminNavDashboard");
+            const customers = document.getElementById("adminNavCustomers");
             const bookings = document.getElementById("adminNavBookings");
             const users = document.getElementById("adminNavUsers");
 
             function setActive(el) {
                 if (el) el.classList.add("active");
             }
-
             if (path === "/") {
                 setActive(home);
             }
-
             else if (path === "/admin") {
                 setActive(dashboard);
-            }
-
+            }          
             else if (path.startsWith("/admin/bookings")) {
                 setActive(bookings);
             }
-
-            else if (path.startsWith("/admin/users")) {
+            else if (path.startsWith("/admin/customers")) {
+                setActive(customers);
+            }  
+            else if (path.startsWith("/admin/staff")) {
                 setActive(users);
             }
-
         })();
     </script>
 

@@ -1,0 +1,173 @@
+{% extends "layouts/admin_layout.html" %}
+{% block content %}
+
+<!-- Alert staff created -->
+{% if success == "staff_created" %}
+<div class="alert-wrapper">
+    <div class="alert success">
+        {{ self.i18n("admin-staff-create1-success") }}
+        <strong>{{ success_last_name }}</strong>
+        {{ self.i18n("admin-staff-create2-success") }}
+    </div>
+</div>
+{% endif %}
+
+<!-- Alert staff updated -->
+{% if success == "staff_updated" %}
+<div class="alert-wrapper">
+    <div class="alert success">
+        {{ self.i18n("admin-staff-update1-success") }}
+        <strong>{{ success_last_name }}</strong>
+        {{ self.i18n("admin-staff-update2-success") }}
+    </div>
+</div>
+{% endif %}
+
+<!-- Alert staff deleted -->
+{% if success == "staff_deleted" %}
+<div class="alert-wrapper">
+    <div class="alert success">
+        {{ self.i18n("admin-staff-delete1-success") }}
+        <strong>{{ success_last_name }}</strong>
+        {{ self.i18n("admin-staff-delete2-success") }}
+    </div>
+</div>
+{% endif %}
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Card container -->
+<div class="container-fluid container-crud mt-5 px-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+
+                <!-- Card header -->
+                <div class="card-header">
+                    <div class="admin-bookings-header">
+
+                        <!-- Title -->
+                        <h3 class="mb-0">
+                            {{ self.i18n("admin-staff-title") }}
+                        </h3>
+
+                        <!-- Search -->
+                        <div class="admin-bookings-search">
+                            <i class='bx bx-search'></i>
+                            <input type="text" placeholder="{{ self.i18n("admin-staff-search") }}">
+                        </div>
+
+                        <!-- Header buttons -->
+                        <div class="admin-bookings-buttons">
+                            <a href="/admin" class="btn btn-colibri-primary me-2">
+                                {{ self.i18n("admin-staff-back") }}
+                            </a>
+
+                            <a href="/admin/staff/create" class="btn btn-colibri-success">
+                                {{ self.i18n("admin-staff-create") }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card body -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover align-middle">
+                            <thead class="table-colibri">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>
+                                        {{ self.i18n("admin-staff-firstname") }}
+                                    </th>
+                                    <th>
+                                        {{ self.i18n("admin-staff-lastname") }}
+                                    </th>
+                                    <th>
+                                        {{ self.i18n("admin-staff-email") }}
+                                    </th>
+                                    <th>
+                                        {{ self.i18n("admin-staff-role") }}
+                                    </th>
+                                    <th class="actions">
+                                        {{ self.i18n("admin-staff-actions") }}
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="table-group-divider">
+                                {% if staff.len() == 0 %}
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">
+                                        {{ self.i18n("admin-staff-empty") }}
+                                    </td>
+                                </tr>
+                                {% else %}
+
+                                    {% for user in staff %}
+                                    <tr>
+                                        <td>{{ user.id }}</td>
+                                        <td>{{ user.first_name }}</td>
+                                        <td>{{ user.last_name }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.role }}</td>
+                                        <td>
+
+                                            <div class="actions">
+                                                <a href="/admin/staff/update/{{ user.id }}"class="btn btn-colibri btn-sm">
+                                                    {{ self.i18n("admin-staff-update") }}
+                                                </a>
+
+                                                <form action="/admin/staff/delete" method="post" onsubmit="return confirm('Are you sure you want to delete this staff member?')">
+                                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                                    <button type="submit" class="btn btn-colibri btn-sm">
+                                                        {{ self.i18n("admin-staff-delete") }}
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Staff table live search -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const searchInput =
+        document.querySelector(".admin-bookings-search input");
+
+    const rows =
+        document.querySelectorAll("tbody tr");
+
+    searchInput.addEventListener("input", function () {
+        const value =
+            this.value.toLowerCase();
+
+        rows.forEach(function(row) {
+            const text =
+                row.innerText.toLowerCase();
+
+            if (text.includes(value)) {
+
+                row.style.display = "";
+
+            } else {
+
+                row.style.display = "none";
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

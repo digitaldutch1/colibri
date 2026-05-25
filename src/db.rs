@@ -83,3 +83,12 @@ pub struct CustomerRow {
     pub postal_code: Option<String>,
     pub city: Option<String>,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct StaffRow {
+    pub id: i32,
+    pub first_name: String,
+    pub last_name: String,
+    pub email: String,
+    pub role: String,
+}

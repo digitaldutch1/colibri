@@ -1,0 +1,116 @@
+{% extends "layouts/admin_layout.html" %}
+{% block content %}
+
+<div class="booking-wrapper">
+    <div class="booking-card">
+        <h2 class="booking-title">
+            {{ self.i18n("admin-staff-update-title") }}
+        </h2>
+
+        <form class="booking-form" action="/admin/staff/update/save" method="post">
+            <input type="hidden" name="user_id" value="{{ user_id }}">
+            <input type="hidden" id="roleInput" name="role" value="{{ role }}">
+
+            <!-- First name -->
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-staff-update-firstname") }}
+                </label>
+                <input type="text" name="first_name" class="form-input" value="{{ first_name }}" required>
+            </div>
+
+            <!-- Last name -->
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-staff-update-lastname") }}
+                </label>
+                <input type="text" name="last_name" class="form-input" value="{{ last_name }}" required>
+            </div>
+
+            <!-- Role -->
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-staff-update-role") }}
+                </label>
+
+                <div class="staff-role-wrapper">
+                    {% if role == "staff" %}
+                    <button type="button" id="staffRoleBtn" class="staff-role-btn active" onclick="setRole('staff')">
+                        {{ self.i18n("admin-staff-role-staff") }}
+                    </button>
+                    {% else %}
+                    <button type="button" id="staffRoleBtn" class="staff-role-btn" onclick="setRole('staff')">
+                        {{ self.i18n("admin-staff-role-staff") }}
+                    </button>
+                    {% endif %}
+
+                    <div class="staff-role-spacer"></div>
+
+                    {% if role == "admin" %}
+                    <button type="button" id="adminRoleBtn" class="staff-role-btn active" onclick="setRole('admin')">
+                        {{ self.i18n("admin-staff-role-admin") }}
+                    </button>
+                    {% else %}
+                    <button type="button" id="adminRoleBtn" class="staff-role-btn" onclick="setRole('admin')">
+                        {{ self.i18n("admin-staff-role-admin") }}
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-staff-update-email") }}
+                </label>
+                <input type="email" name="email" class="form-input" value="{{ email }}" required>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label>
+                    {{ self.i18n("admin-staff-update-password") }}
+                </label>
+                <input type="password" name="password" class="form-input" value="" placeholder="{{ self.i18n("admin-staff-update-password-placeholder") }}">
+            </div>
+
+            <!-- Buttons -->
+            <div class="booking-buttons">
+                <button type="button" onclick="window.location.href='/admin/staff'" class="btn-secondary">
+                    {{ self.i18n("admin-staff-update-back") }}
+                </button>
+
+                <button type="submit" class="btn-primary">
+                    {{ self.i18n("admin-staff-update-save") }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Staff role switch buttons -->
+<script>
+function setRole(role) {
+    const roleInput =
+        document.getElementById("roleInput");
+
+    const staffBtn =
+        document.getElementById("staffRoleBtn");
+
+    const adminBtn =
+        document.getElementById("adminRoleBtn");
+
+    roleInput.value = role;
+
+    staffBtn.classList.remove("active");
+    adminBtn.classList.remove("active");
+
+    if (role === "staff") {
+        staffBtn.classList.add("active");
+
+    } else {
+        adminBtn.classList.add("active");
+    }
+}
+</script>
+{% endblock %}

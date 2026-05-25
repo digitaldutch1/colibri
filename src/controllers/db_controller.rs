@@ -229,3 +229,57 @@ pub async fn get_all_customers() -> Vec<crate::db::CustomerRow> {
 
     customers
 }
+
+pub async fn get_all_staff() -> Vec<crate::db::StaffRow> {
+    let database_url =
+        env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set");
+
+    let (client, connection) =
+        tokio_postgres::connect(&database_url, NoTls)
+            .await
+            .expect("Failed to connect");
+
+    actix_web::rt::spawn(async move {
+
+        if let Err(error) = connection.await {
+            eprintln!("connection error: {}", error);
+        }
+    });
+
+    let rows = client
+        .query(
+            "
+            SELECT
+                id,
+                first_name,
+                last_name,
+                email,
+                role
+            FROM  \"user\"
+            ORDER BY id ASC
+            ",
+            &[],
+        )
+        .await
+        .expect("Query failed");
+
+    let mut staff = Vec::new();
+
+    for row in rows {
+        staff.push(crate::db::StaffRow {
+            id:
+                row.get(0),
+            first_name:
+                row.get(1),
+            last_name:
+                row.get(2),
+            email:
+                row.get(3),
+            role:
+                row.get(4),
+        });
+    }
+
+    staff
+}

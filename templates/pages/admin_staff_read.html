@@ -34,6 +34,24 @@
 </div>
 {% endif %}
 
+<!-- Alert primary admin role error -->
+{% if success == "primary_admin_role_error" %}
+<div class="alert-wrapper">
+    <div class="alert error">
+        {{ self.i18n("admin-staff-primary-role-error") }}
+    </div>
+</div>
+{% endif %}
+
+<!-- Alert primary admin delete error -->
+{% if success == "primary_admin_delete_error" %}
+<div class="alert-wrapper">
+    <div class="alert error">
+        {{ self.i18n("admin-staff-primary-delete-error") }}
+    </div>
+</div>
+{% endif %}
+
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -64,9 +82,11 @@
                                 {{ self.i18n("admin-staff-back") }}
                             </a>
 
+                            {% if user_role == "admin" %}
                             <a href="/admin/staff/create" class="btn btn-colibri-success">
                                 {{ self.i18n("admin-staff-create") }}
                             </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -113,9 +133,9 @@
                                         <td>{{ user.email }}</td>
                                         <td>{{ user.role }}</td>
                                         <td>
-
+                                            {% if user_role == "admin" %}
                                             <div class="actions">
-                                                <a href="/admin/staff/update/{{ user.id }}"class="btn btn-colibri btn-sm">
+                                                <a href="/admin/staff/update/{{ user.id }}" class="btn btn-colibri btn-sm">
                                                     {{ self.i18n("admin-staff-update") }}
                                                 </a>
 
@@ -126,6 +146,7 @@
                                                     </button>
                                                 </form>
                                             </div>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -139,7 +160,7 @@
     </div>
 </div>
 
-<!-- Staff table live search -->
+<!-- Staff table live search (Name, Lastname and Role)-->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -158,11 +179,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 row.innerText.toLowerCase();
 
             if (text.includes(value)) {
-
                 row.style.display = "";
 
             } else {
-
                 row.style.display = "none";
             }
         });

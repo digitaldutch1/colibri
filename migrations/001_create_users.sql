@@ -90,7 +90,8 @@ SELECT * FROM "accommodation";
 -- Empty table
 DELETE FROM booking;
 DELETE FROM customer;
+DELETE FROM "user";
 
 -- Resette id's
-TRUNCATE TABLE accommodation RESTART IDENTITY CASCADE;
-TRUNCATE booking, customer RESTART IDENTITY CASCADE;
+TRUNCATE TABLE customer RESTART IDENTITY CASCADE;
+TRUNCATE booking, customer, "user" RESTART IDENTITY CASCADE;

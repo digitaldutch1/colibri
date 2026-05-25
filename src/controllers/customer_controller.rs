@@ -1,5 +1,6 @@
 use actix_web::{web, HttpResponse, Responder};
 use serde::Deserialize;
+use actix_session::Session;
 use std::env;
 use tokio_postgres::NoTls;
 
@@ -176,8 +177,22 @@ pub struct DeleteCustomerForm {
 
 // Delete customer
 pub async fn delete_customer(
+    session: Session,
     form: web::Form<DeleteCustomerForm>,
 ) -> impl Responder {
+
+    // Check admin role
+    let user_role: String =
+        session.get::<String>("user_role")
+            .unwrap_or(None)
+            .unwrap_or_default();
+
+    if user_role != "admin" {
+
+        return HttpResponse::Found()
+            .append_header(("Location", "/admin/customers"))
+            .finish();
+    }
 
     // Database connection
     let database_url =
@@ -217,7 +232,9 @@ pub async fn delete_customer(
         .query_one(
             "
             SELECT COUNT(*)
+
             FROM booking
+
             WHERE customer_id = $1
             ",
             &[&form.customer_id],

@@ -139,17 +139,14 @@
                                                     {{ self.i18n("admin-customers-update") }}
                                                 </a>
 
-                                                <form action="/admin/customer/delete"
-                                                      method="post"
-                                                      onsubmit="return confirm('Are you sure you want to delete this customer?')">
-
+                                                {% if user_role == "admin" %}
+                                                <form action="/admin/customer/delete" method="post" onsubmit="return confirm('Are you sure you want to delete this customer?')">
                                                     <input type="hidden" name="customer_id" value="{{ customer.id }}">
                                                     <button type="submit" class="btn btn-colibri btn-sm">
-
                                                         {{ self.i18n("admin-customers-delete") }}
                                                     </button>
                                                 </form>
-
+                                                {% endif %}
                                             </div>
                                         </td>
                                     </tr>

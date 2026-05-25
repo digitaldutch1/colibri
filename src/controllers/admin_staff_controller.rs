@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use actix_web::{web, HttpResponse, Responder};
+use actix_session::Session;
 use std::env;
 use bcrypt::{hash, DEFAULT_COST};
 use tokio_postgres::NoTls;
@@ -14,10 +15,24 @@ pub struct CreateStaffForm {
     pub password: String,
 }
 
-// Create staff account
+// Admin staff create
 pub async fn create_staff(
+    session: Session,
     form: web::Form<CreateStaffForm>,
 ) -> impl Responder {
+
+    // Check admin role
+    let user_role: String =
+        session.get::<String>("user_role")
+            .unwrap_or(None)
+            .unwrap_or_default();
+
+    if user_role != "admin" {
+
+        return HttpResponse::Found()
+            .append_header(("Location", "/admin/staff"))
+            .finish();
+    }
 
     // Database connection
     let database_url =
@@ -97,10 +112,35 @@ pub struct UpdateStaffForm {
     pub role: String,
 }
 
-// Update staff account
+// Admin staff update
 pub async fn update_staff(
+    session: Session,
     form: web::Form<UpdateStaffForm>,
 ) -> impl Responder {
+
+    // Check admin role
+    let user_role: String =
+        session.get::<String>("user_role")
+            .unwrap_or(None)
+            .unwrap_or_default();
+
+    if user_role != "admin" {
+
+        return HttpResponse::Found()
+            .append_header(("Location", "/admin/staff"))
+            .finish();
+    }
+
+    // Prevent changing primary admin role
+    if form.user_id == 1 && form.role != "admin" {
+
+        return HttpResponse::Found()
+            .append_header((
+                "Location",
+                "/admin/staff?success=primary_admin_role_error"
+            ))
+            .finish();
+    }
 
     // Database connection
     let database_url =
@@ -132,6 +172,7 @@ pub async fn update_staff(
                     last_name = $2,
                     email = $3,
                     role = $4
+
                 WHERE id = $5
                 ",
                 &[
@@ -164,6 +205,7 @@ pub async fn update_staff(
                     email = $3,
                     password_hash = $4,
                     role = $5
+
                 WHERE id = $6
                 ",
                 &[
@@ -200,10 +242,35 @@ pub struct DeleteStaffForm {
     pub user_id: i32,
 }
 
-// Delete staff account
+// Admin staff delete
 pub async fn delete_staff(
+    session: Session,
     form: web::Form<DeleteStaffForm>,
 ) -> impl Responder {
+
+    // Check admin role
+    let user_role: String =
+        session.get::<String>("user_role")
+            .unwrap_or(None)
+            .unwrap_or_default();
+
+    if user_role != "admin" {
+
+        return HttpResponse::Found()
+            .append_header(("Location", "/admin/staff"))
+            .finish();
+    }
+
+    // Prevent deleting primary admin
+    if form.user_id == 1 {
+
+        return HttpResponse::Found()
+            .append_header((
+                "Location",
+                "/admin/staff?success=primary_admin_delete_error"
+            ))
+            .finish();
+    }
 
     // Database connection
     let database_url =
@@ -243,6 +310,7 @@ pub async fn delete_staff(
         .execute(
             "
             DELETE FROM \"user\"
+
             WHERE id = $1
             ",
             &[&form.user_id],

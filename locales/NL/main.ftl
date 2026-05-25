@@ -23,6 +23,8 @@ admin-staff-update1-success = Staff account
 admin-staff-update2-success = is bijgewerkt.
 admin-staff-delete1-success = Staff account
 admin-staff-delete2-success = is verwijderd.
+admin-staff-primary-role-error = Hoofd admin rol kan niet gewijzigd worden.
+admin-staff-primary-delete-error = Hoofd admin account kan niet verwijderd worden.
 
 
 
@@ -139,8 +141,8 @@ booking-btn-pay = Betalen
 
 # Admin layout
 nav-dashboard = Dashboard
-nav-bookings = Boeking
-nav-customers = Klant
+nav-bookings = Boekingen
+nav-customers = Klanten
 nav-users = Personeel
 nav-logout = Uitloggen
 

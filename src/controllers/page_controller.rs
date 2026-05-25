@@ -1331,6 +1331,18 @@ pub async fn admin_staff_create(
     let user_name: Option<String> =
         session.get("user_name").unwrap_or(None);
 
+    let user_role: String =
+        session.get::<String>("user_role")
+            .unwrap_or(None)
+            .unwrap_or_default();
+
+    if user_role != "admin" {
+
+        return HttpResponse::Found()
+            .append_header(("Location", "/admin/staff"))
+            .finish();
+    }       
+
     // Render template
     let template = AdminStaffCreateTemplate {
         user_name,
@@ -1378,6 +1390,18 @@ pub async fn admin_staff_update(
     // Get session user
     let user_name: Option<String> =
         session.get("user_name").unwrap_or(None);
+
+    let user_role: String =
+        session.get::<String>("user_role")
+            .unwrap_or(None)
+            .unwrap_or_default();
+
+    if user_role != "admin" {
+
+        return HttpResponse::Found()
+            .append_header(("Location", "/admin/staff"))
+            .finish();
+    }
 
     // Database connection
     let database_url =

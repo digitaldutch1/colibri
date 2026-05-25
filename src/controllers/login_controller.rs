@@ -96,7 +96,7 @@ pub async fn login_admin(
             session.insert("last_attempt", now).unwrap();
             session.insert("logged_in", true).unwrap();
             session.insert("user_name", first_name).unwrap();
-            session.insert("role", role).unwrap();
+            session.insert("user_role", role).unwrap();
             session.insert("login_at", now).unwrap();
             session.insert("last_seen", now).unwrap();
 

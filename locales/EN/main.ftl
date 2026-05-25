@@ -21,6 +21,8 @@ admin-staff-update1-success = Staff member
 admin-staff-update2-success = has been updated.
 admin-staff-delete1-success = Staff member
 admin-staff-delete2-success = has been deleted.
+admin-staff-primary-role-error = Primary admin role cannot be changed.
+admin-staff-primary-delete-error = Primary admin account cannot be deleted.
 
 
 
@@ -137,8 +139,8 @@ booking-btn-pay = Pay
 
 # Admin layout
 nav-dashboard = Dashboard
-nav-bookings = Booking
-nav-customers = Customer
+nav-bookings = Bookings
+nav-customers = Customers
 nav-users = Staff
 nav-logout = Logout
 

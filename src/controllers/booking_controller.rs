@@ -1105,25 +1105,18 @@ pub async fn update_admin_booking(
 
     let email: String =
         booking_row.get(0);
-
     let first_name: String =
         booking_row.get(1);
-
     let accommodation_name: String =
         booking_row.get(2);
-
     let email_check_in: String =
         booking_row.get(3);
-
     let email_check_out: String =
         booking_row.get(4);
-
     let total_price: f64 =
         booking_row.get(5);
-
     let nights =
         (check_out_date - check_in_date).num_days();
-
     let price_per_night =
         total_price / nights as f64;
 
@@ -1312,8 +1305,22 @@ pub struct DeleteBookingForm {
 
 // Delete booking
 pub async fn delete_booking(
+    session: Session,
     form: web::Form<DeleteBookingForm>,
 ) -> impl Responder {
+
+    // Check admin role
+    let user_role: String =
+        session.get::<String>("user_role")
+            .unwrap_or(None)
+            .unwrap_or_default();
+
+    if user_role != "admin" {
+
+        return HttpResponse::Found()
+            .append_header(("Location", "/admin/bookings"))
+            .finish();
+    }
 
     // Database connection
     let database_url =
@@ -1337,6 +1344,7 @@ pub async fn delete_booking(
         .execute(
             "
             DELETE FROM booking
+
             WHERE id = $1
             ",
             &[&form.booking_id],

@@ -4,6 +4,7 @@
 /* Theme colors*/
 :root {
     --main-color: #2f5d3a;
+    --main-color-transparent: rgba(47, 93, 58, 0.4);
     --accent-color: #f7faf7;
 }
 

@@ -369,6 +369,11 @@ pub async fn admin_home(
     session: Session,
 ) -> impl Responder {
 
+    
+    let _ =
+        crate::controllers::db_controller::expire_pending_bookings()
+            .await;    
+
     // 1. Get selected language
     let current_lang = get_lang(&req);
 
@@ -565,7 +570,6 @@ pub async fn admin_booking1_create(
         current_lang,
 
         accommodation_id: String::new(),
-        error: String::new(),
     };
 
     HttpResponse::Ok()
@@ -618,15 +622,6 @@ pub async fn admin_booking2_create(
             query.check_in_date.clone().unwrap_or_default(),
         check_out_date:
             query.check_out_date.clone().unwrap_or_default(),
-        first_name: String::new(),
-        last_name: String::new(),
-        address: String::new(),
-        zip_code: String::new(),
-        city: String::new(),
-        phone: String::new(),
-        email: String::new(),
-
-        error: None,
     };
 
     HttpResponse::Ok()
@@ -1133,7 +1128,6 @@ pub async fn admin_customer_create(
         address: String::new(),
         postal_code: String::new(),
         city: String::new(),
-        error: None,
     };
 
     HttpResponse::Ok()
@@ -1237,7 +1231,6 @@ pub async fn admin_customer_update(
         city:
             row.get::<_, Option<String>>(6)
                 .unwrap_or_default(),
-        error: None,
     };
 
     HttpResponse::Ok()
@@ -1351,7 +1344,6 @@ pub async fn admin_staff_create(
         last_name: String::new(),
         email: String::new(),
         password: String::new(),
-        error: None,
     };
 
     HttpResponse::Ok()
@@ -1452,8 +1444,6 @@ pub async fn admin_staff_update(
             row.get::<_, String>(2),
         role:
             row.get::<_, String>(3),
-        password: String::new(),
-        error: None,
     };
 
     HttpResponse::Ok()

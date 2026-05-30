@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS booking (
     check_in_date DATE NOT NULL,
     check_out_date DATE NOT NULL,
     total_price DECIMAL(10,2) NOT NULL,
-    status VARCHAR(20) DEFAULT 'pending', -- (pending, confirmed, cancelled)
+    status VARCHAR(20) DEFAULT 'pending', -- (pending, confirmed, cancelled, expired)
     payment_token TEXT,
     cancel_token TEXT,
     invoice_number TEXT,
@@ -95,3 +95,8 @@ DELETE FROM "user";
 -- Resette id's
 TRUNCATE TABLE customer RESTART IDENTITY CASCADE;
 TRUNCATE booking, customer, "user" RESTART IDENTITY CASCADE;
+
+
+UPDATE booking
+SET created_at = NOW() - INTERVAL '8 days'
+WHERE status = 'pending';

@@ -204,7 +204,6 @@ pub struct AdminBooking1CreateTemplate {
     pub user_name: Option<String>,
     pub current_lang: String,
     pub accommodation_id: String,
-    pub error: String,
 }
 
 impl I18nTemplate for AdminBooking1CreateTemplate {
@@ -223,14 +222,6 @@ pub struct AdminBooking2CreateTemplate {
     pub accommodation_id: String,
     pub check_in_date: String,
     pub check_out_date: String,
-    pub first_name: String,
-    pub last_name: String,
-    pub address: String,
-    pub zip_code: String,
-    pub city: String,
-    pub phone: String,
-    pub email: String,
-    pub error: Option<String>,
 }
 
 impl I18nTemplate for AdminBooking2CreateTemplate {
@@ -367,7 +358,6 @@ pub struct AdminCustomerCreateTemplate {
     pub address: String,
     pub postal_code: String,
     pub city: String,
-    pub error: Option<String>,
 }
 
 impl I18nTemplate for AdminCustomerCreateTemplate {
@@ -391,7 +381,6 @@ pub struct AdminCustomerUpdateTemplate {
     pub address: String,
     pub postal_code: String,
     pub city: String,
-    pub error: Option<String>,
 }
 
 impl I18nTemplate for AdminCustomerUpdateTemplate {
@@ -430,7 +419,6 @@ pub struct AdminStaffCreateTemplate {
     pub last_name: String,
     pub email: String,
     pub password: String,
-    pub error: Option<String>,
 }
 
 impl I18nTemplate for AdminStaffCreateTemplate {
@@ -450,9 +438,7 @@ pub struct AdminStaffUpdateTemplate {
     pub first_name: String,
     pub last_name: String,
     pub email: String,
-    pub password: String,
     pub role: String,
-    pub error: Option<String>,
 }
 
 impl I18nTemplate for AdminStaffUpdateTemplate {

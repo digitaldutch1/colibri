@@ -220,6 +220,61 @@ pub async fn send_cancel_confirmation_email(
     Ok(())
 }
 
+// Booking expired email
+pub async fn send_booking_expired_email(
+    to_email: &str,
+    first_name: &str,
+) -> Result<(), String> {
+
+    let smtp_user =
+        env::var("SMTP_USER")
+            .map_err(|_| "SMTP_USER missing".to_string())?;
+
+    let smtp_password =
+        env::var("SMTP_PASSWORD")
+            .map_err(|_| "SMTP_PASSWORD missing".to_string())?;
+
+    let email_body = format!(
+        "<html>
+        <body style='font-family: Arial, sans-serif;'>
+
+            <p>Dear {},</p>
+
+            <p>
+                Your booking has expired because payment was not received within 7 days.
+            </p>
+
+            <p>
+                The reservation has been cancelled automatically and the accommodation has been released.
+            </p>
+
+            <p>
+                Kind regards,<br>
+                Team Colibri
+            </p>
+
+        </body>
+        </html>",
+        first_name
+    );
+
+    let email = Message::builder()
+        .from(format!("Colibri <{}>", smtp_user).parse().unwrap())
+        .to(to_email.parse().unwrap())
+        .subject("Booking expired")
+        .header(header::ContentType::TEXT_HTML)
+        .body(email_body)
+        .map_err(|error| error.to_string())?;
+
+    let mailer =
+        create_mailer(&smtp_user, &smtp_password)?;
+
+    mailer.send(&email)
+        .map_err(|error| error.to_string())?;
+
+    Ok(())
+}
+
 // Booking update confirmation email
 pub async fn send_booking_update_email(
     to_email: &str,

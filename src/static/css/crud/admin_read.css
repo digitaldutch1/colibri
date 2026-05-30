@@ -154,6 +154,10 @@
     color: #842029 !important;
 }
 
+.status-expired {
+    color: #6c757d !important;
+}
+
 /* Action buttons */
 /***************************************************************************/
 .actions {

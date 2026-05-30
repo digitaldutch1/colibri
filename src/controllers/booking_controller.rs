@@ -1,6 +1,5 @@
 use actix_web::{web, HttpResponse, Responder, HttpRequest};
 use actix_session::Session;
-use askama::Template;
 use chrono::NaiveDate;
 use serde::Deserialize;
 use std::env;
@@ -8,7 +7,7 @@ use tokio_postgres::NoTls;
 use uuid::Uuid;
 use actix_web::http::header;
 
-use crate::templates::*;
+
 
 
 
@@ -105,7 +104,7 @@ pub async fn start_public_booking(form: web::Form<PublicBookingStartForm>) -> im
                 SELECT 1
                 FROM booking b
                 WHERE b.unit_id = u.id
-                AND b.status != 'cancelled'
+                AND b.status NOT IN ('cancelled', 'expired')
                 AND (
                     b.locked_until IS NULL
                     OR b.locked_until > NOW()
@@ -476,14 +475,20 @@ pub async fn create_public_booking(
 
 // Cleanup expired booking
 pub async fn cleanup_expired_booking() -> impl Responder {
-    let result = crate::controllers::db_controller::cleanup_expired_booking_locks().await;
+
+    let _ =
+        crate::controllers::db_controller::expire_pending_bookings()
+            .await;
+
+    let result =
+        crate::controllers::db_controller::cleanup_expired_booking_locks()
+            .await;
 
     match result {
         Ok(_) => HttpResponse::Ok().finish(),
         Err(_) => HttpResponse::InternalServerError().finish(),
     }
 }
-
 
 
 // Cancel public booking using cancel token from confirmation email
@@ -684,7 +689,7 @@ pub async fn create_admin_booking(
                 SELECT 1
                 FROM booking b
                 WHERE b.unit_id = u.id
-                AND b.status != 'cancelled'
+                AND b.status NOT IN ('cancelled', 'expired')
                 AND b.check_in_date < $3
                 AND b.check_out_date > $2
             )

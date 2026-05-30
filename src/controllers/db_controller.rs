@@ -79,7 +79,7 @@ pub async fn get_unavailable_dates(
                 FROM booking b
                 WHERE b.accommodation_id = $1
                 AND b.id != $2
-                AND b.status != 'cancelled'
+                AND b.status NOT IN ('cancelled', 'expired')
                 AND (
                     b.locked_until IS NULL
                     OR b.locked_until > NOW()
@@ -160,6 +160,84 @@ pub async fn cleanup_expired_booking_locks() -> Result<(), String> {
         )
         .await
         .map_err(|error| error.to_string())?;
+
+    Ok(())
+}
+
+pub async fn expire_pending_bookings() -> Result<(), String> {
+
+    let database_url =
+        std::env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set");
+
+    let (client, connection) =
+        tokio_postgres::connect(
+            &database_url,
+            tokio_postgres::NoTls
+        )
+        .await
+        .map_err(|error| error.to_string())?;
+
+    actix_web::rt::spawn(async move {
+
+        if let Err(error) = connection.await {
+            eprintln!("Database connection error: {}", error);
+        }
+    });
+
+    let rows = client
+        .query(
+            "
+            SELECT
+                b.id,
+                c.email,
+                c.first_name
+
+            FROM booking b
+
+            JOIN customer c
+                ON c.id = b.customer_id
+
+            WHERE b.status = 'pending'
+            AND b.created_at < NOW() - INTERVAL '7 days'
+            ",
+            &[],
+        )
+        .await
+        .map_err(|error| error.to_string())?;
+
+    for row in rows {
+
+        let booking_id: i32 =
+            row.get(0);
+
+        let email: String =
+            row.get(1);
+
+        let first_name: String =
+            row.get(2);
+
+        let _ =
+            crate::controllers::email_controller::send_booking_expired_email(
+                &email,
+                &first_name,
+            )
+            .await;
+
+        client
+            .execute(
+                "
+                UPDATE booking
+
+                SET status = 'expired'
+
+                WHERE id = $1
+                ",
+                &[&booking_id],
+            )
+            .await
+            .map_err(|error| error.to_string())?;
+    }
 
     Ok(())
 }

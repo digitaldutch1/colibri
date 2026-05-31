@@ -183,8 +183,15 @@ pub struct BookingStep2Params {
     pub accommodation_id: Option<String>,
     pub check_in_date: Option<String>,
     pub check_out_date: Option<String>,
+    pub error: Option<String>,
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub address: Option<String>,
+    pub zip_code: Option<String>,
+    pub city: Option<String>,
+    pub phone: Option<String>,
+    pub email: Option<String>,
 }
-
 // Render public booking step 2 page
 pub async fn public_booking2(
     req: HttpRequest,
@@ -192,7 +199,7 @@ pub async fn public_booking2(
     query: web::Query<BookingStep2Params>,
 ) -> impl Responder {
 
-     // 1. Get session user and selected language
+    // 1. Get session user and selected language
     let user_name: Option<String> = session.get("user_name").unwrap_or(None);
     let current_lang = get_lang(&req);
 
@@ -206,6 +213,15 @@ pub async fn public_booking2(
         accommodation_id: query.accommodation_id.clone().unwrap_or_default(),
         check_in_date: query.check_in_date.clone().unwrap_or_default(),
         check_out_date: query.check_out_date.clone().unwrap_or_default(),
+        error: query.error.clone().unwrap_or_default(),
+        
+        first_name: query.first_name.clone().unwrap_or_default(),
+        last_name: query.last_name.clone().unwrap_or_default(),
+        address: query.address.clone().unwrap_or_default(),
+        zip_code: query.zip_code.clone().unwrap_or_default(),
+        city: query.city.clone().unwrap_or_default(),
+        phone: query.phone.clone().unwrap_or_default(),
+        email: query.email.clone().unwrap_or_default(),
     };
 
     // 3. Return rendered booking step 2 page
@@ -577,12 +593,20 @@ pub async fn admin_booking1_create(
         .body(template.render().unwrap())
 }
 
-// Booking step 1 query parameters
+// Booking step 2 query parameters
 #[derive(Deserialize)]
 pub struct AdminBookingStep2Params {
     pub accommodation_id: Option<String>,
     pub check_in_date: Option<String>,
     pub check_out_date: Option<String>,
+    pub error: Option<String>,
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub address: Option<String>,
+    pub zip_code: Option<String>,
+    pub city: Option<String>,
+    pub phone: Option<String>,
+    pub email: Option<String>,
 }
 
 // Render admin booking step 2 create page
@@ -616,12 +640,31 @@ pub async fn admin_booking2_create(
     let template = AdminBooking2CreateTemplate {
         user_name,
         current_lang,
+
         accommodation_id:
             query.accommodation_id.clone().unwrap_or_default(),
         check_in_date:
             query.check_in_date.clone().unwrap_or_default(),
         check_out_date:
             query.check_out_date.clone().unwrap_or_default(),
+
+        error:
+            query.error.clone().unwrap_or_default(),
+
+        first_name:
+            query.first_name.clone().unwrap_or_default(),
+        last_name:
+            query.last_name.clone().unwrap_or_default(),
+        address:
+            query.address.clone().unwrap_or_default(),
+        zip_code:
+            query.zip_code.clone().unwrap_or_default(),
+        city:
+            query.city.clone().unwrap_or_default(),
+        phone:
+            query.phone.clone().unwrap_or_default(),
+        email:
+            query.email.clone().unwrap_or_default(),
     };
 
     HttpResponse::Ok()

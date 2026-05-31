@@ -6,8 +6,9 @@ use std::env;
 use tokio_postgres::NoTls;
 use uuid::Uuid;
 use actix_web::http::header;
-
-
+use urlencoding;
+use crate::controllers::validation_controller::validate_public_booking;
+use crate::controllers::validation_controller::validate_admin_booking;
 
 
 
@@ -104,7 +105,7 @@ pub async fn start_public_booking(form: web::Form<PublicBookingStartForm>) -> im
                 SELECT 1
                 FROM booking b
                 WHERE b.unit_id = u.id
-                AND b.status NOT IN ('cancelled', 'expired')
+                AND b.status != 'cancelled'
                 AND (
                     b.locked_until IS NULL
                     OR b.locked_until > NOW()
@@ -241,6 +242,28 @@ pub async fn create_public_booking(
 ) -> impl Responder {
 
     // 1. Validate booking step 2 form data
+    if let Err(error_key) = validate_public_booking(&form) {
+        let redirect_url = format!(
+            "/booking2?booking_id={}&lock_token={}&accommodation_id={}&check_in_date={}&check_out_date={}&error={}&first_name={}&last_name={}&address={}&zip_code={}&city={}&phone={}&email={}",
+            form.booking_id,
+            form.lock_token,
+            form.accommodation_id,
+            form.check_in_date,
+            form.check_out_date,
+            urlencoding::encode(&error_key),
+            urlencoding::encode(&form.first_name),
+            urlencoding::encode(&form.last_name),
+            urlencoding::encode(&form.address),
+            urlencoding::encode(&form.zip_code),
+            urlencoding::encode(&form.city),
+            urlencoding::encode(&form.phone),
+            urlencoding::encode(&form.email)
+        );
+        return HttpResponse::SeeOther()
+            .insert_header((actix_web::http::header::LOCATION, redirect_url))
+            .finish();
+    }
+
     if form.tos_accepted.is_none() {
         return HttpResponse::BadRequest().body("Terms of service must be accepted.");
     }
@@ -471,24 +494,16 @@ pub async fn create_public_booking(
         .finish()
 }
 
-
-
 // Cleanup expired booking
 pub async fn cleanup_expired_booking() -> impl Responder {
-
-    let _ =
-        crate::controllers::db_controller::expire_pending_bookings()
-            .await;
-
-    let result =
-        crate::controllers::db_controller::cleanup_expired_booking_locks()
-            .await;
+    let result = crate::controllers::db_controller::cleanup_expired_booking_locks().await;
 
     match result {
         Ok(_) => HttpResponse::Ok().finish(),
         Err(_) => HttpResponse::InternalServerError().finish(),
     }
 }
+
 
 
 // Cancel public booking using cancel token from confirmation email
@@ -600,6 +615,31 @@ pub async fn create_admin_booking(
     form: web::Form<AdminBookingForm>,
 ) -> impl Responder {
 
+    if let Err(error_key) = validate_admin_booking(&form) {
+
+        let redirect_url = format!(
+            "/admin/booking2?accommodation_id={}&check_in_date={}&check_out_date={}&error={}&first_name={}&last_name={}&address={}&zip_code={}&city={}&phone={}&email={}",
+            form.accommodation_id,
+            urlencoding::encode(&form.check_in_date),
+            urlencoding::encode(&form.check_out_date),
+            urlencoding::encode(&error_key),
+            urlencoding::encode(&form.first_name),
+            urlencoding::encode(&form.last_name),
+            urlencoding::encode(&form.address),
+            urlencoding::encode(&form.zip_code),
+            urlencoding::encode(&form.city),
+            urlencoding::encode(&form.phone),
+            urlencoding::encode(&form.email),
+        );
+
+    return HttpResponse::SeeOther()
+        .insert_header((
+            actix_web::http::header::LOCATION,
+            redirect_url,
+        ))
+        .finish();
+}    
+
     // 1. Parse booking dates
     let check_in_date =
         match NaiveDate::parse_from_str(
@@ -689,7 +729,7 @@ pub async fn create_admin_booking(
                 SELECT 1
                 FROM booking b
                 WHERE b.unit_id = u.id
-                AND b.status NOT IN ('cancelled', 'expired')
+                AND b.status != 'cancelled'
                 AND b.check_in_date < $3
                 AND b.check_out_date > $2
             )

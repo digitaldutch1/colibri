@@ -100,6 +100,14 @@ pub struct PublicBooking2Template {
     pub accommodation_id: String,
     pub check_in_date: String,
     pub check_out_date: String,
+    pub error: String,
+    pub first_name: String,
+    pub last_name: String,
+    pub address: String,
+    pub zip_code: String,
+    pub city: String,
+    pub phone: String,
+    pub email: String,
 }
 
 impl I18nTemplate for PublicBooking2Template {
@@ -167,7 +175,6 @@ impl I18nTemplate for AdminHomeTemplate {
 }
 
 // Admin booking read row
-// Admin booking read row
 pub struct BookingRow {
     pub id: i32,
     pub last_name: String,
@@ -222,6 +229,14 @@ pub struct AdminBooking2CreateTemplate {
     pub accommodation_id: String,
     pub check_in_date: String,
     pub check_out_date: String,
+    pub error: String,
+    pub first_name: String,
+    pub last_name: String,
+    pub address: String,
+    pub zip_code: String,
+    pub city: String,
+    pub phone: String,
+    pub email: String,
 }
 
 impl I18nTemplate for AdminBooking2CreateTemplate {

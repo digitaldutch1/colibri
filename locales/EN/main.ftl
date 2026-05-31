@@ -26,6 +26,17 @@ admin-staff-primary-delete-error = Primary admin account cannot be deleted.
 
 
 
+# Booking input validation alerts
+error-firstname-invalid=Invalid first name. Use letters, spaces or hyphens only.
+error-lastname-invalid=Invalid last name. Use letters, spaces or hyphens only.
+error-address-invalid = Invalid address (use only letters, numbers and spaces)
+error-zipcode-invalid=Invalid zip code. Use letters, numbers or spaces only.
+error-city-invalid=Invalid city name. Use letters, spaces or hyphens only.
+error-phone-invalid=Invalid phone number. Use numbers, spaces, plus signs or hyphens only.
+error-email-invalid=Invalid email address. Use a valid email address.
+
+
+
 # Booking step 2 session countdown
 booking-lock-message = This reservation is held for
 booking-lock-expired = Your reservation time has expired. You will be redirected.

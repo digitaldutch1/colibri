@@ -1,64 +1,68 @@
 {% extends "layouts/public_layout.html" %}
-
 {% block content %}
 
-    <!-- Session countdonw message -->
+    <!-- Session countdonw alert -->
     <div class="alert-wrapper">
         <div class="alert success persistent-alert" id="booking-lock-timer">
             {{ self.i18n("booking-lock-message") }} <strong><span id="lock-countdown">05:00</span></strong>
         </div>
     </div>
 
-    <!-- Public booking 2 for, -->
     <div class="booking-wrapper">
         <div class="booking-card">
+
+            <!-- Input validation alerts -->
+            {% if !error.is_empty() %}
+                <div class="alert error">
+                    {{ self.i18n(error) }}
+                </div>
+            {% endif %}
+
             <h2 class="booking-title">{{ self.i18n("booking-title-step2") }}</h2>
             <form class="booking-form" action="/booking/create" method="post">
                 
-                <!-- Pass booking details from booking step 1 -->
                 <input type="hidden" name="accommodation_id" value="{{ accommodation_id }}">
                 <input type="hidden" name="check_in_date" value="{{ check_in_date }}">
                 <input type="hidden" name="check_out_date" value="{{ check_out_date }}">
 
-                <!-- Pass booking lock data created during booking start -->
                 <input type="hidden" name="booking_id" value="{{ booking_id }}">
                 <input type="hidden" name="lock_token" value="{{ lock_token }}">
 
                 <div class="form-group">
                     <label>{{ self.i18n("booking-label-firstname") }}</label>
-                    <input type="text" name="first_name" value="" class="form-input">
+                    <input type="text" name="first_name" value="{{ first_name }}" class="form-input">
                 </div>
 
                 <div class="form-group">
                     <label>{{ self.i18n("booking-label-lastname") }}</label>
-                    <input type="text" name="last_name" value="" class="form-input">
+                    <input type="text" name="last_name" value="{{ last_name }}" class="form-input">
                 </div>
 
                 <div class="form-group">
                     <label>{{ self.i18n("booking-label-address") }}</label>
-                    <input type="text" name="address" value="" class="form-input"> 
+                    <input type="text" name="address" value="{{ address }}" class="form-input"> 
                 </div>
 
                 <div class="form-row">
                     <div class="form-group half">
                         <label>{{ self.i18n("booking-label-zipcode") }}</label>
-                        <input type="text" name="zip_code" value="" class="form-input">
+                        <input type="text" name="zip_code" value="{{ zip_code }}" class="form-input">
                     </div>
 
                     <div class="form-group half">
                         <label>{{ self.i18n("booking-label-city") }}</label>
-                        <input type="text" name="city" value="" class="form-input">
+                        <input type="text" name="city" value="{{ city }}" class="form-input">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>{{ self.i18n("booking-label-phone") }}</label>
-                    <input type="text" name="phone" value="" class="form-input">
+                    <input type="text" name="phone" value="{{ phone }}" class="form-input">
                 </div>
 
                 <div class="form-group">
                     <label>{{ self.i18n("booking-label-email") }}</label>
-                    <input type="email" name="email" value="" class="form-input">
+                    <input type="email" name="email" value="{{ email }}" class="form-input">
                 </div>
 
                 <div class="tos-check-wrapper">

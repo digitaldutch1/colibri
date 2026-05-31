@@ -28,6 +28,17 @@ admin-staff-primary-delete-error = Hoofd admin account kan niet verwijderd worde
 
 
 
+# Booking input validation alert
+error-firstname-invalid=Ongeldige voornaam. Gebruik alleen letters, spaties of koppeltekens.
+error-lastname-invalid=Ongeldige achternaam. Gebruik alleen letters, spaties of koppeltekens.
+error-address-invalid=Ongeldig adres (gebruik alleen letters, cijfers en spaties)
+error-zipcode-invalid=Ongeldige postcode. Gebruik alleen letters, cijfers of spaties.
+error-city-invalid=Ongeldige plaatsnaam. Gebruik alleen letters, spaties of koppeltekens.
+error-phone-invalid=Ongeldig telefoonnummer. Gebruik alleen cijfers, spaties, plus- of koppeltekens.
+error-email-invalid=Ongeldig e-mailadres. Gebruik een geldig e-mailadres.
+
+
+
 # Booking step 2 session countdown
 booking-lock-message = Deze reservering wordt vastgehouden voor
 booking-lock-expired = Je reserveringstijd is verlopen. Je wordt doorgestuurd.

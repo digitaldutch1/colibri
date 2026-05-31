@@ -4,6 +4,14 @@
 <!-- Admin booking 2 form -->
 <div class="booking-wrapper">
     <div class="booking-card">
+
+        <!-- Input validation alerts -->
+        {% if !error.is_empty() %}
+            <div class="alert error">
+                {{ self.i18n(error) }}
+            </div>
+        {% endif %}
+
         <h2 class="booking-title">
             {{ self.i18n("admin-booking-create-step2-title") }}
         </h2>
@@ -19,7 +27,7 @@
                     {{ self.i18n("admin-booking-create-firstname") }}
                 </label>
 
-                <input type="text" name="first_name" value="" class="form-input">
+                <input type="text" name="first_name" value="{{ first_name }}" class="form-input">
             </div>
 
             <div class="form-group">
@@ -27,7 +35,7 @@
                     {{ self.i18n("admin-booking-create-lastname") }}
                 </label>
 
-                <input type="text" name="last_name" value="" class="form-input">
+                <input type="text" name="last_name" value="{{ last_name }}" class="form-input">
             </div>
 
             <div class="form-group">
@@ -35,7 +43,7 @@
                     {{ self.i18n("admin-booking-create-address") }}
                 </label>
 
-                <input type="text" name="address" value="" class="form-input">
+                <input type="text" name="address" value="{{ address }}" class="form-input">
             </div>
 
             <div class="form-row">
@@ -44,7 +52,7 @@
                         {{ self.i18n("admin-booking-create-zipcode") }}
                     </label>
 
-                    <input type="text" name="zip_code" value="" class="form-input">
+                    <input type="text" name="zip_code" value="{{ zip_code }}" class="form-input">
                 </div>
 
                 <div class="form-group half">
@@ -52,7 +60,7 @@
                         {{ self.i18n("admin-booking-create-city") }}
                     </label>
 
-                    <input type="text" name="city" value="" class="form-input">
+                    <input type="text" name="city" value="{{ city }}" class="form-input">
                 </div>
             </div>
 
@@ -61,7 +69,7 @@
                     {{ self.i18n("admin-booking-create-phone") }}
                 </label>
 
-                <input type="text" name="phone" value="" class="form-input">
+                <input type="text" name="phone" value="{{ phone }}" class="form-input">
             </div>
 
             <div class="form-group">
@@ -69,7 +77,7 @@
                     {{ self.i18n("admin-booking-create-email") }}
                 </label>
 
-                <input type="email" name="email" value="" class="form-input">
+                <input type="email" name="email" value="{{ email }}" class="form-input">
             </div>
 
             <div class="booking-buttons">

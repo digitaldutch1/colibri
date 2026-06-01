@@ -26,15 +26,15 @@ admin-staff-primary-delete-error = Primary admin account cannot be deleted.
 
 
 
-# Booking and customer input validation alerts
+# Booking, customer and staff input validation alerts
 error-firstname-invalid=Invalid first name. Use letters, spaces or hyphens only.
 error-lastname-invalid=Invalid last name. Use letters, spaces or hyphens only.
 error-address-invalid = Invalid address (use only letters, numbers and spaces)
 error-zipcode-invalid=Invalid zip code. Use letters, numbers or spaces only.
 error-city-invalid=Invalid city name. Use letters, spaces or hyphens only.
 error-phone-invalid=Invalid phone number. Use numbers, spaces, plus signs or hyphens only.
-error-email-invalid=Invalid email address. Use a valid email address.
-
+error-email-invalid=Invalid email address. Use a valid email address containing an @ symbol.
+error-password-invalid=Invalid password. Use at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character.
 
 
 # Booking step 2 session countdown
@@ -325,6 +325,7 @@ admin-staff-create-firstname = First name
 admin-staff-create-lastname = Last name
 admin-staff-create-email = Email
 admin-staff-create-password = Password
+admin-staff-password-requirements=Min. 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character.
 admin-staff-create-back = Back
 admin-staff-create-save = Save
 

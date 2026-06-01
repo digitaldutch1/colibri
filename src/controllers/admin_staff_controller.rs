@@ -4,9 +4,10 @@ use actix_session::Session;
 use std::env;
 use bcrypt::{hash, DEFAULT_COST};
 use tokio_postgres::NoTls;
+use crate::controllers::validation_controller::*;
 
 
-// Admin staff create struct
+// Admin staff create form struct
 #[derive(Deserialize)]
 pub struct CreateStaffForm {
     pub first_name: String,
@@ -20,6 +21,25 @@ pub async fn create_staff(
     session: Session,
     form: web::Form<CreateStaffForm>,
 ) -> impl Responder {
+
+    // Input validation
+    if let Err(error_key) = validate_staff_create(&form) {
+        let redirect_url = format!(
+            "/admin/staff/create?error={}&first_name={}&last_name={}&email={}&password={}",
+            urlencoding::encode(&error_key),
+            urlencoding::encode(&form.first_name),
+            urlencoding::encode(&form.last_name),
+            urlencoding::encode(&form.email),
+            urlencoding::encode(&form.password),
+        );
+
+        return HttpResponse::SeeOther()
+            .insert_header((
+                actix_web::http::header::LOCATION,
+                redirect_url,
+            ))
+            .finish();
+    }
 
     // Check admin role
     let user_role: String =
@@ -101,7 +121,9 @@ pub async fn create_staff(
         .finish()
 }
 
-// Admin staff update struct
+
+
+// Admin staff update form struct
 #[derive(Deserialize)]
 pub struct UpdateStaffForm {
     pub user_id: i32,
@@ -117,6 +139,25 @@ pub async fn update_staff(
     session: Session,
     form: web::Form<UpdateStaffForm>,
 ) -> impl Responder {
+
+    // Input validation
+    if let Err(error_key) = validate_staff_update(&form) {
+        let redirect_url = format!(
+            "/admin/staff/update/{}?error={}&first_name={}&last_name={}&email={}",
+            form.user_id,
+            urlencoding::encode(&error_key),
+            urlencoding::encode(&form.first_name),
+            urlencoding::encode(&form.last_name),
+            urlencoding::encode(&form.email),
+        );
+
+        return HttpResponse::SeeOther()
+            .insert_header((
+                actix_web::http::header::LOCATION,
+                redirect_url,
+            ))
+            .finish();
+    }
 
     // Check admin role
     let user_role: String =
@@ -235,6 +276,8 @@ pub async fn update_staff(
         ))
         .finish()
 }
+
+
 
 // Admin staff delete struct
 #[derive(Deserialize)]

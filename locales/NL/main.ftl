@@ -28,15 +28,15 @@ admin-staff-primary-delete-error = Hoofd admin account kan niet verwijderd worde
 
 
 
-# Booking and customer input validation alert
+# Booking, customer and staff input validation alert
 error-firstname-invalid=Ongeldige voornaam. Gebruik alleen letters, spaties of koppeltekens.
 error-lastname-invalid=Ongeldige achternaam. Gebruik alleen letters, spaties of koppeltekens.
 error-address-invalid=Ongeldig adres (gebruik alleen letters, cijfers en spaties)
 error-zipcode-invalid=Ongeldige postcode. Gebruik alleen letters, cijfers of spaties.
 error-city-invalid=Ongeldige plaatsnaam. Gebruik alleen letters, spaties of koppeltekens.
 error-phone-invalid=Ongeldig telefoonnummer. Gebruik alleen cijfers, spaties, plus- of koppeltekens.
-error-email-invalid=Ongeldig e-mailadres. Gebruik een geldig e-mailadres.
-
+error-email-invalid=Ongeldig e-mailadres. Gebruik een geldig e-mailadres met een @-teken.
+error-password-invalid=Ongeldig wachtwoord. Gebruik minimaal 8 tekens, een hoofdletter, een kleine letter, een cijfer en een speciaal teken.
 
 
 # Booking step 2 session countdown
@@ -327,6 +327,7 @@ admin-staff-create-firstname = Voornaam
 admin-staff-create-lastname = Achternaam
 admin-staff-create-email = Email
 admin-staff-create-password = Wachtwoord
+admin-staff-password-requirements=Min. 8 tekens, 1 hoofdletter, 1 kleine letter, 1 cijfer en 1 speciaal teken.
 admin-staff-create-back = Terug
 admin-staff-create-save = Opslaan
 

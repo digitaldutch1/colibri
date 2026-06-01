@@ -10,12 +10,18 @@ use std::env;
 use std::time::{SystemTime, UNIX_EPOCH};
 use bcrypt::verify;
 
-// Struct for login form data (email and password from user input)
+
+
+
+
+// login form struct
 #[derive(Deserialize)]
 pub struct LoginForm {
     pub email: String,
     pub password: String,
 }
+
+
 
 // Returns current time as Unix timestamp
 // Gets current time to store login time and check session timeout
@@ -26,7 +32,9 @@ fn now_unix() -> i64 {
         .as_secs() as i64
 }
 
-// Handles admin login: checks user credentials and creates session
+
+
+// Admin login: checks user credentials and creates session
 pub async fn login_admin(
     form: web::Form<LoginForm>,
     session: Session,
@@ -115,7 +123,9 @@ pub async fn login_admin(
         .finish()
 }
 
-// Handles logout: clears session and redirects user
+
+
+// Admin logout: clears session and redirects user
 pub async fn logout_admin(
     req: HttpRequest,
     session: Session,

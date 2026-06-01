@@ -37,7 +37,7 @@ fn redirect_with_error(message: &str, accommodation_id: &str) -> HttpResponse {
 
 
 
-// Public booking step 1 form data struct
+// Public booking step 1 form struct
 #[derive(Deserialize)]
 pub struct PublicBookingStartForm {
     pub accommodation_id: String,
@@ -217,7 +217,7 @@ pub async fn start_public_booking(form: web::Form<PublicBookingStartForm>) -> im
 
 
 
-// Public booking step 2 form data struct
+// Public booking step 2 form struct
 #[derive(Deserialize)]
 pub struct PublicBookingForm {
     pub booking_id: String,
@@ -494,6 +494,8 @@ pub async fn create_public_booking(
         .finish()
 }
 
+
+
 // Cleanup expired booking
 pub async fn cleanup_expired_booking() -> impl Responder {
     let result = crate::controllers::db_controller::cleanup_expired_booking_locks().await;
@@ -595,7 +597,9 @@ pub async fn cancel_booking(path: web::Path<String>) -> impl Responder {
         .finish()
 }
 
-// Admin booking form data struct
+
+
+// Admin booking form struct
 #[derive(Deserialize)]
 pub struct AdminBookingForm {
     pub accommodation_id: i32,
@@ -928,7 +932,9 @@ pub async fn create_admin_booking(
         .finish();
 }
 
-// Admin booking update form struct
+
+
+// Admin booking update struct
 #[derive(Deserialize)]
 pub struct AdminBookingUpdateForm {
     pub booking_id: i32,
@@ -1204,6 +1210,8 @@ pub async fn update_admin_booking(
         .finish();
 }
 
+
+
 // Admin booking status struct
 #[derive(Deserialize)]
 pub struct AdminBookingStatusForm {
@@ -1341,6 +1349,8 @@ pub async fn save_admin_booking_status(
         ))
         .finish()
 }
+
+
 
 // Admin delete booking struct
 #[derive(Deserialize)]

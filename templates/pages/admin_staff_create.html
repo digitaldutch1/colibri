@@ -3,6 +3,13 @@
 
 <div class="booking-wrapper">
     <div class="booking-card">
+
+        {% if !error.is_empty() %}
+            <div class="alert error">
+                {{ self.i18n(error) }}
+            </div>
+        {% endif %}
+
         <h2 class="booking-title">
             {{ self.i18n("admin-staff-create-title") }}
         </h2>
@@ -29,7 +36,7 @@
                 <label>
                     {{ self.i18n("admin-staff-create-email") }}
                 </label>
-                <input type="email" name="email" class="form-input" value="{{ email }}" required>
+                <input type="text" name="email" class="form-input" value="{{ email }}" required>
             </div>
 
             <!-- Password -->
@@ -38,6 +45,9 @@
                     {{ self.i18n("admin-staff-create-password") }}
                 </label>
                 <input type="password" name="password" class="form-input" value="{{ password }}" required>
+                <div class="password-hint">
+                    {{ self.i18n("admin-staff-password-requirements") }}
+                </div>            
             </div>
 
             <!-- Buttons -->

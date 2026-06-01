@@ -4,6 +4,8 @@ use std::env;
 
 
 
+
+
 // Gmail / Mailpit switch based on MAIL_DRIVER setting in .env
 fn create_mailer(smtp_user: &str, smtp_password: &str) -> Result<SmtpTransport, String> {
     let mail_driver = env::var("MAIL_DRIVER").unwrap_or_else(|_| "gmail".to_string());
@@ -22,6 +24,7 @@ fn create_mailer(smtp_user: &str, smtp_password: &str) -> Result<SmtpTransport, 
         .port(587)
         .build())
 }
+
 
 
 // Booking confirmation email
@@ -220,6 +223,8 @@ pub async fn send_cancel_confirmation_email(
     Ok(())
 }
 
+
+
 // Booking expired email
 pub async fn send_booking_expired_email(
     to_email: &str,
@@ -274,6 +279,8 @@ pub async fn send_booking_expired_email(
 
     Ok(())
 }
+
+
 
 // Booking update confirmation email
 pub async fn send_booking_update_email(
@@ -360,6 +367,8 @@ pub async fn send_booking_update_email(
 
     Ok(())
 }
+
+
 
 // Booking status update email
 pub async fn send_booking_status_email(

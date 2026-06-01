@@ -432,6 +432,7 @@ impl I18nTemplate for AdminStaffReadTemplate {
 pub struct AdminStaffCreateTemplate {
     pub user_name: Option<String>,
     pub current_lang: String,
+    pub error: String,
     pub first_name: String,
     pub last_name: String,
     pub email: String,
@@ -451,6 +452,7 @@ impl I18nTemplate for AdminStaffCreateTemplate {
 pub struct AdminStaffUpdateTemplate {
     pub user_name: Option<String>,
     pub current_lang: String,
+    pub error: String,
     pub user_id: i32,
     pub first_name: String,
     pub last_name: String,

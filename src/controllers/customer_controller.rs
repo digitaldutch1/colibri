@@ -6,7 +6,10 @@ use tokio_postgres::NoTls;
 use crate::controllers::validation_controller::*;
 
 
-// Create customer form
+
+
+
+// Create customer form struct
 #[derive(Deserialize)]
 pub struct CreateCustomerForm {
     pub first_name: String,
@@ -18,12 +21,12 @@ pub struct CreateCustomerForm {
     pub city: String,
 }
 
-
 // Create customer
 pub async fn create_customer(
     form: web::Form<CreateCustomerForm>,
 ) -> impl Responder {
 
+    // Input validation
     if let Err(error_key) = validate_customer_create(&form) {
         let redirect_url = format!(
             "/admin/customer/create?error={}&first_name={}&last_name={}&email={}&phone={}&address={}&postal_code={}&city={}",
@@ -108,7 +111,9 @@ pub async fn create_customer(
         .finish()
 }
 
-// Update customer form
+
+
+// Update customer form struct
 #[derive(Deserialize)]
 pub struct UpdateCustomerForm {
     pub customer_id: i32,
@@ -126,8 +131,8 @@ pub async fn update_customer(
     form: web::Form<UpdateCustomerForm>,
 ) -> impl Responder {
 
+    // Input validation
     if let Err(error_key) = validate_customer_update(&form) {
-
         let redirect_url = format!(
             "/admin/customer/update/{}?error={}&first_name={}&last_name={}&email={}&phone={}&address={}&postal_code={}&city={}",
             form.customer_id,
@@ -211,6 +216,8 @@ pub async fn update_customer(
         ))
         .finish()
 }
+
+
 
 // Delete customer form
 #[derive(Deserialize)]

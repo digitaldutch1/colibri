@@ -30,6 +30,8 @@ pub struct HomeParams {
     pub error: Option<String>,
 }
 
+
+
 // Render public homepage
 pub async fn public_home(
     req: HttpRequest,
@@ -102,6 +104,8 @@ pub async fn tos_page(req: HttpRequest, session: Session) -> impl Responder {
 
 
 
+
+
 // API endpoint for unavailable booking dates
 #[derive(Deserialize)]
 pub struct UnavailableDatesQuery {
@@ -138,6 +142,10 @@ pub async fn unavailable_dates_api(
                 .body("error"),
     }
 }
+
+
+
+
 
 // Booking step 1 query parameters
 #[derive(Deserialize)]
@@ -233,6 +241,8 @@ pub async fn public_booking2(
         Err(_) => HttpResponse::InternalServerError().finish(),
     }
 }
+
+
 
 // Booking overview query parameters from payment token
 #[derive(Deserialize)]
@@ -379,6 +389,8 @@ pub async fn admin_login(
         .body(template.render().unwrap())
 }
 
+
+
 // Render admin homepage
 pub async fn admin_home(
     req: HttpRequest,
@@ -437,6 +449,8 @@ pub async fn admin_home(
         .content_type("text/html")
         .body(template.render().unwrap())
 }
+
+
 
 // Admin bookings read page query parameters 
 #[derive(serde::Deserialize)]
@@ -554,6 +568,8 @@ pub async fn admin_bookings_read(
         .body(template.render().unwrap())
 }
 
+
+
 // Render admin booking step 1 create page
 pub async fn admin_booking1_create(
     req: HttpRequest,
@@ -593,7 +609,9 @@ pub async fn admin_booking1_create(
         .body(template.render().unwrap())
 }
 
-// Booking step 2 query parameters
+
+
+// Admin booking create step 2 query parameters
 #[derive(Deserialize)]
 pub struct AdminBookingStep2Params {
     pub accommodation_id: Option<String>,
@@ -673,6 +691,7 @@ pub async fn admin_booking2_create(
 }
 
 
+// Admin booking overview query parameters
 #[derive(Deserialize)]
 pub struct AdminBookingOverviewParams {
     pub payment_token: Option<String>,
@@ -784,7 +803,9 @@ pub async fn admin_booking_overview(
         .body(template.render().unwrap())
 }
 
-// Admin booking query parameters
+
+
+// Admin booking update (step 1) query parameters
 #[derive(Deserialize)]
 pub struct AdminBookingUpdatePath {
     pub error: Option<String>,
@@ -872,6 +893,8 @@ pub async fn admin_booking_update(
         .content_type("text/html")
         .body(template.render().unwrap())
 }
+
+
 
 // Admin booking update overview query parameters
 #[derive(Deserialize)]
@@ -987,7 +1010,9 @@ pub async fn admin_booking_update_overview(
         .body(template.render().unwrap())
 }
 
-// Admin booking status path
+
+
+// Admin booking status path parameters
 #[derive(Deserialize)]
 pub struct AdminBookingStatusPath {
     pub id: i32,
@@ -1072,7 +1097,7 @@ pub async fn admin_booking_status(
 
 
 // Admin customer
-// Admin customers query parameters
+// Admin customers read query parameters
 #[derive(Deserialize)]
 pub struct AdminCustomerParams {
     pub success: Option<String>,
@@ -1133,6 +1158,8 @@ pub async fn admin_customers_read(
         .content_type("text/html")
         .body(template.render().unwrap())
 }
+
+
 
 // Admin customer create overview query parameters
 #[derive(Deserialize)]
@@ -1208,6 +1235,7 @@ pub async fn admin_customer_create(
         .content_type("text/html")
         .body(template.render().unwrap())
 }
+
 
 
 // Admin customer update path parameters
@@ -1353,7 +1381,9 @@ pub async fn admin_customer_update(
         .body(template.render().unwrap())
 }
 
-// Admin staff query parameters
+
+
+// Admin staff read query parameters
 #[derive(Deserialize)]
 pub struct AdminStaffParams {
     pub success: Option<String>,
@@ -1413,10 +1443,23 @@ pub async fn admin_staff_read(
         .body(template.render().unwrap())
 }
 
+
+
+// Admin staff create query parameters
+#[derive(Deserialize)]
+pub struct StaffCreateParams {
+    pub error: Option<String>,
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub email: Option<String>,
+    pub password: Option<String>,
+}
+
 // Render admin staff create page
 pub async fn admin_staff_create(
     req: HttpRequest,
     session: Session,
+    query: web::Query<StaffCreateParams>,
 ) -> impl Responder {
 
     // Get selected language
@@ -1449,16 +1492,27 @@ pub async fn admin_staff_create(
         return HttpResponse::Found()
             .append_header(("Location", "/admin/staff"))
             .finish();
-    }       
+    }
 
     // Render template
     let template = AdminStaffCreateTemplate {
         user_name,
         current_lang,
-        first_name: String::new(),
-        last_name: String::new(),
-        email: String::new(),
-        password: String::new(),
+
+        error:
+            query.error.clone().unwrap_or_default(),
+
+        first_name:
+            query.first_name.clone().unwrap_or_default(),
+
+        last_name:
+            query.last_name.clone().unwrap_or_default(),
+
+        email:
+            query.email.clone().unwrap_or_default(),
+
+        password:
+            query.password.clone().unwrap_or_default(),
     };
 
     HttpResponse::Ok()
@@ -1466,9 +1520,21 @@ pub async fn admin_staff_create(
         .body(template.render().unwrap())
 }
 
+
+
+// Admin staff update path parameters
 #[derive(Deserialize)]
 pub struct StaffPath {
     pub id: i32,
+}
+
+// Admin staff update query parameters
+#[derive(Deserialize)]
+pub struct StaffUpdateParams {
+    pub error: Option<String>,
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub email: Option<String>,
 }
 
 // Render admin staff update page
@@ -1476,6 +1542,7 @@ pub async fn admin_staff_update(
     req: HttpRequest,
     session: Session,
     path: web::Path<StaffPath>,
+    query: web::Query<StaffUpdateParams>,
 ) -> impl Responder {
 
     // Get selected language
@@ -1549,14 +1616,25 @@ pub async fn admin_staff_update(
     let template = AdminStaffUpdateTemplate {
         user_name,
         current_lang,
+
+        error:
+            query.error.clone().unwrap_or_default(),
+
         user_id:
             path.id,
+
         first_name:
-            row.get::<_, String>(0),
+            query.first_name.clone()
+                .unwrap_or_else(|| row.get::<_, String>(0)),
+
         last_name:
-            row.get::<_, String>(1),
+            query.last_name.clone()
+                .unwrap_or_else(|| row.get::<_, String>(1)),
+
         email:
-            row.get::<_, String>(2),
+            query.email.clone()
+                .unwrap_or_else(|| row.get::<_, String>(2)),
+
         role:
             row.get::<_, String>(3),
     };

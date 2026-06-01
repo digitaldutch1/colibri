@@ -3,6 +3,14 @@
 
 <div class="booking-wrapper">
     <div class="booking-card">
+
+        <!-- Input validation alerts -->
+        {% if !error.is_empty() %}
+            <div class="alert error">
+                {{ self.i18n(error) }}
+            </div>
+        {% endif %}
+
         <h2 class="booking-title">
             {{ self.i18n("admin-customer-create-title") }}
         </h2>

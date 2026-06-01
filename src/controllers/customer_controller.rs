@@ -3,8 +3,7 @@ use serde::Deserialize;
 use actix_session::Session;
 use std::env;
 use tokio_postgres::NoTls;
-
-
+use crate::controllers::validation_controller::*;
 
 
 // Create customer form
@@ -24,6 +23,27 @@ pub struct CreateCustomerForm {
 pub async fn create_customer(
     form: web::Form<CreateCustomerForm>,
 ) -> impl Responder {
+
+    if let Err(error_key) = validate_customer_create(&form) {
+        let redirect_url = format!(
+            "/admin/customer/create?error={}&first_name={}&last_name={}&email={}&phone={}&address={}&postal_code={}&city={}",
+            urlencoding::encode(&error_key),
+            urlencoding::encode(&form.first_name),
+            urlencoding::encode(&form.last_name),
+            urlencoding::encode(&form.email),
+            urlencoding::encode(&form.phone),
+            urlencoding::encode(&form.address),
+            urlencoding::encode(&form.postal_code),
+            urlencoding::encode(&form.city),
+        );
+
+        return HttpResponse::SeeOther()
+            .insert_header((
+                actix_web::http::header::LOCATION,
+                redirect_url,
+            ))
+            .finish();
+    }
 
     // Database connection
     let database_url =
@@ -105,6 +125,29 @@ pub struct UpdateCustomerForm {
 pub async fn update_customer(
     form: web::Form<UpdateCustomerForm>,
 ) -> impl Responder {
+
+    if let Err(error_key) = validate_customer_update(&form) {
+
+        let redirect_url = format!(
+            "/admin/customer/update/{}?error={}&first_name={}&last_name={}&email={}&phone={}&address={}&postal_code={}&city={}",
+            form.customer_id,
+            urlencoding::encode(&error_key),
+            urlencoding::encode(&form.first_name),
+            urlencoding::encode(&form.last_name),
+            urlencoding::encode(&form.email),
+            urlencoding::encode(&form.phone),
+            urlencoding::encode(&form.address),
+            urlencoding::encode(&form.postal_code),
+            urlencoding::encode(&form.city),
+        );
+
+        return HttpResponse::SeeOther()
+            .insert_header((
+                actix_web::http::header::LOCATION,
+                redirect_url,
+            ))
+            .finish();
+    }    
 
     // Database connection
     let database_url =

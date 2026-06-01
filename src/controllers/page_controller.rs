@@ -1134,10 +1134,24 @@ pub async fn admin_customers_read(
         .body(template.render().unwrap())
 }
 
+// Admin customer create overview query parameters
+#[derive(Deserialize)]
+pub struct CustomerCreateParams {
+    pub error: Option<String>,
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub email: Option<String>,
+    pub phone: Option<String>,
+    pub address: Option<String>,
+    pub postal_code: Option<String>,
+    pub city: Option<String>,
+}
+
 // Render admin customer create page
 pub async fn admin_customer_create(
     req: HttpRequest,
     session: Session,
+    query: web::Query<CustomerCreateParams>,
 ) -> impl Responder {
 
     // Get selected language
@@ -1164,13 +1178,30 @@ pub async fn admin_customer_create(
     let template = AdminCustomerCreateTemplate {
         user_name,
         current_lang,
-        first_name: String::new(),
-        last_name: String::new(),
-        email: String::new(),
-        phone: String::new(),
-        address: String::new(),
-        postal_code: String::new(),
-        city: String::new(),
+
+        error:
+            query.error.clone().unwrap_or_default(),
+
+        first_name:
+            query.first_name.clone().unwrap_or_default(),
+
+        last_name:
+            query.last_name.clone().unwrap_or_default(),
+
+        email:
+            query.email.clone().unwrap_or_default(),
+
+        phone:
+            query.phone.clone().unwrap_or_default(),
+
+        address:
+            query.address.clone().unwrap_or_default(),
+
+        postal_code:
+            query.postal_code.clone().unwrap_or_default(),
+
+        city:
+            query.city.clone().unwrap_or_default(),
     };
 
     HttpResponse::Ok()
@@ -1178,10 +1209,24 @@ pub async fn admin_customer_create(
         .body(template.render().unwrap())
 }
 
-// Admin customers update query parameters
+
+// Admin customer update path parameters
 #[derive(Deserialize)]
 pub struct CustomerPath {
     pub id: i32,
+}
+
+// Admin customers update query parameters
+#[derive(Deserialize)]
+pub struct CustomerUpdateParams {
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub email: Option<String>,
+    pub phone: Option<String>,
+    pub address: Option<String>,
+    pub postal_code: Option<String>,
+    pub city: Option<String>,
+    pub error: Option<String>,
 }
 
 // Render admin customer update page
@@ -1189,6 +1234,7 @@ pub async fn admin_customer_update(
     req: HttpRequest,
     session: Session,
     path: web::Path<CustomerPath>,
+    query: web::Query<CustomerUpdateParams>,
 ) -> impl Responder {
 
     // Get selected language
@@ -1254,26 +1300,52 @@ pub async fn admin_customer_update(
     let template = AdminCustomerUpdateTemplate {
         user_name,
         current_lang,
+
         customer_id:
             path.id,
+
         first_name:
-            row.get::<_, String>(0),
+            query.first_name.clone()
+                .unwrap_or_else(|| row.get::<_, String>(0)),
+
         last_name:
-            row.get::<_, String>(1),
+            query.last_name.clone()
+                .unwrap_or_else(|| row.get::<_, String>(1)),
+
         email:
-            row.get::<_, String>(2),
+            query.email.clone()
+                .unwrap_or_else(|| row.get::<_, String>(2)),
+
         phone:
-            row.get::<_, Option<String>>(3)
-                .unwrap_or_default(),
+            query.phone.clone()
+                .unwrap_or_else(|| {
+                    row.get::<_, Option<String>>(3)
+                        .unwrap_or_default()
+                }),
+
         address:
-            row.get::<_, Option<String>>(4)
-                .unwrap_or_default(),
+            query.address.clone()
+                .unwrap_or_else(|| {
+                    row.get::<_, Option<String>>(4)
+                        .unwrap_or_default()
+                }),
+
         postal_code:
-            row.get::<_, Option<String>>(5)
-                .unwrap_or_default(),
+            query.postal_code.clone()
+                .unwrap_or_else(|| {
+                    row.get::<_, Option<String>>(5)
+                        .unwrap_or_default()
+                }),
+
         city:
-            row.get::<_, Option<String>>(6)
-                .unwrap_or_default(),
+            query.city.clone()
+                .unwrap_or_else(|| {
+                    row.get::<_, Option<String>>(6)
+                        .unwrap_or_default()
+                }),
+
+        error:
+            query.error.clone().unwrap_or_default(),
     };
 
     HttpResponse::Ok()

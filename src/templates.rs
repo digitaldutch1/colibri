@@ -373,6 +373,7 @@ pub struct AdminCustomerCreateTemplate {
     pub address: String,
     pub postal_code: String,
     pub city: String,
+    pub error: String,
 }
 
 impl I18nTemplate for AdminCustomerCreateTemplate {
@@ -396,6 +397,7 @@ pub struct AdminCustomerUpdateTemplate {
     pub address: String,
     pub postal_code: String,
     pub city: String,
+    pub error: String,
 }
 
 impl I18nTemplate for AdminCustomerUpdateTemplate {

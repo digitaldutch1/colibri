@@ -28,7 +28,7 @@ admin-staff-primary-delete-error = Hoofd admin account kan niet verwijderd worde
 
 
 
-# Booking input validation alert
+# Booking and customer input validation alert
 error-firstname-invalid=Ongeldige voornaam. Gebruik alleen letters, spaties of koppeltekens.
 error-lastname-invalid=Ongeldige achternaam. Gebruik alleen letters, spaties of koppeltekens.
 error-address-invalid=Ongeldig adres (gebruik alleen letters, cijfers en spaties)

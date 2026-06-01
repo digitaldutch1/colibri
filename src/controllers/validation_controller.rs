@@ -1,6 +1,7 @@
 
-use crate::controllers::booking_controller::PublicBookingForm;
-use crate::controllers::booking_controller::AdminBookingForm;
+use crate::controllers::booking_controller::*;
+use crate::controllers::customer_controller::*;
+
 
 
 pub fn validate_public_booking(form: &PublicBookingForm) -> Result<(), String> {
@@ -122,6 +123,128 @@ pub fn validate_admin_booking(form: &AdminBookingForm) -> Result<(), String> {
 
     // Email: must contain @
     if form.email.trim().is_empty() || !form.email.contains('@') {
+        return Err("error-email-invalid".to_string());
+    }
+
+    Ok(())
+}
+
+pub fn validate_customer_create(
+    form: &CreateCustomerForm
+) -> Result<(), String> {
+
+    if form.first_name.trim().is_empty()
+        || form.first_name.trim().len() > 50
+        || !form.first_name.trim().chars().all(|c|
+            c.is_alphabetic() || c == ' ' || c == '-' || c == '\'')
+    {
+        return Err("error-firstname-invalid".to_string());
+    }
+
+    if form.last_name.trim().is_empty()
+        || form.last_name.trim().len() > 50
+        || !form.last_name.trim().chars().all(|c|
+            c.is_alphabetic() || c == ' ' || c == '-' || c == '\'')
+    {
+        return Err("error-lastname-invalid".to_string());
+    }
+
+    if form.address.trim().is_empty()
+        || form.address.trim().len() > 100
+        || !form.address.trim().chars().all(|c|
+            c.is_alphanumeric() || c == ' ')
+    {
+        return Err("error-address-invalid".to_string());
+    }
+
+    if form.postal_code.trim().len() < 4
+        || form.postal_code.trim().len() > 10
+        || !form.postal_code.trim().chars().all(|c|
+            c.is_alphanumeric() || c == ' ')
+    {
+        return Err("error-zipcode-invalid".to_string());
+    }
+
+    if form.city.trim().is_empty()
+        || form.city.trim().len() > 50
+        || !form.city.trim().chars().all(|c|
+            c.is_alphabetic() || c == ' ' || c == '-' || c == '\'')
+    {
+        return Err("error-city-invalid".to_string());
+    }
+
+    if form.phone.trim().len() < 8
+        || form.phone.trim().len() > 15
+        || !form.phone.trim().chars().all(|c|
+            c.is_numeric() || c == '+' || c == ' ' || c == '-')
+    {
+        return Err("error-phone-invalid".to_string());
+    }
+
+    if form.email.trim().is_empty()
+        || !form.email.contains('@')
+    {
+        return Err("error-email-invalid".to_string());
+    }
+
+    Ok(())
+}
+
+pub fn validate_customer_update(
+    form: &UpdateCustomerForm
+) -> Result<(), String> {
+
+    if form.first_name.trim().is_empty()
+        || form.first_name.trim().len() > 50
+        || !form.first_name.trim().chars().all(|c|
+            c.is_alphabetic() || c == ' ' || c == '-' || c == '\'')
+    {
+        return Err("error-firstname-invalid".to_string());
+    }
+
+    if form.last_name.trim().is_empty()
+        || form.last_name.trim().len() > 50
+        || !form.last_name.trim().chars().all(|c|
+            c.is_alphabetic() || c == ' ' || c == '-' || c == '\'')
+    {
+        return Err("error-lastname-invalid".to_string());
+    }
+
+    if form.address.trim().is_empty()
+        || form.address.trim().len() > 100
+        || !form.address.trim().chars().all(|c|
+            c.is_alphanumeric() || c == ' ')
+    {
+        return Err("error-address-invalid".to_string());
+    }
+
+    if form.postal_code.trim().len() < 4
+        || form.postal_code.trim().len() > 10
+        || !form.postal_code.trim().chars().all(|c|
+            c.is_alphanumeric() || c == ' ')
+    {
+        return Err("error-zipcode-invalid".to_string());
+    }
+
+    if form.city.trim().is_empty()
+        || form.city.trim().len() > 50
+        || !form.city.trim().chars().all(|c|
+            c.is_alphabetic() || c == ' ' || c == '-' || c == '\'')
+    {
+        return Err("error-city-invalid".to_string());
+    }
+
+    if form.phone.trim().len() < 8
+        || form.phone.trim().len() > 15
+        || !form.phone.trim().chars().all(|c|
+            c.is_numeric() || c == '+' || c == ' ' || c == '-')
+    {
+        return Err("error-phone-invalid".to_string());
+    }
+
+    if form.email.trim().is_empty()
+        || !form.email.contains('@')
+    {
         return Err("error-email-invalid".to_string());
     }
 

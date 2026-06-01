@@ -26,7 +26,7 @@ admin-staff-primary-delete-error = Primary admin account cannot be deleted.
 
 
 
-# Booking input validation alerts
+# Booking and customer input validation alerts
 error-firstname-invalid=Invalid first name. Use letters, spaces or hyphens only.
 error-lastname-invalid=Invalid last name. Use letters, spaces or hyphens only.
 error-address-invalid = Invalid address (use only letters, numbers and spaces)

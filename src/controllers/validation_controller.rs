@@ -1,7 +1,31 @@
 
+use crate::controllers::login_controller::*;
 use crate::controllers::booking_controller::*;
 use crate::controllers::customer_controller::*;
 use crate::controllers::admin_staff_controller::*;
+
+
+
+
+
+// Admin login input validation
+pub fn validate_login(
+    form: &LoginForm
+) -> Result<(), String> {
+
+    if form.email.trim().is_empty()
+        || !form.email.contains('@')
+    {
+        return Err("error-email-invalid".to_string());
+    }
+
+    if form.password.trim().is_empty() {
+        return Err("error-password-required".to_string());
+    }
+
+    Ok(())
+}
+
 
 
 // Public create booking input validation
@@ -65,6 +89,8 @@ pub fn validate_public_booking(form: &PublicBookingForm) -> Result<(), String> {
 
     Ok(())
 }
+
+
 
 // Admin create booking input validation
 pub fn validate_admin_booking(form: &AdminBookingForm) -> Result<(), String> {
@@ -131,6 +157,8 @@ pub fn validate_admin_booking(form: &AdminBookingForm) -> Result<(), String> {
     Ok(())
 }
 
+
+
 // Admin customer create input validation
 pub fn validate_customer_create(
     form: &CreateCustomerForm
@@ -192,6 +220,8 @@ pub fn validate_customer_create(
 
     Ok(())
 }
+
+
 
 // Admin customer update input validation
 pub fn validate_customer_update(
@@ -255,6 +285,8 @@ pub fn validate_customer_update(
     Ok(())
 }
 
+
+
 // Admin staff create input validation
 pub fn validate_staff_create(
     form: &CreateStaffForm
@@ -295,6 +327,8 @@ pub fn validate_staff_create(
 
     Ok(())
 }
+
+
 
 // Admin staff update input validation
 pub fn validate_staff_update(

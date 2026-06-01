@@ -9,7 +9,7 @@ use actix_web::http::header;
 use urlencoding;
 use crate::controllers::validation_controller::validate_public_booking;
 use crate::controllers::validation_controller::validate_admin_booking;
-
+use crate::controllers::csrf_controller;
 
 
 // Helper function to extract language from cookie or default to "en"
@@ -40,14 +40,26 @@ fn redirect_with_error(message: &str, accommodation_id: &str) -> HttpResponse {
 // Public booking step 1 form struct
 #[derive(Deserialize)]
 pub struct PublicBookingStartForm {
+    pub csrf_token: String,
     pub accommodation_id: String,
     pub check_in_date: String,
     pub check_out_date: String,
 }
 
 // Start public booking step 1, availability check and create temporary booking lock
-pub async fn start_public_booking(form: web::Form<PublicBookingStartForm>) -> impl Responder {
+pub async fn start_public_booking(
+    session: Session,
+    form: web::Form<PublicBookingStartForm>
+) -> impl Responder {
     
+    // CSRF validation
+    if !csrf_controller::verify_csrf_token(
+        &session,
+        &form.csrf_token,
+    ) {
+        return HttpResponse::Forbidden().finish();
+    }
+
     // 1. Parse and validate booking step 1 data
     let accommodation_id: i32 = match form.accommodation_id.parse() {
         Ok(value) => value,
@@ -220,6 +232,7 @@ pub async fn start_public_booking(form: web::Form<PublicBookingStartForm>) -> im
 // Public booking step 2 form struct
 #[derive(Deserialize)]
 pub struct PublicBookingForm {
+    pub csrf_token: String,
     pub booking_id: String,
     pub lock_token: String,
     pub accommodation_id: String,
@@ -237,9 +250,18 @@ pub struct PublicBookingForm {
 
 // Create new public booking
 pub async fn create_public_booking(
+    session: Session,
     req: HttpRequest,
     form: web::Form<PublicBookingForm>,
 ) -> impl Responder {
+
+    // CSRF validation
+    if !csrf_controller::verify_csrf_token(
+        &session,
+        &form.csrf_token,
+    ) {
+        return HttpResponse::Forbidden().finish();
+    }
 
     // 1. Validate booking step 2 form data
     if let Err(error_key) = validate_public_booking(&form) {
@@ -602,6 +624,7 @@ pub async fn cancel_booking(path: web::Path<String>) -> impl Responder {
 // Admin booking form struct
 #[derive(Deserialize)]
 pub struct AdminBookingForm {
+    pub csrf_token: String,
     pub accommodation_id: i32,
     pub check_in_date: String,
     pub check_out_date: String,
@@ -616,8 +639,17 @@ pub struct AdminBookingForm {
 
 // Create admin booking
 pub async fn create_admin_booking(
+    session: Session,
     form: web::Form<AdminBookingForm>,
 ) -> impl Responder {
+
+    // CSRF validation
+    if !csrf_controller::verify_csrf_token(
+        &session,
+        &form.csrf_token,
+    ) {
+        return HttpResponse::Forbidden().finish();
+    }    
 
     if let Err(error_key) = validate_admin_booking(&form) {
 
@@ -937,6 +969,7 @@ pub async fn create_admin_booking(
 // Admin booking update struct
 #[derive(Deserialize)]
 pub struct AdminBookingUpdateForm {
+    pub csrf_token: String,
     pub booking_id: i32,
     pub accommodation_id: i32,
     pub check_in_date: String,
@@ -945,8 +978,17 @@ pub struct AdminBookingUpdateForm {
 
 // Update admin booking
 pub async fn update_admin_booking(
+    session: Session,
     form: web::Form<AdminBookingUpdateForm>,
 ) -> impl Responder {
+
+    // CSRF validation
+    if !csrf_controller::verify_csrf_token(
+        &session,
+        &form.csrf_token,
+    ) {
+        return HttpResponse::Forbidden().finish();
+    }
 
     // Parse booking dates
     let check_in_date =

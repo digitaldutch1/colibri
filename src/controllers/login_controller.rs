@@ -9,6 +9,8 @@ use tokio_postgres::NoTls;
 use std::env;
 use std::time::{SystemTime, UNIX_EPOCH};
 use bcrypt::verify;
+use crate::controllers::csrf_controller;
+use crate::controllers::validation_controller::*;
 
 
 
@@ -17,11 +19,10 @@ use bcrypt::verify;
 // login form struct
 #[derive(Deserialize)]
 pub struct LoginForm {
+    pub csrf_token: String,
     pub email: String,
     pub password: String,
 }
-
-
 
 // Returns current time as Unix timestamp
 // Gets current time to store login time and check session timeout
@@ -40,32 +41,20 @@ pub async fn login_admin(
     session: Session,
 ) -> impl Responder {
 
-    let now = now_unix();
-
-    let mut attempts = session.get::<i32>("login_attempts").unwrap_or(None).unwrap_or(0);
-    let last_attempt = session.get::<i64>("last_attempt").unwrap_or(None).unwrap_or(0);
-
-    let max_attempts = 3;
-    let block_time = 300; // seconds
-
-    if now - last_attempt >= block_time {
-        attempts = 0;
+    // CSRF validation
+    if !csrf_controller::verify_csrf_token(
+        &session,
+        &form.csrf_token,
+    ) {
+        return HttpResponse::Forbidden().finish();
     }
 
-    if attempts >= max_attempts && now - last_attempt < block_time {
-
-        let remaining = block_time - (now - last_attempt);
-        let minutes = (remaining + 59) / 60;
-
-        let time_text = if minutes == 1 {
-            "1 minuut".to_string()
-        } else {
-            format!("{} minuten", minutes)
-        };
+    // Input validation
+    if let Err(error_key) = validate_login(&form) {
 
         let redirect_url = format!(
-            "/admin/login?error=Teveel pogingen, probeer over {} opnieuw",
-            time_text
+            "/admin/login?error={}",
+            urlencoding::encode(&error_key),
         );
 
         return HttpResponse::Found()
@@ -73,13 +62,47 @@ pub async fn login_admin(
             .finish();
     }
 
+    let now = now_unix();
+
+    let mut attempts =
+        session.get::<i32>("login_attempts")
+            .unwrap_or(None)
+            .unwrap_or(0);
+
+    let last_attempt =
+        session.get::<i64>("last_attempt")
+            .unwrap_or(None)
+            .unwrap_or(0);
+
+    let max_attempts = 3;
+    let block_time = 300;
+
+    if now - last_attempt >= block_time {
+        attempts = 0;
+    }
+
+    if attempts >= max_attempts
+        && now - last_attempt < block_time
+    {
+        return HttpResponse::Found()
+            .append_header((
+                "Location",
+                "/admin/login?error=error-login-throttled",
+            ))
+            .finish();
+    }
+
     let database_url =
-        env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+        env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set");
 
     let (client, connection) =
-        tokio_postgres::connect(&database_url, NoTls)
-            .await
-            .expect("DB connect failed");
+        tokio_postgres::connect(
+            &database_url,
+            NoTls,
+        )
+        .await
+        .expect("DB connect failed");
 
     actix_web::rt::spawn(async move {
         let _ = connection.await;
@@ -94,12 +117,22 @@ pub async fn login_admin(
         .expect("Query failed");
 
     if let Some(row) = row {
-        let first_name: String = row.get(0);
-        let db_password_hash: String = row.get(1);
-        let role: String = row.get(2);
 
-        if verify(&form.password, &db_password_hash).unwrap_or(false) {
+        let first_name: String =
+            row.get(0);
 
+        let db_password_hash: String =
+            row.get(1);
+
+        let role: String =
+            row.get(2);
+
+        if verify(
+            &form.password,
+            &db_password_hash,
+        )
+        .unwrap_or(false)
+        {
             session.insert("login_attempts", 0).unwrap();
             session.insert("last_attempt", now).unwrap();
             session.insert("logged_in", true).unwrap();
@@ -115,11 +148,15 @@ pub async fn login_admin(
     }
 
     attempts += 1;
+
     session.insert("login_attempts", attempts).unwrap();
     session.insert("last_attempt", now).unwrap();
 
     HttpResponse::Found()
-        .append_header(("Location", "/admin/login?error=Email en wachtwoord komen niet overeen"))
+        .append_header((
+            "Location",
+            "/admin/login?error=error-login-invalid",
+        ))
         .finish()
 }
 

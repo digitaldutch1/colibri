@@ -19,12 +19,19 @@
             {% endif %}
 
             <h2 class="booking-title">{{ self.i18n("booking-title-step2") }}</h2>
+
+            <!-- Public booking 2 form -->
             <form class="booking-form" action="/booking/create" method="post">
                 
+                <!-- CSRF token -->
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                <!-- Public booking step 1 data -->
                 <input type="hidden" name="accommodation_id" value="{{ accommodation_id }}">
                 <input type="hidden" name="check_in_date" value="{{ check_in_date }}">
                 <input type="hidden" name="check_out_date" value="{{ check_out_date }}">
 
+                <!-- Public booking lock data -->
                 <input type="hidden" name="booking_id" value="{{ booking_id }}">
                 <input type="hidden" name="lock_token" value="{{ lock_token }}">
 
@@ -73,6 +80,7 @@
                     </label>
                 </div>           
 
+                <!-- Public booking 2 buttons -->
                 <div class="booking-buttons">
                     <button type="button" class="btn-secondary" onclick="window.history.back()">
                         {{ self.i18n("booking-btn-back") }}

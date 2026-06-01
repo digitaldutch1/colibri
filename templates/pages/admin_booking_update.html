@@ -16,7 +16,13 @@
             {{ self.i18n("admin-booking-update-step1-title") }}
         </h2>
 
+        <!-- Admin booking (step 1) update form -->
         <form class="booking-form" action="/admin/booking/update/save" method="post">
+            
+            <!-- CSRF token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            
+            <!-- Booking ID -->
             <input type="hidden" name="booking_id" value="{{ booking_id }}">
 
             <!-- Accommodation -->

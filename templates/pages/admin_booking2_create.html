@@ -16,8 +16,13 @@
             {{ self.i18n("admin-booking-create-step2-title") }}
         </h2>
 
+        <!-- Admin booking 2 form -->
         <form class="booking-form" action="/admin/booking/create" method="post">
             
+            <!-- CSRF token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <!-- Admin booking step 1 data -->
             <input type="hidden" name="accommodation_id" value="{{ accommodation_id }}">
             <input type="hidden" name="check_in_date" value="{{ check_in_date }}">
             <input type="hidden" name="check_out_date" value="{{ check_out_date }}">
@@ -26,7 +31,6 @@
                 <label>
                     {{ self.i18n("admin-booking-create-firstname") }}
                 </label>
-
                 <input type="text" name="first_name" value="{{ first_name }}" class="form-input">
             </div>
 
@@ -34,7 +38,6 @@
                 <label>
                     {{ self.i18n("admin-booking-create-lastname") }}
                 </label>
-
                 <input type="text" name="last_name" value="{{ last_name }}" class="form-input">
             </div>
 
@@ -42,7 +45,6 @@
                 <label>
                     {{ self.i18n("admin-booking-create-address") }}
                 </label>
-
                 <input type="text" name="address" value="{{ address }}" class="form-input">
             </div>
 
@@ -51,7 +53,6 @@
                     <label>
                         {{ self.i18n("admin-booking-create-zipcode") }}
                     </label>
-
                     <input type="text" name="zip_code" value="{{ zip_code }}" class="form-input">
                 </div>
 
@@ -59,7 +60,6 @@
                     <label>
                         {{ self.i18n("admin-booking-create-city") }}
                     </label>
-
                     <input type="text" name="city" value="{{ city }}" class="form-input">
                 </div>
             </div>
@@ -76,13 +76,12 @@
                 <label>
                     {{ self.i18n("admin-booking-create-email") }}
                 </label>
-
                 <input type="text" name="email" value="{{ email }}" class="form-input">
             </div>
 
+            <!-- Admin booking  2 buttons -->
             <div class="booking-buttons">
-                <button
-                    type="button" class="btn-secondary" onclick="window.history.back()">
+                <button type="button" class="btn-secondary" onclick="window.history.back()">
                     {{ self.i18n("admin-booking-create-back") }}
                 </button>
 

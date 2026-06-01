@@ -3,24 +3,30 @@
 
 <div class="login-container">
     <div class="login-card">
-        <form method="POST" action="/admin/login">
-            <h1>Admin Login</h1>
 
-            <!-- Alert no match login credentials-->
+        <!-- Admin login form -->
+        <form method="POST" action="/admin/login">
+
+            <!-- CSRF token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <!-- Input validation alerts -->
             {% if error.is_some() %}
                 <div class="alert-wrapper">
                     <div class="alert error">
-                        {{ error.as_ref().unwrap() }}
+                        {{ self.i18n(error.as_ref().unwrap()) }}
                     </div>
                 </div>
             {% endif %}
 
+            <h1>Admin Login</h1>
+
             <div class="input-field">
-                <input type="email" name="email" placeholder="Email address" required>
+                <input type="text" name="email" placeholder="Email address">
             </div>
 
             <div class="input-field">
-                <input type="password" id="password" name="password" placeholder="Password" required>
+                <input type="password" id="password" name="password" placeholder="Password">
                 <i class="bx bx-show toggle-password" id="togglePassword"></i>
             </div>
 
@@ -32,7 +38,6 @@
                 Inloggen
             </button>
         </form>
-
     </div>
 </div>
 

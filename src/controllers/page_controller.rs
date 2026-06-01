@@ -8,9 +8,13 @@ use crate::templates::*;
 use serde::Deserialize;
 use tokio_postgres::NoTls;
 use std::env;
+use crate::controllers::csrf_controller;
+
+
 
 // Login session time
 const SESSION_TIMEOUT_HOURS: i64 = 8;
+
 
 
 // Helper function to extract language from cookie or default to "en"
@@ -169,12 +173,17 @@ pub async fn public_booking1(
     let accommodation_id = query.accommodation_id.clone().unwrap_or_default();
     let error = query.error.clone().unwrap_or_default();
 
+    // csrf 
+    let csrf_token =
+        csrf_controller::generate_csrf_token(&session);
+
     // 3. Render booking step 1 template
     let template = PublicBooking1Template {
         user_name,
         current_lang,
         accommodation_id,
         error,
+        csrf_token,
     };
     HttpResponse::Ok()
         .content_type("text/html")
@@ -211,6 +220,10 @@ pub async fn public_booking2(
     let user_name: Option<String> = session.get("user_name").unwrap_or(None);
     let current_lang = get_lang(&req);
 
+    // csrf 
+    let csrf_token =
+        csrf_controller::generate_csrf_token(&session);
+
     // 2. Render booking step 2 template with booking lock data
     let template = PublicBooking2Template {
         user_name,
@@ -230,6 +243,7 @@ pub async fn public_booking2(
         city: query.city.clone().unwrap_or_default(),
         phone: query.phone.clone().unwrap_or_default(),
         email: query.email.clone().unwrap_or_default(),
+        csrf_token,
     };
 
     // 3. Return rendered booking step 2 page
@@ -354,41 +368,42 @@ pub async fn public_booking_overview(
 
 
 // Admin pages
+// Admin login query parameters
+#[derive(Deserialize)]
+pub struct LoginParams {
+    pub error: Option<String>,
+}
+
 // Render admin login page
 pub async fn admin_login(
     req: HttpRequest,
+    session: Session,
+    query: web::Query<LoginParams>,
 ) -> impl Responder {
 
     // 1. Get selected language
     let current_lang = get_lang(&req);
 
-    // 2. Get optional error message from query string
-    let error = req
-        .query_string()
-        .split('&')
-        .find_map(|pair| {
-            let mut parts = pair.split('=');
+    // 2. Get optional error message
+    let error =
+        query.error.clone();
 
-            match (parts.next(), parts.next()) {
-                (Some("error"), Some(value)) => {
-                    Some(value.replace("%20", " "))
-                }
-                _ => None,
-            }
-        });
+    // CSRF token
+    let csrf_token =
+        csrf_controller::generate_csrf_token(&session);
 
     // 3. Render template
     let template = AdminLoginTemplate {
         user_name: None,
         current_lang,
         error,
+        csrf_token,
     };
 
     HttpResponse::Ok()
         .content_type("text/html")
         .body(template.render().unwrap())
 }
-
 
 
 // Render admin homepage
@@ -596,12 +611,16 @@ pub async fn admin_booking1_create(
     let user_name: Option<String> =
         session.get("user_name").unwrap_or(None);
 
+    // csrf 
+    let csrf_token =
+        csrf_controller::generate_csrf_token(&session);
+
     // 4. Render template
     let template = AdminBooking1CreateTemplate {
         user_name,
         current_lang,
-
         accommodation_id: String::new(),
+        csrf_token,
     };
 
     HttpResponse::Ok()
@@ -654,21 +673,22 @@ pub async fn admin_booking2_create(
     let user_name: Option<String> =
         session.get("user_name").unwrap_or(None);
 
+    // csrf 
+    let csrf_token =
+        csrf_controller::generate_csrf_token(&session);
+
     // 4. Render template
     let template = AdminBooking2CreateTemplate {
         user_name,
         current_lang,
-
         accommodation_id:
             query.accommodation_id.clone().unwrap_or_default(),
         check_in_date:
             query.check_in_date.clone().unwrap_or_default(),
         check_out_date:
             query.check_out_date.clone().unwrap_or_default(),
-
         error:
             query.error.clone().unwrap_or_default(),
-
         first_name:
             query.first_name.clone().unwrap_or_default(),
         last_name:
@@ -683,6 +703,7 @@ pub async fn admin_booking2_create(
             query.phone.clone().unwrap_or_default(),
         email:
             query.email.clone().unwrap_or_default(),
+        csrf_token,
     };
 
     HttpResponse::Ok()
@@ -874,6 +895,10 @@ pub async fn admin_booking_update(
         .await
         .unwrap();
 
+    // csrf 
+    let csrf_token =
+        csrf_controller::generate_csrf_token(&session);
+
     // Render template
     let template = AdminBooking1UpdateTemplate {
         user_name,
@@ -887,6 +912,7 @@ pub async fn admin_booking_update(
             row.get(2),
         error:
             query.error.clone().unwrap_or_default(),
+        csrf_token,
     };
 
     HttpResponse::Ok()

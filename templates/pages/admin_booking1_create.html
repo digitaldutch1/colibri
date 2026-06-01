@@ -8,7 +8,12 @@
             {{ self.i18n("admin-booking-create-step1-title") }}
         </h2>
 
+        <!-- Admin booking 1 form -->
         <form class="booking-form" action="/admin/booking2" method="get">
+
+            <!-- CSRF token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
             <div class="form-group">
                 <label for="accommodation">
                     {{ self.i18n("admin-booking-create-accommodation") }}
@@ -37,41 +42,24 @@
                 <label>
                     {{ self.i18n("admin-booking-create-checkin") }}
                 </label>
-
-                <input
-                    type="text"
-                    name="check_in_date"
-                    class="form-input"
-                >
+                <input type="text" name="check_in_date" class="form-input">
             </div>
 
             <div class="form-group">
                 <label>
                     {{ self.i18n("admin-booking-create-checkout") }}
                 </label>
-                <input
-                    type="text"
-                    name="check_out_date"
-                    class="form-input"
-                >
+                <input type="text" name="check_out_date" class="form-input">
             </div>
 
+            <!-- Admin booking 1 buttons -->
             <div class="booking-buttons">
-
-                <button
-                    type="button"
-                    onclick="window.location.href='/admin/bookings'"
-                    class="btn-secondary"
-                >
+                <button type="button" onclick="window.location.href='/admin/bookings'" class="btn-secondary">
                     {{ self.i18n("admin-booking-create-back") }}
                 </button>
 
                 <button
-                    id="submit-btn"
-                    type="submit"
-                    class="btn-primary"
-                    disabled
-                >
+                    id="submit-btn" type="submit" class="btn-primary" disabled>
                     {{ self.i18n("admin-booking-create-next") }}
                 </button>
             </div>

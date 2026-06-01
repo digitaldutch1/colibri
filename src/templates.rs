@@ -82,6 +82,7 @@ pub struct PublicBooking1Template {
     pub accommodation_id: String,
     pub current_lang: String,
     pub error: String,
+    pub csrf_token: String,
 }
 
 impl I18nTemplate for PublicBooking1Template {
@@ -108,6 +109,7 @@ pub struct PublicBooking2Template {
     pub city: String,
     pub phone: String,
     pub email: String,
+    pub csrf_token: String,
 }
 
 impl I18nTemplate for PublicBooking2Template {
@@ -153,6 +155,7 @@ impl I18nTemplate for PublicBookingOverviewTemplate {
 #[derive(Template)]
 #[template(path = "pages/admin_login.html")]
 pub struct AdminLoginTemplate {
+    pub csrf_token: String,
     pub user_name: Option<String>,
     pub current_lang: String,
     pub error: Option<String>,
@@ -211,6 +214,7 @@ pub struct AdminBooking1CreateTemplate {
     pub user_name: Option<String>,
     pub current_lang: String,
     pub accommodation_id: String,
+    pub csrf_token: String,
 }
 
 impl I18nTemplate for AdminBooking1CreateTemplate {
@@ -237,6 +241,7 @@ pub struct AdminBooking2CreateTemplate {
     pub city: String,
     pub phone: String,
     pub email: String,
+    pub csrf_token: String,
 }
 
 impl I18nTemplate for AdminBooking2CreateTemplate {
@@ -277,6 +282,7 @@ impl I18nTemplate for AdminBookingOverviewTemplate {
 #[derive(Template)]
 #[template(path = "pages/admin_booking_update.html")]
 pub struct AdminBooking1UpdateTemplate {
+    pub csrf_token: String,
     pub user_name: Option<String>,
     pub current_lang: String,
     pub booking_id: i32,

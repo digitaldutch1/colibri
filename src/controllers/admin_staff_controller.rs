@@ -5,11 +5,13 @@ use std::env;
 use bcrypt::{hash, DEFAULT_COST};
 use tokio_postgres::NoTls;
 use crate::controllers::validation_controller::*;
+use crate::controllers::csrf_controller;
 
 
 // Admin staff create form struct
 #[derive(Deserialize)]
 pub struct CreateStaffForm {
+    pub csrf_token: String,
     pub first_name: String,
     pub last_name: String,
     pub email: String,
@@ -21,6 +23,14 @@ pub async fn create_staff(
     session: Session,
     form: web::Form<CreateStaffForm>,
 ) -> impl Responder {
+
+    // CSRF validation
+    if !csrf_controller::verify_csrf_token(
+        &session,
+        &form.csrf_token,
+    ) {
+        return HttpResponse::Forbidden().finish();
+    }
 
     // Input validation
     if let Err(error_key) = validate_staff_create(&form) {
@@ -126,6 +136,7 @@ pub async fn create_staff(
 // Admin staff update form struct
 #[derive(Deserialize)]
 pub struct UpdateStaffForm {
+    pub csrf_token: String,
     pub user_id: i32,
     pub first_name: String,
     pub last_name: String,
@@ -139,6 +150,14 @@ pub async fn update_staff(
     session: Session,
     form: web::Form<UpdateStaffForm>,
 ) -> impl Responder {
+
+    // CSRF validation
+    if !csrf_controller::verify_csrf_token(
+        &session,
+        &form.csrf_token,
+    ) {
+        return HttpResponse::Forbidden().finish();
+    }    
 
     // Input validation
     if let Err(error_key) = validate_staff_update(&form) {

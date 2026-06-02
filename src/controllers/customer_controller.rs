@@ -4,7 +4,7 @@ use actix_session::Session;
 use std::env;
 use tokio_postgres::NoTls;
 use crate::controllers::validation_controller::*;
-
+use crate::controllers::csrf_controller;
 
 
 
@@ -12,6 +12,7 @@ use crate::controllers::validation_controller::*;
 // Create customer form struct
 #[derive(Deserialize)]
 pub struct CreateCustomerForm {
+    pub csrf_token: String,
     pub first_name: String,
     pub last_name: String,
     pub email: String,
@@ -23,8 +24,17 @@ pub struct CreateCustomerForm {
 
 // Create customer
 pub async fn create_customer(
+    session: Session,
     form: web::Form<CreateCustomerForm>,
 ) -> impl Responder {
+
+    // CSRF validation
+    if !csrf_controller::verify_csrf_token(
+        &session,
+        &form.csrf_token,
+    ) {
+        return HttpResponse::Forbidden().finish();
+    }
 
     // Input validation
     if let Err(error_key) = validate_customer_create(&form) {
@@ -116,6 +126,7 @@ pub async fn create_customer(
 // Update customer form struct
 #[derive(Deserialize)]
 pub struct UpdateCustomerForm {
+    pub csrf_token: String,
     pub customer_id: i32,
     pub first_name: String,
     pub last_name: String,
@@ -128,8 +139,17 @@ pub struct UpdateCustomerForm {
 
 // Update customer
 pub async fn update_customer(
+    session: Session,
     form: web::Form<UpdateCustomerForm>,
 ) -> impl Responder {
+
+    // CSRF validation
+    if !csrf_controller::verify_csrf_token(
+        &session,
+        &form.csrf_token,
+    ) {
+        return HttpResponse::Forbidden().finish();
+    }
 
     // Input validation
     if let Err(error_key) = validate_customer_update(&form) {

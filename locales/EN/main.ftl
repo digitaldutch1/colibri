@@ -37,7 +37,7 @@ error-email-invalid=Invalid email address. Use a valid email address containing 
 error-password-invalid=Invalid password. Use at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character.
 error-password-required=Password is required.
 error-login-invalid=Email and password do not match.
-error-login-throttled=Too many login attempts. Please try again later.
+error-login-throttled=Too many login attempts. Please wait 5 minutes before trying again.
 
 
 # Booking step 2 session countdown

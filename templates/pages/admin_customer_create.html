@@ -15,7 +15,11 @@
             {{ self.i18n("admin-customer-create-title") }}
         </h2>
 
+        <!-- Admin customer create form -->
         <form class="booking-form" action="/admin/customer/create" method="post">
+
+            <!-- CSRF token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <!-- First name -->
             <div class="form-group">

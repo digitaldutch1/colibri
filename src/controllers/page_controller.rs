@@ -1227,34 +1227,31 @@ pub async fn admin_customer_create(
     let user_name: Option<String> =
         session.get("user_name").unwrap_or(None);
 
+    // csrf 
+    let csrf_token =
+        csrf_controller::generate_csrf_token(&session);
+
     // Render template
     let template = AdminCustomerCreateTemplate {
         user_name,
         current_lang,
-
         error:
             query.error.clone().unwrap_or_default(),
-
         first_name:
             query.first_name.clone().unwrap_or_default(),
-
         last_name:
             query.last_name.clone().unwrap_or_default(),
-
         email:
             query.email.clone().unwrap_or_default(),
-
         phone:
             query.phone.clone().unwrap_or_default(),
-
         address:
             query.address.clone().unwrap_or_default(),
-
         postal_code:
             query.postal_code.clone().unwrap_or_default(),
-
         city:
             query.city.clone().unwrap_or_default(),
+        csrf_token,
     };
 
     HttpResponse::Ok()
@@ -1350,56 +1347,52 @@ pub async fn admin_customer_update(
         .await
         .unwrap();
 
+    // csrf 
+    let csrf_token =
+        csrf_controller::generate_csrf_token(&session);
+
     // Render template
     let template = AdminCustomerUpdateTemplate {
         user_name,
         current_lang,
-
         customer_id:
             path.id,
-
         first_name:
             query.first_name.clone()
                 .unwrap_or_else(|| row.get::<_, String>(0)),
-
         last_name:
             query.last_name.clone()
                 .unwrap_or_else(|| row.get::<_, String>(1)),
-
         email:
             query.email.clone()
                 .unwrap_or_else(|| row.get::<_, String>(2)),
-
         phone:
             query.phone.clone()
                 .unwrap_or_else(|| {
                     row.get::<_, Option<String>>(3)
                         .unwrap_or_default()
                 }),
-
         address:
             query.address.clone()
                 .unwrap_or_else(|| {
                     row.get::<_, Option<String>>(4)
                         .unwrap_or_default()
                 }),
-
         postal_code:
             query.postal_code.clone()
                 .unwrap_or_else(|| {
                     row.get::<_, Option<String>>(5)
                         .unwrap_or_default()
                 }),
-
         city:
             query.city.clone()
                 .unwrap_or_else(|| {
                     row.get::<_, Option<String>>(6)
                         .unwrap_or_default()
                 }),
-
         error:
             query.error.clone().unwrap_or_default(),
+        csrf_token,
     };
 
     HttpResponse::Ok()
@@ -1520,25 +1513,25 @@ pub async fn admin_staff_create(
             .finish();
     }
 
+    // csrf 
+    let csrf_token =
+        csrf_controller::generate_csrf_token(&session);
+
     // Render template
     let template = AdminStaffCreateTemplate {
         user_name,
         current_lang,
-
         error:
             query.error.clone().unwrap_or_default(),
-
         first_name:
             query.first_name.clone().unwrap_or_default(),
-
         last_name:
             query.last_name.clone().unwrap_or_default(),
-
         email:
             query.email.clone().unwrap_or_default(),
-
         password:
             query.password.clone().unwrap_or_default(),
+        csrf_token,
     };
 
     HttpResponse::Ok()
@@ -1638,31 +1631,30 @@ pub async fn admin_staff_update(
         .await
         .unwrap();
 
+    // csrf 
+    let csrf_token =
+        csrf_controller::generate_csrf_token(&session);
+
     // Render template
     let template = AdminStaffUpdateTemplate {
         user_name,
         current_lang,
-
         error:
             query.error.clone().unwrap_or_default(),
-
         user_id:
             path.id,
-
         first_name:
             query.first_name.clone()
                 .unwrap_or_else(|| row.get::<_, String>(0)),
-
         last_name:
             query.last_name.clone()
                 .unwrap_or_else(|| row.get::<_, String>(1)),
-
         email:
             query.email.clone()
                 .unwrap_or_else(|| row.get::<_, String>(2)),
-
         role:
             row.get::<_, String>(3),
+        csrf_token,
     };
 
     HttpResponse::Ok()

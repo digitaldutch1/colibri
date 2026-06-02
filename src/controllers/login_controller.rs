@@ -62,6 +62,7 @@ pub async fn login_admin(
             .finish();
     }
 
+    //Login throttler part 1/2
     let now = now_unix();
 
     let mut attempts =
@@ -74,7 +75,10 @@ pub async fn login_admin(
             .unwrap_or(None)
             .unwrap_or(0);
 
+    // Login throttler 3 attempts        
     let max_attempts = 3;
+
+    // Login throttler block time 300 seconds
     let block_time = 300;
 
     if now - last_attempt >= block_time {
@@ -147,6 +151,7 @@ pub async fn login_admin(
         }
     }
 
+    // Login throttler part 2/2
     attempts += 1;
 
     session.insert("login_attempts", attempts).unwrap();

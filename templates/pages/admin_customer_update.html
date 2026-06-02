@@ -15,8 +15,13 @@
             {{ self.i18n("admin-customer-update-title") }}
         </h2>
 
+        <!-- Admin customer update form -->
         <form class="booking-form" action="/admin/customer/update/save" method="post">
 
+            <!-- CSRF token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <!-- Customer ID -->
             <input type="hidden" name="customer_id" value="{{ customer_id }}">
             
             <!-- First name -->

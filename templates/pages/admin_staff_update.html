@@ -14,7 +14,13 @@
             {{ self.i18n("admin-staff-update-title") }}
         </h2>
 
+        <!-- Admin admin/staff update form -->
         <form class="booking-form" action="/admin/staff/update/save" method="post">
+            
+            <!-- CSRF token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            
+            <!-- Staff data -->
             <input type="hidden" name="user_id" value="{{ user_id }}">
             <input type="hidden" id="roleInput" name="role" value="{{ role }}">
 

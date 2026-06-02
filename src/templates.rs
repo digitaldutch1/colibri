@@ -31,7 +31,7 @@ pub trait I18nTemplate {
 
 
 
-// Public page template structs and Trait implementations EN/NL
+// Public home page template structs and Trait implementations EN/NL
 #[derive(Template)]
 #[template(path = "pages/public_home.html")]
 pub struct HomePublicTemplate {
@@ -48,6 +48,7 @@ impl I18nTemplate for HomePublicTemplate {
 
 
 
+// Public contact page template structs and Trait implementations EN/NL
 #[derive(Template)]
 #[template(path = "pages/public_contact.html")]
 pub struct ContactTemplate {
@@ -61,6 +62,7 @@ impl I18nTemplate for ContactTemplate {
 
 
 
+// Public terms of service page template structs and Trait implementations EN/NL
 #[derive(Template)]
 #[template(path = "pages/public_tos.html")]
 pub struct TosTemplate {
@@ -74,7 +76,7 @@ impl I18nTemplate for TosTemplate {
 
 
 
-// Public booking template structs and Trait implementations EN/NL
+// Public booking 1 page template structs and Trait implementations EN/NL
 #[derive(Template)]
 #[template(path = "pages/public_booking1.html")]
 pub struct PublicBooking1Template {
@@ -91,6 +93,7 @@ impl I18nTemplate for PublicBooking1Template {
 
 
 
+// Public booking 2 page template structs and Trait implementations EN/NL
 #[derive(Template)]
 #[template(path = "pages/public_booking2.html")]
 pub struct PublicBooking2Template {
@@ -118,6 +121,7 @@ impl I18nTemplate for PublicBooking2Template {
 
 
 
+// Public booking overview page template structs and Trait implementations EN/NL
 #[derive(Template)]
 #[template(path = "pages/public_booking_overview.html")]
 pub struct PublicBookingOverviewTemplate {
@@ -165,7 +169,9 @@ impl I18nTemplate for AdminLoginTemplate {
     fn lang(&self) -> &str { &self.current_lang }
 }
 
-// Admin page template structs and Trait implementations EN/NL
+
+
+// Admin dashboard page template structs and Trait implementations EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_home.html")]
 pub struct AdminHomeTemplate {
@@ -177,7 +183,9 @@ impl I18nTemplate for AdminHomeTemplate {
     fn lang(&self) -> &str { &self.current_lang }
 }
 
-// Admin booking read row
+
+
+// Admin bookings read template struct
 pub struct BookingRow {
     pub id: i32,
     pub last_name: String,
@@ -191,7 +199,7 @@ pub struct BookingRow {
     pub source: Option<String>,
 }
 
-// Admin bookings read template
+// Admin bookings read page template struct and trait implemantation EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_bookings_read.html")]
 pub struct AdminBookingsReadTemplate {
@@ -207,7 +215,9 @@ impl I18nTemplate for AdminBookingsReadTemplate {
     fn lang(&self) -> &str { &self.current_lang }
 }
 
-// Admin booking step 1 create template
+
+
+// Admin booking step 1 page template struct and trait implemantation EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_booking1_create.html")]
 pub struct AdminBooking1CreateTemplate {
@@ -224,7 +234,8 @@ impl I18nTemplate for AdminBooking1CreateTemplate {
 }
 
 
-// Admin booking step 2 create template
+
+// Admin booking step 2 page template struct and trait implemantation EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_booking2_create.html")]
 pub struct AdminBooking2CreateTemplate {
@@ -250,7 +261,9 @@ impl I18nTemplate for AdminBooking2CreateTemplate {
     }
 }
 
-// Admin booking overview page template struct and trait implementation
+
+
+// Admin booking overview page template struct and trait implemantation EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_booking_overview.html")]
 pub struct AdminBookingOverviewTemplate {
@@ -278,7 +291,9 @@ impl I18nTemplate for AdminBookingOverviewTemplate {
     }
 }
 
-// Admin booking update template
+
+
+// Admin booking update page template struct and trait implemantation EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_booking_update.html")]
 pub struct AdminBooking1UpdateTemplate {
@@ -299,7 +314,9 @@ impl I18nTemplate for AdminBooking1UpdateTemplate {
     }
 }
 
-// Admin booking update overview template
+
+
+// Admin booking update overview page template struct and trait implemantation EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_booking_update_overview.html")]
 pub struct AdminBookingUpdateOverviewTemplate {
@@ -329,7 +346,9 @@ impl I18nTemplate for AdminBookingUpdateOverviewTemplate {
     }
 }
 
-// Admin booking status template
+
+
+// Admin booking status page template struct and trait implemantation EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_booking_status.html")]
 pub struct AdminBookingStatusTemplate {
@@ -346,8 +365,10 @@ impl I18nTemplate for AdminBookingStatusTemplate {
     }
 }
 
+
+
 // Admin customer
-// Admin customer read template
+// Admin customers read page template struct and trait implemantation EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_customer_read.html")]
 pub struct AdminCustomerReadTemplate {
@@ -366,7 +387,9 @@ impl I18nTemplate for AdminCustomerReadTemplate {
     }
 }
 
-// Admin customer create template
+
+
+// Admin customer create page template struct and trait implemantation EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_customer_create.html")]
 pub struct AdminCustomerCreateTemplate {
@@ -380,6 +403,7 @@ pub struct AdminCustomerCreateTemplate {
     pub postal_code: String,
     pub city: String,
     pub error: String,
+    pub csrf_token: String,
 }
 
 impl I18nTemplate for AdminCustomerCreateTemplate {
@@ -389,7 +413,9 @@ impl I18nTemplate for AdminCustomerCreateTemplate {
     }
 }
 
-// Admin customer update template
+
+
+// Admin customer update page template struct and trait implemantation EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_customer_update.html")]
 pub struct AdminCustomerUpdateTemplate {
@@ -404,6 +430,7 @@ pub struct AdminCustomerUpdateTemplate {
     pub postal_code: String,
     pub city: String,
     pub error: String,
+    pub csrf_token: String,
 }
 
 impl I18nTemplate for AdminCustomerUpdateTemplate {
@@ -413,7 +440,9 @@ impl I18nTemplate for AdminCustomerUpdateTemplate {
     }
 }
 
-// Admin staff read template
+
+
+// Admin admin/ staff read page template struct and trait implemantation EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_staff_read.html")]
 pub struct AdminStaffReadTemplate {
@@ -432,7 +461,9 @@ impl I18nTemplate for AdminStaffReadTemplate {
     }
 }
 
-// Admin staff create template
+
+
+// Admin admin/ staff create page template struct and trait implemantation EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_staff_create.html")]
 pub struct AdminStaffCreateTemplate {
@@ -443,6 +474,7 @@ pub struct AdminStaffCreateTemplate {
     pub last_name: String,
     pub email: String,
     pub password: String,
+    pub csrf_token: String,
 }
 
 impl I18nTemplate for AdminStaffCreateTemplate {
@@ -452,7 +484,9 @@ impl I18nTemplate for AdminStaffCreateTemplate {
     }
 }
 
-// Admin staff update template
+
+
+// Admin admin/ staff update page template struct and trait implemantation EN/NL
 #[derive(Template)]
 #[template(path = "pages/admin_staff_update.html")]
 pub struct AdminStaffUpdateTemplate {
@@ -464,6 +498,7 @@ pub struct AdminStaffUpdateTemplate {
     pub last_name: String,
     pub email: String,
     pub role: String,
+    pub csrf_token: String,
 }
 
 impl I18nTemplate for AdminStaffUpdateTemplate {

@@ -39,7 +39,7 @@ error-email-invalid=Ongeldig e-mailadres. Gebruik een geldig e-mailadres met een
 error-password-invalid=Ongeldig wachtwoord. Gebruik minimaal 8 tekens, een hoofdletter, een kleine letter, een cijfer en een speciaal teken.
 error-password-required=Wachtwoord is verplicht.
 error-login-invalid=E-mailadres en wachtwoord komen niet overeen.
-error-login-throttled=Te veel inlogpogingen. Probeer het later opnieuw.
+error-login-throttled=Te veel inlogpogingen. Wacht 5 minuten voordat je het opnieuw probeert.
 
 
 

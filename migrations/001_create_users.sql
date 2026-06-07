@@ -94,6 +94,7 @@ DELETE FROM "user";
 
 -- Resette id's
 TRUNCATE TABLE customer RESTART IDENTITY CASCADE;
+TRUNCATE booking, customer RESTART IDENTITY CASCADE;
 TRUNCATE booking, customer, "user" RESTART IDENTITY CASCADE;
 
 

@@ -53,6 +53,11 @@ pub fn init(cfg: &mut web::ServiceConfig) {
         .route("/admin/staff/create", web::post().to(admin_staff_controller::create_staff))
         .route("/admin/staff/update/{id}", web::get().to(page_controller::admin_staff_update))
         .route("/admin/staff/update/save", web::post().to(admin_staff_controller::update_staff))
-        .route("/admin/staff/delete", web::post().to(admin_staff_controller::delete_staff));
+        .route("/admin/staff/delete", web::post().to(admin_staff_controller::delete_staff))
+        
+        .route("/admin/prices", web::get().to(page_controller::admin_prices))
+        .route("/admin/prices/save", web::post().to(price_controller::save_price))
+
+        .route("/admin/bookings/{id}/print",web::get().to(print_controller::booking_print),);
 
 }

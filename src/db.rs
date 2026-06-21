@@ -9,6 +9,7 @@ pub struct Accommodation {
     pub id: i32,
     pub name: String,
     pub total_units: i32,
+    pub price_per_night: String,
     pub created_at: NaiveDateTime,
 }
 

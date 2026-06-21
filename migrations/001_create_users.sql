@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS accommodation (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     total_units INT NOT NULL,
+    price_per_night DECIMAL(10,2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -68,18 +69,19 @@ CREATE TABLE IF NOT EXISTS booking (
 INSERT INTO "user" (first_name, last_name, email, password_hash, role)
 VALUES ('Dennis', 'Hettinga', 'dennis_hettinga@live.nl', '1111', 'admin');
 
--- Add units to accommodation table
-INSERT INTO accommodation (name, total_units) 
-VALUES 
-('Chalet', 3), 
-('Tent', 3), 
-('Pitch', 3);
+INSERT INTO accommodation (name, total_units, price_per_night)
+VALUES
+('Chalet', 3, 300.00),
+('Tent', 3, 200.00),
+('Pitch', 3, 100.00);
 
 -- Add unit id's to unit table and connect them to accommodation table
 INSERT INTO unit (accommodation_id, unit_code) VALUES 
 (1, 'C1'), (1, 'C2'), (1, 'C3'),
 (2, 'T1'), (2, 'T2'), (2, 'T3'),
 (3, 'P1'), (3, 'P2'), (3, 'P3'); 
+
+
 
 -- Check table
 SELECT * FROM "booking";

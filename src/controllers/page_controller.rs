@@ -9,6 +9,7 @@ use serde::Deserialize;
 use tokio_postgres::NoTls;
 use std::env;
 use crate::controllers::csrf_controller;
+use crate::controllers::db_controller;
 
 
 
@@ -43,24 +44,38 @@ pub async fn public_home(
     query: web::Query<HomeParams>,
 ) -> impl Responder {
 
-     // 1. Get session user and selected language
-    let user_name: Option<String> = session.get("user_name").unwrap_or(None);
-    let current_lang = get_lang(&req);
+    // 1. Get session user and selected language
+    let user_name: Option<String> =
+        session.get("user_name").unwrap_or(None);
+
+    let current_lang =
+        get_lang(&req);
 
     // 2. Read optional query parameters for homepage alerts
-    let payment = query.payment.clone().unwrap_or_default();
-    let invoice = query.invoice.clone().unwrap_or_default();
-    let error = query.error.clone().unwrap_or_default();
+    let payment =
+        query.payment.clone().unwrap_or_default();
 
-    // 3. Render homepage template
-    let template = HomePublicTemplate { 
-        user_name, 
+    let invoice =
+        query.invoice.clone().unwrap_or_default();
+
+    let error =
+        query.error.clone().unwrap_or_default();
+
+    // 3. Get accommodations
+    let accommodations =
+        crate::controllers::db_controller::get_all_accommodations()
+            .await;
+
+    // 4. Render homepage template
+    let template = HomePublicTemplate {
+        user_name,
         current_lang,
         payment,
         invoice,
         error,
+        accommodations,
     };
-    
+
     HttpResponse::Ok()
         .content_type("text/html")
         .body(template.render().unwrap())
@@ -502,7 +517,7 @@ pub async fn admin_bookings_read(
 
     // 4. Get session role
     let user_role: String =
-        session.get("role").unwrap_or(None).unwrap_or_default();
+        session.get("user_role").unwrap_or(None).unwrap_or_default();
 
     // 5. Connect to database
     let database_url =
@@ -1655,6 +1670,56 @@ pub async fn admin_staff_update(
         role:
             row.get::<_, String>(3),
         csrf_token,
+    };
+
+    HttpResponse::Ok()
+        .content_type("text/html")
+        .body(template.render().unwrap())
+}
+
+// Admin price query parameters
+#[derive(Deserialize)]
+pub struct AdminPricesParams {
+    pub error: Option<String>,
+}
+
+// Render admin prices page
+pub async fn admin_prices(
+    req: HttpRequest,
+    session: Session,
+    query: web::Query<AdminPricesParams>,
+) -> impl Responder {
+
+    let current_lang = get_lang(&req);
+
+    let logged_in = session
+        .get::<bool>("logged_in")
+        .unwrap_or(None)
+        .unwrap_or(false);
+
+    if !logged_in {
+        return HttpResponse::Found()
+            .append_header(("Location", "/admin/login"))
+            .finish();
+    }
+
+    let user_name: Option<String> =
+        session.get("user_name").unwrap_or(None);
+
+    let accommodations =
+        db_controller::get_all_accommodations().await;
+
+    // csrf 
+    let csrf_token =
+        csrf_controller::generate_csrf_token(&session);
+
+    let template = AdminPricesTemplate {
+        user_name,
+        current_lang,
+        accommodations,
+        error:
+            query.error.clone().unwrap_or_default(),
+        csrf_token,    
     };
 
     HttpResponse::Ok()

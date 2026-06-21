@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Reservering</title>
+        <style>
+            body{
+                font-family: Arial, sans-serif;
+                padding:40px;
+            }
+
+            table{
+                width:100%;
+                border-collapse:collapse;
+            }
+
+            td{
+                border:1px solid #ddd;
+                padding:10px;
+            }
+
+            h1{
+                margin-bottom:30px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Camping de Colibri</h1>
+
+        <h2>
+        Reservering #{{ booking.id }}
+        </h2>
+
+        <table>
+            <tr>
+            <td>Gast</td>
+            <td>{{ booking.first_name }} {{ booking.last_name }}</td>
+            </tr>
+
+            <tr>
+            <td>Email</td>
+            <td>{{ booking.email }}</td>
+            </tr>
+
+            <tr>
+            <td>Telefoon</td>
+            <td>{{ booking.phone.as_deref().unwrap_or("-") }}</td>
+            </tr>
+
+            <tr>
+            <td>Accommodatie</td>
+            <td>{{ booking.accommodation_name }}</td>
+            </tr>
+
+            <tr>
+            <td>Unit</td>
+            <td>{{ booking.unit_code }}</td>
+            </tr>
+
+            <tr>
+            <td>Check-in</td>
+            <td>{{ booking.check_in }}</td>
+            </tr>
+
+            <tr>
+            <td>Check-out</td>
+            <td>{{ booking.check_out }}</td>
+            </tr>
+
+            <tr>
+            <td>Factuurnummer</td>
+            <td>{{ booking.invoice_number.as_deref().unwrap_or("-") }}</td>
+            </tr>
+
+            <tr>
+            <td>Status</td>
+            <td>{{ booking.status }}</td>
+            </tr>
+        </table>
+
+        <script>
+        window.onload = function () {
+            window.print();
+        };
+        </script>
+    </body>
+</html>

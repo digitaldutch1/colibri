@@ -11,3 +11,5 @@ pub mod customer_controller;
 pub mod admin_staff_controller;
 pub mod validation_controller;
 pub mod csrf_controller;
+pub mod print_controller;
+pub mod price_controller;

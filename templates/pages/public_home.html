@@ -37,7 +37,7 @@
                     <div class="booking-content">
                         <h3>{{ self.i18n("home-chalet-title") }}</h3>
                         <p>{{ self.i18n("home-chalet-desc") }}</p>
-                        <small>{{ self.i18n("home-price-chalet") }}</small>
+                        <small>€{{ accommodations[0].price_per_night }} {{ self.i18n("home-price-per-night") }}</small>
                         <button type="button" onclick="window.location.href='/booking1?accommodation_id=1'" class="btn-booking">
                             {{ self.i18n("home-btn-book") }}
                         </button>
@@ -52,7 +52,7 @@
                     <div class="booking-content">
                         <h3>{{ self.i18n("home-tent-title") }}</h3>
                         <p>{{ self.i18n("home-tent-desc") }}</p>
-                        <small>{{ self.i18n("home-price-tent") }}</small>
+                        <small>€{{ accommodations[1].price_per_night }} {{ self.i18n("home-price-per-night") }}</small>
                         <button type="button" onclick="window.location.href='/booking1?accommodation_id=2'" class="btn-booking">
                             {{ self.i18n("home-btn-book") }}
                         </button>
@@ -67,7 +67,7 @@
                     <div class="booking-content">
                         <h3>{{ self.i18n("home-pitch-title") }}</h3>
                         <p>{{ self.i18n("home-pitch-desc") }}</p>
-                        <small>{{ self.i18n("home-price-pitch") }}</small>
+                        <small>€{{ accommodations[2].price_per_night }} {{ self.i18n("home-price-per-night") }}</small>
                         <button type="button" onclick="window.location.href='/booking1?accommodation_id=3'" class="btn-booking">
                             {{ self.i18n("home-btn-book") }}
                         </button>

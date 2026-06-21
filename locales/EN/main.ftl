@@ -23,7 +23,7 @@ admin-staff-delete1-success = Staff member
 admin-staff-delete2-success = has been deleted.
 admin-staff-primary-role-error = Primary admin role cannot be changed.
 admin-staff-primary-delete-error = Primary admin account cannot be deleted.
-
+error-price-invalid = Invalid price.
 
 
 # Booking, customer, staff and login form input validation alerts
@@ -51,6 +51,7 @@ nav-home = Home
 nav-booking = Booking
 nav-contact = Contact
 nav-admin = Admin
+
 footer-camping-desc = A peaceful campsite in the heart of nature.
 footer-nav-title = Navigation
 footer-nav-tos = Terms of Service
@@ -65,13 +66,11 @@ footer-copyright = © 2026 Camping de Colibri
 # Home page
 home-chalet-title = Chalet
 home-chalet-desc = Our chalet is a comfortable accommodation for those who want that extra bit of luxury while camping. The chalet is fully furnished and offers a great place to relax after a day in nature. Suitable for couples and families who value convenience and comfort.
-home-price-chalet = €300 per night
 home-tent-title = Tent
+home-price-per-night = per night
 home-tent-desc = The tent is ideal for true camping enthusiasts who like to stay close to nature. You will enjoy peace, space, and a real outdoor experience. A great choice for those who want simple camping in a green environment.
-home-price-tent = €200 per night
 home-pitch-title = Pitch
 home-pitch-desc = Our pitches are spacious and suitable for campers, caravans, and tents. You have plenty of privacy and a view of the greenery surrounding the campsite. Perfect for guests traveling with their own camping equipment.
-home-price-pitch = €100 per night
 home-btn-book = Book Now
 home-welcome-title = Welcome to Camping de Colibri
 home-welcome-text = Welcome to Camping de Colibri, a peaceful campsite in the middle of nature. Here you can enjoy relaxation, space, and a wonderful environment. The campsite is an ideal base for walking, cycling, and swimming. Whether you come to relax or want to be active, you will quickly feel at home at Camping de Colibri.
@@ -156,6 +155,7 @@ nav-dashboard = Dashboard
 nav-bookings = Bookings
 nav-customers = Customers
 nav-users = Staff
+nav-prices = Prices
 nav-logout = Logout
 
 
@@ -164,6 +164,7 @@ nav-logout = Logout
 admin-home-bookings = Bookings
 admin-home-users = Admins / Staff
 admin-home-customers = Customers
+admin-home-prices = Prices
 
 
 
@@ -262,6 +263,7 @@ admin-booking-status-current = Current status
 admin-booking-status-pending = Pending
 admin-booking-status-confirmed = Confirmed
 admin-booking-status-cancelled = Cancelled
+admin-booking-status-expired = Expired
 admin-booking-status-back = Back
 admin-booking-status-save = Save
 
@@ -347,3 +349,11 @@ admin-staff-update-password-placeholder = Leave empty to keep current password
 admin-staff-update-back = Back
 admin-staff-update-save = Save
 
+
+# Admin prices
+admin-prices-current-price = Current price
+admin-prices-new-price = New price
+admin-prices-save = Save
+accommodation-chalet = Chalet
+accommodation-tent = Tent
+accommodation-pitch = Pitch

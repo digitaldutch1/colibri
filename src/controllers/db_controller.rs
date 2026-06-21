@@ -21,21 +21,79 @@ pub async fn get_all_accommodations() -> Vec<Accommodation> {
     });
 
     let rows = client
-        .query("SELECT id, name, total_units, created_at FROM accommodation", &[])
+        .query(
+            "
+            SELECT
+                id,
+                name,
+                total_units,
+                price_per_night::TEXT,
+                created_at
+
+            FROM accommodation
+            ORDER BY id ASC
+            ",
+            &[],
+        )
         .await
         .expect("Query failed");
 
     let mut accommodations = Vec::new();
+
     for row in rows {
         accommodations.push(Accommodation {
             id: row.get(0),
             name: row.get(1),
             total_units: row.get(2),
-            created_at: row.get(3),
+            price_per_night: row.get(3),
+            created_at: row.get(4),
         });
     }
+
     accommodations
 }
+
+
+
+pub async fn get_accommodation_price(
+    accommodation_id: i32,
+) -> f64 {
+
+    let database_url =
+        env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set");
+
+    let (client, connection) =
+        tokio_postgres::connect(
+            &database_url,
+            NoTls,
+        )
+        .await
+        .expect("Failed to connect");
+
+    actix_web::rt::spawn(async move {
+        if let Err(error) = connection.await {
+            eprintln!("connection error: {}", error);
+        }
+    });
+
+    let row = client
+        .query_one(
+            "
+            SELECT price_per_night::FLOAT8
+
+            FROM accommodation
+
+            WHERE id = $1
+            ",
+            &[&accommodation_id],
+        )
+        .await
+        .expect("Query failed");
+
+    row.get(0)
+}
+
 
 
 pub async fn get_unavailable_dates(

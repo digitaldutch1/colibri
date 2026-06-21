@@ -10,6 +10,7 @@ use urlencoding;
 use crate::controllers::validation_controller::validate_public_booking;
 use crate::controllers::validation_controller::validate_admin_booking;
 use crate::controllers::csrf_controller;
+use crate::controllers::db_controller;
 
 
 // Helper function to extract language from cookie or default to "en"
@@ -83,12 +84,11 @@ pub async fn start_public_booking(
      // 2. Calculate nights and temporary booking price
     let nights = (check_out_date - check_in_date).num_days();
 
-    let price_per_night = match accommodation_id {
-        1 => 300.0,
-        2 => 200.0,
-        3 => 100.0,
-        _ => return HttpResponse::BadRequest().body("Invalid accommodation."),
-    };
+    let price_per_night: f64 =
+        db_controller::get_accommodation_price(
+            accommodation_id,
+        )
+        .await;
 
     let total_price = price_per_night * nights as f64;
 
@@ -318,12 +318,11 @@ pub async fn create_public_booking(
     // 3. Calculate nights and total booking price
     let nights = (check_out_date - check_in_date).num_days();
 
-    let price_per_night = match accommodation_id {
-        1 => 300.0,
-        2 => 200.0,
-        3 => 100.0,
-        _ => return HttpResponse::BadRequest().body("Invalid accommodation."),
-    };
+    let price_per_night =
+        db_controller::get_accommodation_price(
+            accommodation_id,
+        )
+        .await;
 
     let total_price = price_per_night * nights as f64;
 
@@ -713,16 +712,11 @@ pub async fn create_admin_booking(
     let nights =
         (check_out_date - check_in_date).num_days();
 
-    let price_per_night = match form.accommodation_id {
-        1 => 300.0,
-        2 => 200.0,
-        3 => 100.0,
-
-        _ => {
-            return HttpResponse::BadRequest()
-                .body("Invalid accommodation.");
-        }
-    };
+    let price_per_night =
+        crate::controllers::db_controller::get_accommodation_price(
+            form.accommodation_id,
+        )
+        .await;
 
     let total_price =
         price_per_night * nights as f64;

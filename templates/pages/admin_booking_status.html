@@ -15,8 +15,22 @@
                 <div class="status-current-title">
                     {{ self.i18n("admin-booking-status-current") }}
                 </div>
-                <div class="status-value">
-                    {{ current_status }}
+                <div class="status-value" id="status-value">
+
+                {% if current_status == "pending" %}
+                    {{ self.i18n("admin-booking-status-pending") }}
+
+                {% else if current_status == "confirmed" %}
+                    {{ self.i18n("admin-booking-status-confirmed") }}
+
+                {% else if current_status == "cancelled" %}
+                    {{ self.i18n("admin-booking-status-cancelled") }}
+
+                {% else if current_status == "expired" %}
+                    {{ self.i18n("admin-booking-status-expired") }}
+
+                {% endif %}
+
                 </div>
             </div>
 
@@ -49,6 +63,15 @@
                 >
                     {{ self.i18n("admin-booking-status-cancelled") }}
                 </button>
+
+                <button
+                    type="button"
+                    class="{% if current_status == "expired" %}status-active{% else %}status-inactive{% endif %}"
+                    {% if current_status == "expired" %}disabled{% endif %}
+                    onclick="setStatus('expired')"
+                >
+                    {{ self.i18n("admin-booking-status-expired") }}
+                </button>
             </div>
 
             <!-- Hidden selected status -->
@@ -71,11 +94,14 @@
 <!-- Booking status button state and selected status update -->
 <script>
 function setStatus(status) {
+
     document.getElementById("selected-status").value =
         status;
 
-    document.querySelector(".status-value").innerText =
-        status;
+    document.getElementById("status-value").innerText =
+        document.querySelector(
+            '[onclick="setStatus(\'' + status + '\')"]'
+        ).innerText;
 
     const buttons =
         document.querySelectorAll(".status-buttons button");
@@ -89,7 +115,7 @@ function setStatus(status) {
     buttons.forEach(function(button) {
 
         if (
-            button.innerText.toLowerCase() === status
+            button.getAttribute("onclick") === "setStatus('" + status + "')"
         ) {
 
             button.disabled = true;

@@ -148,6 +148,12 @@
                                                     {{ self.i18n("admin-bookings-status-change") }}
                                                 </a>
 
+                                                <a href="/admin/bookings/{{ booking.id }}/print"
+                                                target="_blank"
+                                                class="btn btn-colibri btn-sm">
+                                                    Print
+                                                </a>
+
                                                 {% if user_role == "admin" %}
                                                 <form action="/admin/booking/delete"
                                                     method="post"

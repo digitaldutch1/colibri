@@ -73,11 +73,11 @@ pub fn validate_public_booking(form: &PublicBookingForm) -> Result<(), String> {
         return Err("error-city-invalid".to_string());
     }
 
-    // Phone: min 8, max 15, numbers, +, spaces and hyphens
+    // Phone: min 8, max 15, numbers and optional +
     if form.phone.trim().len() < 8
         || form.phone.trim().len() > 15
         || !form.phone.trim().chars().all(|c|
-            c.is_numeric() || c == '+' || c == ' ' || c == '-')
+            c.is_numeric() || c == '+')
     {
         return Err("error-phone-invalid".to_string());
     }
@@ -140,11 +140,11 @@ pub fn validate_admin_booking(form: &AdminBookingForm) -> Result<(), String> {
         return Err("error-city-invalid".to_string());
     }
 
-    // Phone: min 8, max 15, numbers, +, spaces and hyphens
+    // Phone: min 8, max 15, numbers and optional +
     if form.phone.trim().len() < 8
         || form.phone.trim().len() > 15
         || !form.phone.trim().chars().all(|c|
-            c.is_numeric() || c == '+' || c == ' ' || c == '-')
+            c.is_numeric() || c == '+')
     {
         return Err("error-phone-invalid".to_string());
     }
@@ -369,6 +369,37 @@ pub fn validate_staff_update(
         {
             return Err("error-password-invalid".to_string());
         }
+    }
+
+    Ok(())
+}
+
+// Admin prices validation
+pub fn validate_price(
+    price: &str
+) -> Result<(), String> {
+
+    let price =
+        price.trim();
+
+    let parts: Vec<&str> =
+        price.split('.').collect();
+
+    if parts.len() != 2 {
+        return Err("error-price-invalid".to_string());
+    }
+
+    if parts[0].len() < 2
+        || parts[0].len() > 3
+        || !parts[0].chars().all(|c| c.is_numeric())
+    {
+        return Err("error-price-invalid".to_string());
+    }
+
+    if parts[1].len() != 2
+        || !parts[1].chars().all(|c| c.is_numeric())
+    {
+        return Err("error-price-invalid".to_string());
     }
 
     Ok(())

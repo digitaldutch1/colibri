@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/static/css/pages/admin_booking_overview.css">
     <link rel="stylesheet" href="/static/css/pages/admin_booking_update_overview.css">
     <link rel="stylesheet" href="/static/css/pages/admin_booking_status.css">
+    <link rel="stylesheet" href="/static/css/pages/admin_prices.css">
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
@@ -84,6 +85,11 @@
                         {{ self.i18n("nav-users") }}
                     </a>
                 </li>
+                <li>
+                    <a id="adminNavPrices" href="/admin/prices" class="admin-nav-link">
+                        {{ self.i18n("nav-prices") }}
+                    </a>
+                </li>                
             {% endif %}
         </ul>
 
@@ -155,6 +161,7 @@
             const customers = document.getElementById("adminNavCustomers");
             const bookings = document.getElementById("adminNavBookings");
             const users = document.getElementById("adminNavUsers");
+            const prices = document.getElementById("adminNavPrices");
 
             function setActive(el) {
                 if (el) el.classList.add("active");
@@ -174,6 +181,9 @@
             else if (path.startsWith("/admin/staff")) {
                 setActive(users);
             }
+            else if (path.startsWith("/admin/prices")) {
+                setActive(prices);
+            }            
         })();
     </script>
 

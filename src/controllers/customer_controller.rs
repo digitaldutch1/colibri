@@ -302,10 +302,9 @@ pub async fn delete_customer(
         .query_one(
             "
             SELECT COUNT(*)
-
             FROM booking
-
             WHERE customer_id = $1
+            AND status NOT IN ('cancelled', 'expired')
             ",
             &[&form.customer_id],
         )

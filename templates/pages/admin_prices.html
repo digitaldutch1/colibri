@@ -1,0 +1,56 @@
+{% extends "layouts/admin_layout.html" %}
+{% block content %}
+
+{% if !error.is_empty() %}
+<div class="alert-wrapper">
+    <div class="alert error">
+        {{ self.i18n(error) }}
+    </div>
+</div>
+{% endif %}
+
+<div class="prices-wrapper">
+    {% for accommodation in accommodations %}
+    <div class="price-card">
+        <form action="/admin/prices/save" method="post">
+            
+            <!-- CSRF token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            
+            <!--  -->
+            <input type="hidden" name="accommodation_id" value="{{ accommodation.id }}">
+
+            <div class="price-card-title">
+            {% if accommodation.name == "Chalet" %}
+                {{ self.i18n("accommodation-chalet") }}
+            {% else if accommodation.name == "Tent" %}
+                {{ self.i18n("accommodation-tent") }}
+            {% else if accommodation.name == "Pitch" %}
+                {{ self.i18n("accommodation-pitch") }}
+            {% endif %}
+            </div>
+
+            <div class="price-card-label">
+                {{ self.i18n("admin-prices-current-price") }}
+            </div>
+
+            <div class="price-card-current-price">
+                €{{ accommodation.price_per_night }}
+            </div>
+
+            <div class="price-card-label">
+                {{ self.i18n("admin-prices-new-price") }}
+            </div>
+
+            <input type="text" name="price" class="price-card-input" value="{{ accommodation.price_per_night }}">
+
+            <button type="submit" class="price-card-button">
+                {{ self.i18n("admin-prices-save") }}
+            </button>
+
+        </form>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

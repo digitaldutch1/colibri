@@ -118,7 +118,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         onChange: function (_selectedDates, dateStr, instance) {
             if (instance === checkInPicker && checkOutPicker) {
-                checkOutPicker.set("minDate", dateStr);
+
+                const nextDay = new Date(dateStr);
+                nextDay.setDate(nextDay.getDate() + 1);
+
+                checkOutPicker.set("minDate", nextDay);
+
                 if (
                     checkOutInput.value &&
                     checkOutInput.value <= dateStr

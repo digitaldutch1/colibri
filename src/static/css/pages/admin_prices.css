@@ -1,0 +1,106 @@
+
+
+
+
+  
+/*Admin prices */
+/* Prices wrapper */
+.prices-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 320px);
+    justify-content: center;
+    gap: 48px;
+}
+
+/* Price card */
+.price-card {
+    border: 2px solid var(--main-color);
+    border-radius: 12px;
+    background-color: var(--accent-color);
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px;
+}
+
+/* Accommodation title */
+.price-card-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--main-color);
+    margin-bottom: 24px;
+}
+
+/* Divider */
+.price-card-divider {
+    width: 100%;
+    height: 1px;
+    background-color: var(--main-color);
+    margin: 20px 0;
+}
+
+/* Labels */
+.price-card-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--main-color);
+    margin-bottom: 8px;
+}
+
+/* Current price */
+.price-card-current-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--main-color);
+    margin-bottom: 24px;
+}
+
+/* Input */
+.price-card-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--main-color);
+    border-radius: 8px;
+    background-color: white;
+    color: var(--main-color);
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+/* Save button */
+.price-card-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--main-color);
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.price-card-button:hover {
+    opacity: 0.9;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 900px) {
+
+    .prices-wrapper {
+        grid-template-columns: 320px;
+        justify-content: center;
+    }
+
+    .price-card {
+        width: 100%;
+    }
+}

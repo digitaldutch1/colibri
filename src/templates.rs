@@ -5,6 +5,7 @@ use askama::Template;
 use unic_langid::LanguageIdentifier;
 use crate::db::CustomerRow;
 use crate::db::StaffRow;
+use crate::db::Accommodation;
 
 
 
@@ -40,6 +41,7 @@ pub struct HomePublicTemplate {
     pub payment: String,
     pub invoice: String,
     pub error: String,
+    pub accommodations: Vec<Accommodation>,
 }
 
 impl I18nTemplate for HomePublicTemplate {
@@ -215,7 +217,27 @@ impl I18nTemplate for AdminBookingsReadTemplate {
     fn lang(&self) -> &str { &self.current_lang }
 }
 
+// Admin booking print template struct
+pub struct BookingPrintRow {
+    pub id: i32,
+    pub first_name: String,
+    pub last_name: String,
+    pub email: String,
+    pub phone: Option<String>,
+    pub unit_code: String,
+    pub accommodation_name: String,
+    pub invoice_number: Option<String>,
+    pub check_in: String,
+    pub check_out: String,
+    pub status: String,
+}
 
+// Admin booking print template struct
+#[derive(Template)]
+#[template(path = "pages/admin_booking_print.html")]
+pub struct AdminBookingPrintTemplate {
+    pub booking: BookingPrintRow,
+}
 
 // Admin booking step 1 page template struct and trait implemantation EN/NL
 #[derive(Template)]
@@ -503,6 +525,23 @@ pub struct AdminStaffUpdateTemplate {
 
 impl I18nTemplate for AdminStaffUpdateTemplate {
 
+    fn lang(&self) -> &str {
+        &self.current_lang
+    }
+}
+
+// Admin prices page template struct and trait implemantation EN/NL
+#[derive(Template)]
+#[template(path = "pages/admin_prices.html")]
+pub struct AdminPricesTemplate {
+    pub user_name: Option<String>,
+    pub current_lang: String,
+    pub accommodations: Vec<Accommodation>,
+    pub error: String,
+    pub csrf_token: String,
+}
+
+impl I18nTemplate for AdminPricesTemplate {
     fn lang(&self) -> &str {
         &self.current_lang
     }

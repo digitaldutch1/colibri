@@ -25,7 +25,7 @@ admin-staff-delete1-success = Staff account
 admin-staff-delete2-success = is verwijderd.
 admin-staff-primary-role-error = Hoofd admin rol kan niet gewijzigd worden.
 admin-staff-primary-delete-error = Hoofd admin account kan niet verwijderd worden.
-
+error-price-invalid = Ongeldige prijs.
 
 
 # Booking, customer, staff  and login form input validation alerts
@@ -54,6 +54,7 @@ nav-home = Home
 nav-booking = Boeken
 nav-contact = Contact
 nav-admin = Admin
+
 footer-camping-desc = Een rustige camping midden in de natuur.
 footer-nav-title = Navigatie
 footer-nav-tos = Algemene voorwaarden
@@ -68,13 +69,11 @@ footer-copyright = © 2026 Camping de Colibri
 # Public home page
 home-chalet-title = Chalet
 home-chalet-desc = Onze chalet is een comfortabele accommodatie voor wie graag wat extra luxe wil tijdens het kamperen. De chalet is volledig ingericht en biedt een fijne plek om te ontspannen na een dag in de natuur. Geschikt voor stellen en gezinnen die gemak en comfort belangrijk vinden.
-home-price-chalet = €300 per nacht
 home-tent-title = Tent
+home-price-per-night = per nacht
 home-tent-desc = De tent is ideaal voor echte kampeerliefhebbers die graag dicht bij de natuur verblijven. Je geniet van rust, ruimte en een echte buitenervaring. Een fijne keuze voor wie eenvoudig wil kamperen in een groene omgeving.
-home-price-tent = €200 per nacht
 home-pitch-title = Staanplaats
 home-pitch-desc = Onze staanplaatsen zijn ruim opgezet en geschikt voor campers, caravans en tenten. Je hebt voldoende privacy en uitzicht op het groen rondom de camping. Perfect voor gasten die met hun eigen kampeermiddel reizen.
-home-price-pitch = €100 per nacht
 home-btn-book = Boeken
 home-welcome-title = Welkom bij Camping de Colibri
 home-welcome-text = Welkom bij Camping de Colibri, een rustige camping midden in de natuur. Hier kun je genieten van ontspanning, ruimte en een fijne omgeving. De camping is een ideale uitvalsbasis voor wandelen, fietsen en zwemmen. Of je nu komt om te ontspannen of actief bezig wilt zijn, bij Camping de Colibri voel je je snel thuis.
@@ -159,6 +158,7 @@ nav-dashboard = Dashboard
 nav-bookings = Boekingen
 nav-customers = Klanten
 nav-users = Personeel
+nav-prices = Prijzen
 nav-logout = Uitloggen
 
 
@@ -167,6 +167,7 @@ nav-logout = Uitloggen
 admin-home-bookings = Boekingen
 admin-home-users = Beheerders / Personeel
 admin-home-customers = Customers
+admin-home-prices = Prijzen
 
 
 
@@ -265,6 +266,7 @@ admin-booking-status-current = Huidige status
 admin-booking-status-pending = In afwachting
 admin-booking-status-confirmed = Bevestigd
 admin-booking-status-cancelled = Geannuleerd
+admin-booking-status-expired = Verlopen
 admin-booking-status-back = Terug
 admin-booking-status-save = Opslaan
 
@@ -349,3 +351,13 @@ admin-staff-update-role = Rol
 admin-staff-update-password-placeholder = Leeg laten om huidig wachtwoord te behouden
 admin-staff-update-back = Terug
 admin-staff-update-save = Opslaan
+
+
+
+# Admin prices
+admin-prices-current-price = Huidige prijs
+admin-prices-new-price = Nieuwe prijs
+admin-prices-save = Opslaan
+accommodation-chalet = Chalet
+accommodation-tent = Tent
+accommodation-pitch = Staanplaats

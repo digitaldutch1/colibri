@@ -28,7 +28,7 @@ admin-staff-primary-delete-error = Hoofd admin account kan niet verwijderd worde
 error-price-invalid = Ongeldige prijs.
 
 
-# Booking, customer, staff  and login form input validation alerts
+# Booking, customer, staff, login, forgot_password and reset_password form input validation alerts
 error-firstname-invalid=Ongeldige voornaam. Gebruik alleen letters, spaties of koppeltekens.
 error-lastname-invalid=Ongeldige achternaam. Gebruik alleen letters, spaties of koppeltekens.
 error-address-invalid=Ongeldig adres (gebruik alleen letters, cijfers en spaties)
@@ -40,7 +40,12 @@ error-password-invalid=Ongeldig wachtwoord. Gebruik minimaal 8 tekens, een hoofd
 error-password-required=Wachtwoord is verplicht.
 error-login-invalid=E-mailadres en wachtwoord komen niet overeen.
 error-login-throttled=Te veel inlogpogingen. Wacht 5 minuten voordat je het opnieuw probeert.
-
+forgot-password-success = E-mail voor wachtwoordherstel verzonden.
+forgot-password-email-not-found=E-mailadres niet gevonden.
+reset-password-password-invalid=Wachtwoord voldoet niet aan de eisen.
+reset-password-passwords-not-match=Wachtwoorden komen niet overeen.
+reset-password-invalid-token=Ongeldige of verlopen resetlink.
+reset-password-success=Wachtwoord succesvol gewijzigd.
 
 
 # Booking step 2 session countdown
@@ -163,11 +168,34 @@ nav-logout = Uitloggen
 
 
 
+# Admin login page
+admin-login-title=Admin Login
+admin-login-email=E-mailadres
+admin-login-password=Wachtwoord
+admin-login-forgot-password=Wachtwoord vergeten?
+admin-login-button=Inloggen
+
+
+
 # Admin home page
 admin-home-bookings = Boekingen
 admin-home-users = Beheerders / Personeel
 admin-home-customers = Customers
 admin-home-prices = Prijzen
+
+
+
+# Admin forgot password
+forgot-password-title = Wachtwoord Vergeten
+forgot-password-email = E-mailadres
+forgot-password-submit = Resetlink Versturen
+forgot-password-back = Terug naar Login
+
+# Admin reset password
+reset-password-title = Wachtwoord Resetten
+reset-password-new-password = Nieuw Wachtwoord
+reset-password-confirm-password = Herhaal Wachtwoord
+reset-password-save = Wachtwoord Opslaan
 
 
 

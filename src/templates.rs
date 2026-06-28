@@ -161,14 +161,54 @@ impl I18nTemplate for PublicBookingOverviewTemplate {
 #[derive(Template)]
 #[template(path = "pages/admin_login.html")]
 pub struct AdminLoginTemplate {
-    pub csrf_token: String,
     pub user_name: Option<String>,
     pub current_lang: String,
     pub error: Option<String>,
+    pub success: Option<String>,
+    pub csrf_token: String,
 }
 
 impl I18nTemplate for AdminLoginTemplate {
     fn lang(&self) -> &str { &self.current_lang }
+}
+
+
+
+// Admin forgot password template struct and trait implemantation EN/NL
+#[derive(Template)]
+#[template(path = "pages/admin_forgot_password.html")]
+pub struct AdminForgotPasswordTemplate {
+    pub user_name: Option<String>,
+    pub current_lang: String,
+    pub email: String,
+    pub error: String,
+    pub success: String,
+    pub csrf_token: String,
+}
+
+impl I18nTemplate for AdminForgotPasswordTemplate {
+    fn lang(&self) -> &str {
+        &self.current_lang
+    }
+}
+
+
+// Admin reset password template struct and trait implemantation EN/NL
+#[derive(Template)]
+#[template(path = "pages/admin_reset_password.html")]
+pub struct AdminResetPasswordTemplate {
+    pub user_name: Option<String>,
+    pub current_lang: String,
+    pub token: String,
+    pub error: String,
+    pub success: String,
+    pub csrf_token: String,
+}
+
+impl I18nTemplate for AdminResetPasswordTemplate {
+    fn lang(&self) -> &str {
+        &self.current_lang
+    }
 }
 
 

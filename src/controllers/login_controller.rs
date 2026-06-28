@@ -8,7 +8,8 @@ use serde::Deserialize;
 use tokio_postgres::NoTls;
 use std::env;
 use std::time::{SystemTime, UNIX_EPOCH};
-use bcrypt::verify;
+use bcrypt::{hash, verify};
+use uuid::Uuid;
 use crate::controllers::csrf_controller;
 use crate::controllers::validation_controller::*;
 
@@ -161,6 +162,259 @@ pub async fn login_admin(
         .append_header((
             "Location",
             "/admin/login?error=error-login-invalid",
+        ))
+        .finish()
+}
+
+
+
+// Admin forgot password form struct
+#[derive(Deserialize)]
+pub struct ForgotPasswordForm {
+    pub csrf_token: String,
+    pub email: String,
+}
+
+// Admin forgot password
+pub async fn forgot_password(
+    session: Session,
+    form: web::Form<ForgotPasswordForm>,
+) -> impl Responder {
+
+    // CSRF validation
+    if !csrf_controller::verify_csrf_token(
+        &session,
+        &form.csrf_token,
+    ) {
+        return HttpResponse::Forbidden().finish();
+    }
+
+    // Input validation
+    if let Err(error_key) =
+        validate_forgot_password(&form)
+    {
+        let redirect_url = format!(
+            "/admin/forgot-password?error={}",
+            urlencoding::encode(&error_key),
+        );
+
+        return HttpResponse::Found()
+            .append_header(("Location", redirect_url))
+            .finish();
+    }    
+
+    let database_url =
+        env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set");
+
+    let (client, connection) =
+        tokio_postgres::connect(
+            &database_url,
+            NoTls,
+        )
+        .await
+        .expect("DB connect failed");
+
+    actix_web::rt::spawn(async move {
+        let _ = connection.await;
+    });
+
+    let user = client
+        .query_opt(
+            "
+            SELECT id
+
+            FROM \"user\"
+
+            WHERE email = $1
+            ",
+            &[&form.email],
+        )
+        .await
+        .expect("Query failed");
+
+    if user.is_none() {
+
+        return HttpResponse::SeeOther()
+            .insert_header((
+                actix_web::http::header::LOCATION,
+                "/admin/forgot-password?error=forgot-password-email-not-found",
+            ))
+            .finish();
+    }
+
+    let token =
+        Uuid::new_v4().to_string();        
+
+    // Token automatically expires after 1 hour    
+    client
+        .execute(
+            "
+            UPDATE \"user\"
+
+            SET
+                reset_token = $1,
+                reset_token_expires = NOW() + INTERVAL '1 hour'
+
+            WHERE email = $2
+            ",
+            &[
+                &token,
+                &form.email,
+            ],
+        )
+        .await
+        .expect("Update failed");
+
+    let app_url =
+        env::var("APP_URL")
+            .unwrap_or_else(|_| "http://127.0.0.1:8080".to_string());
+
+    let reset_link =
+        format!(
+            "{}/admin/reset-password/{}",
+            app_url,
+            token
+        );
+
+    let _ =
+        crate::controllers::email_controller::send_password_reset_email(
+            &form.email,
+            &reset_link,
+        )
+        .await;
+
+    HttpResponse::SeeOther()
+        .insert_header((
+            actix_web::http::header::LOCATION,
+            "/admin/forgot-password?success=forgot-password-success",
+        ))
+        .finish()
+}
+
+
+
+// Admin reset password form struct
+#[derive(Deserialize)]
+pub struct ResetPasswordForm {
+    pub csrf_token: String,
+    pub token: String,
+    pub password: String,
+    pub password_confirm: String,
+}
+
+// Admin reset password
+pub async fn reset_password(
+    session: Session,
+    form: web::Form<ResetPasswordForm>,
+) -> impl Responder {
+
+    if !csrf_controller::verify_csrf_token(
+        &session,
+        &form.csrf_token,
+    ) {
+        return HttpResponse::Forbidden().finish();
+    }
+
+    // Input validation
+    if let Err(error_key) =
+        validate_reset_password(&form)
+    {
+        let redirect_url = format!(
+            "/admin/reset-password/{}?error={}",
+            form.token,
+            urlencoding::encode(&error_key),
+        );
+
+        return HttpResponse::Found()
+            .append_header(("Location", redirect_url))
+            .finish();
+    }
+
+    if form.password != form.password_confirm {
+
+        let redirect_url = format!(
+            "/admin/reset-password/{}?error=reset-password-passwords-not-match",
+            form.token,
+        );
+
+        return HttpResponse::SeeOther()
+            .insert_header(("Location", redirect_url))
+            .finish();
+    }
+
+    let database_url =
+        env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set");
+
+    let (client, connection) =
+        tokio_postgres::connect(
+            &database_url,
+            NoTls,
+        )
+        .await
+        .expect("DB connect failed");
+
+    actix_web::rt::spawn(async move {
+        let _ = connection.await;
+    });
+
+    let user = client
+        .query_opt(
+            "
+            SELECT id
+
+            FROM \"user\"
+
+            WHERE reset_token = $1
+            AND reset_token_expires > NOW()
+            ",
+            &[&form.token],
+        )
+        .await
+        .expect("Query failed");
+
+    if user.is_none() {
+
+        let redirect_url = format!(
+            "/admin/reset-password/{}?error=reset-password-invalid-token",
+            form.token,
+        );
+
+        return HttpResponse::SeeOther()
+            .insert_header(("Location", redirect_url))
+            .finish();
+    }
+
+    let password_hash =
+        hash(&form.password, 12)
+            .expect("Hash failed");
+
+    // Token becomes invalid after successful use
+    client
+        .execute(
+            "
+            UPDATE \"user\"
+
+            SET
+                password_hash = $1,
+                reset_token = NULL,
+                reset_token_expires = NULL
+
+            WHERE reset_token = $2
+            ",
+            &[
+                &password_hash,
+                &form.token,
+            ],
+        )
+        .await
+        .expect("Update failed");
+
+    HttpResponse::SeeOther()
+        .insert_header((
+            "Location",
+            "/admin/login?success=reset-password-success",
         ))
         .finish()
 }

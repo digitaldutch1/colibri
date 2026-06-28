@@ -446,3 +446,67 @@ pub async fn send_booking_status_email(
 
     Ok(())
 }
+
+
+// Admin forgot password email
+pub async fn send_password_reset_email(
+    to_email: &str,
+    reset_link: &str,
+) -> Result<(), String> {
+
+    let smtp_user =
+        env::var("SMTP_USER")
+            .map_err(|_| "SMTP_USER missing".to_string())?;
+
+    let smtp_password =
+        env::var("SMTP_PASSWORD")
+            .map_err(|_| "SMTP_PASSWORD missing".to_string())?;
+
+    let email_body = format!(
+        "<html>
+        <body style='font-family: Arial, sans-serif;'>
+
+            <p>Hello,</p>
+
+            <p>
+                A password reset has been requested for your account.
+            </p>
+
+            <p>
+                Click the link below to create a new password:
+            </p>
+
+            <p>
+                <a href='{}'>Reset Password</a>
+            </p>
+
+            <p>
+                This link will expire in 1 hour.
+            </p>
+
+            <p>
+                Kind regards,<br>
+                Team Colibri
+            </p>
+
+        </body>
+        </html>",
+        reset_link
+    );
+
+    let email = Message::builder()
+        .from(format!("Colibri <{}>", smtp_user).parse().unwrap())
+        .to(to_email.parse().unwrap())
+        .subject("Password Reset")
+        .header(header::ContentType::TEXT_HTML)
+        .body(email_body)
+        .map_err(|error| error.to_string())?;
+
+    let mailer =
+        create_mailer(&smtp_user, &smtp_password)?;
+
+    mailer.send(&email)
+        .map_err(|error| error.to_string())?;
+
+    Ok(())
+}

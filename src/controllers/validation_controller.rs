@@ -404,3 +404,38 @@ pub fn validate_price(
 
     Ok(())
 }
+
+
+// Admin forgot password input validation
+pub fn validate_forgot_password(
+    form: &ForgotPasswordForm
+) -> Result<(), String> {
+
+    if form.email.trim().is_empty()
+        || !form.email.contains('@')
+    {
+        return Err("error-email-invalid".to_string());
+    }
+
+    Ok(())
+}
+
+// Admin reset password input validation
+pub fn validate_reset_password(
+    form: &ResetPasswordForm
+) -> Result<(), String> {
+
+    let password =
+        &form.password;
+
+    if password.len() < 8
+        || !password.chars().any(|c| c.is_lowercase())
+        || !password.chars().any(|c| c.is_uppercase())
+        || !password.chars().any(|c| c.is_numeric())
+        || !password.chars().any(|c| !c.is_alphanumeric())
+    {
+        return Err("reset-password-password-invalid".to_string());
+    }
+
+    Ok(())
+}

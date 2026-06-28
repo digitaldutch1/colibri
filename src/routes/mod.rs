@@ -25,6 +25,10 @@ pub fn init(cfg: &mut web::ServiceConfig) {
         // Admin pages
         .route("/admin/login", web::get().to(page_controller::admin_login))
         .route("/admin/login", web::post().to(login_controller::login_admin))
+        .route("/admin/forgot-password",web::get().to(page_controller::admin_forgot_password))
+        .route("/admin/forgot-password",web::post().to(login_controller::forgot_password))
+        .route("/admin/reset-password/{token}",web::get().to(page_controller::admin_reset_password))
+        .route("/admin/reset-password/{token}",web::post().to(login_controller::reset_password))
         .route("/logout", web::get().to(login_controller::logout_admin))
         .route("/admin", web::get().to(page_controller::admin_home))
         
@@ -58,6 +62,6 @@ pub fn init(cfg: &mut web::ServiceConfig) {
         .route("/admin/prices", web::get().to(page_controller::admin_prices))
         .route("/admin/prices/save", web::post().to(price_controller::save_price))
 
-        .route("/admin/bookings/{id}/print",web::get().to(print_controller::booking_print),);
+        .route("/admin/bookings/{id}/print",web::get().to(print_controller::booking_print));
 
 }

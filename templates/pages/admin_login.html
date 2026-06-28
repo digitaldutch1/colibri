@@ -19,23 +19,32 @@
                 </div>
             {% endif %}
 
-            <h1>Admin Login</h1>
+            
+            {% if success.is_some() %}
+                <div class="alert-wrapper">
+                    <div class="alert success">
+                        {{ self.i18n(success.as_ref().unwrap()) }}
+                    </div>
+                </div>
+            {% endif %}
+
+            <h1>{{ self.i18n("admin-login-title") }}</h1>
 
             <div class="input-field">
-                <input type="text" name="email" placeholder="Email address">
+                <input type="text" name="email" placeholder="{{ self.i18n("admin-login-email") }}">
             </div>
 
             <div class="input-field">
-                <input type="password" id="password" name="password" placeholder="Password">
+                <input type="password" id="password" name="password" placeholder="{{ self.i18n("admin-login-password") }}">
                 <i class="bx bx-show toggle-password" id="togglePassword"></i>
             </div>
 
             <div class="forgot">
-                <a href="#">Wachtwoord vergeten?</a>
+                <a href="/admin/forgot-password">{{ self.i18n("admin-login-forgot-password") }}</a>
             </div>
 
             <button type="submit" class="login-button">
-                Inloggen
+                {{ self.i18n("admin-login-button") }}
             </button>
         </form>
     </div>

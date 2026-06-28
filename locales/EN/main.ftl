@@ -26,7 +26,8 @@ admin-staff-primary-delete-error = Primary admin account cannot be deleted.
 error-price-invalid = Invalid price.
 
 
-# Booking, customer, staff and login form input validation alerts
+
+# Booking, customer, staff, login, forgot_password and reset_password form input validation alerts
 error-firstname-invalid=Invalid first name. Use letters, spaces or hyphens only.
 error-lastname-invalid=Invalid last name. Use letters, spaces or hyphens only.
 error-address-invalid = Invalid address (use only letters, numbers and spaces)
@@ -38,6 +39,13 @@ error-password-invalid=Invalid password. Use at least 8 characters, one uppercas
 error-password-required=Password is required.
 error-login-invalid=Email and password do not match.
 error-login-throttled=Too many login attempts. Please wait 5 minutes before trying again.
+forgot-password-success = Password reset email sent.
+forgot-password-email-not-found=Email address not found.
+reset-password-password-invalid=Password does not meet the requirements.
+reset-password-passwords-not-match=Passwords do not match.
+reset-password-invalid-token=Invalid or expired reset link.
+reset-password-success=Password successfully changed.
+
 
 
 # Booking step 2 session countdown
@@ -159,12 +167,34 @@ nav-prices = Prices
 nav-logout = Logout
 
 
+# Admin login page
+admin-login-title=Admin Login
+admin-login-email=Email Address
+admin-login-password=Password
+admin-login-forgot-password=Forgot Password?
+admin-login-button=Login
+
+
 
 # Admin home page
 admin-home-bookings = Bookings
 admin-home-users = Admins / Staff
 admin-home-customers = Customers
 admin-home-prices = Prices
+
+
+
+# Admin forgot password
+forgot-password-title = Forgot Password
+forgot-password-email = Email Address
+forgot-password-submit = Send Reset Link
+forgot-password-back = Back to Login
+
+# Admin reset password
+reset-password-title = Reset Password
+reset-password-new-password = New Password
+reset-password-confirm-password = Confirm Password
+reset-password-save = Save Password
 
 
 

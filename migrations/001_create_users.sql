@@ -10,6 +10,8 @@ CREATE TABLE "user" (
     phone VARCHAR(20),
     password_hash TEXT NOT NULL,
     role VARCHAR(10) NOT NULL DEFAULT 'staff' CHECK (role IN ('admin', 'staff')),
+    reset_token TEXT,
+    reset_token_expires TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -103,3 +105,10 @@ TRUNCATE booking, customer, "user" RESTART IDENTITY CASCADE;
 UPDATE booking
 SET created_at = NOW() - INTERVAL '8 days'
 WHERE status = 'pending';
+
+
+-- Start mailpit docekr container
+-- docker run --rm -p 8025:8025 -p 1025:1025 axllent/mailpit
+
+-- open mailpit
+-- http://127.0.0.1:8025/

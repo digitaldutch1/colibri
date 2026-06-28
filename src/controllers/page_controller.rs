@@ -387,6 +387,7 @@ pub async fn public_booking_overview(
 #[derive(Deserialize)]
 pub struct LoginParams {
     pub error: Option<String>,
+    pub success: Option<String>,
 }
 
 // Render admin login page
@@ -402,6 +403,10 @@ pub async fn admin_login(
     // 2. Get optional error message
     let error =
         query.error.clone();
+    
+    // 2. Get optional success message
+    let success =
+        query.success.clone();
 
     // CSRF token
     let csrf_token =
@@ -412,6 +417,7 @@ pub async fn admin_login(
         user_name: None,
         current_lang,
         error,
+        success,
         csrf_token,
     };
 
@@ -419,6 +425,100 @@ pub async fn admin_login(
         .content_type("text/html")
         .body(template.render().unwrap())
 }
+
+
+// Forgot password query parameters
+#[derive(Deserialize)]
+pub struct ForgotPasswordParams {
+    pub email: Option<String>,
+    pub error: Option<String>,
+    pub success: Option<String>,
+}
+
+// Render forgot password page
+pub async fn admin_forgot_password(
+    req: HttpRequest,
+    session: Session,
+    query: web::Query<ForgotPasswordParams>,
+) -> impl Responder {
+
+    // Get selected language
+    let current_lang =
+        get_lang(&req);
+
+    // csrf
+    let csrf_token =
+        csrf_controller::generate_csrf_token(&session);
+
+    // Render template
+    let template = AdminForgotPasswordTemplate {
+        user_name: None,
+        current_lang,
+        email:
+            query.email.clone().unwrap_or_default(),
+        error:
+            query.error.clone().unwrap_or_default(),
+        success:
+            query.success.clone().unwrap_or_default(),
+        csrf_token,
+    };
+
+    HttpResponse::Ok()
+        .content_type("text/html")
+        .body(template.render().unwrap())
+}
+
+
+
+// Admin reset password page query parameters 
+#[derive(Deserialize)]
+pub struct ResetPasswordPath {
+    pub token: String,
+}
+#[derive(Deserialize)]
+pub struct ResetPasswordParams {
+    pub error: Option<String>,
+    pub success: Option<String>,
+}
+
+// Render reset password page
+pub async fn admin_reset_password(
+    req: HttpRequest,
+    session: Session,
+    path: web::Path<ResetPasswordPath>,
+    query: web::Query<ResetPasswordParams>,
+) -> impl Responder {
+
+    // Get selected language
+    let current_lang =
+        get_lang(&req);
+
+    // csrf
+    let csrf_token =
+        csrf_controller::generate_csrf_token(&session);
+
+    // Render template
+    let template = AdminResetPasswordTemplate {
+        user_name: None,
+        current_lang,
+
+        token:
+            path.token.clone(),
+
+        error:
+            query.error.clone().unwrap_or_default(),
+
+        success:
+            query.success.clone().unwrap_or_default(),
+
+        csrf_token,
+    };
+
+    HttpResponse::Ok()
+        .content_type("text/html")
+        .body(template.render().unwrap())
+}
+
 
 
 // Render admin homepage
